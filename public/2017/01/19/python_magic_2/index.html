@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-atom.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,String," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="文章中的代码仅在Python3中测试成功，没有在Python2中测试。 0X00 split升级字符串有一个split方法，可以用某个字符或字符串把源字符串切开。但是存在一个弊端，切割位置是固定的，不能灵活切割。有这样一个需求，将这个字符串hello 1 wrld 2 python 3 linux切割开，以每个数字为分隔符。这样标准的str.split就不能完成任务了。但是在re模块中有一个re">
+<meta name="keywords" content="Python,String">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 奇技淫巧 (二) 字符串、文本">
+<meta property="og:url" content="http://blog.xshawn.top/2017/01/19/python_magic_2/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="文章中的代码仅在Python3中测试成功，没有在Python2中测试。 0X00 split升级字符串有一个split方法，可以用某个字符或字符串把源字符串切开。但是存在一个弊端，切割位置是固定的，不能灵活切割。有这样一个需求，将这个字符串hello 1 wrld 2 python 3 linux切割开，以每个数字为分隔符。这样标准的str.split就不能完成任务了。但是在re模块中有一个re">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-02T14:48:51.370Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python 奇技淫巧 (二) 字符串、文本">
+<meta name="twitter:description" content="文章中的代码仅在Python3中测试成功，没有在Python2中测试。 0X00 split升级字符串有一个split方法，可以用某个字符或字符串把源字符串切开。但是存在一个弊端，切割位置是固定的，不能灵活切割。有这样一个需求，将这个字符串hello 1 wrld 2 python 3 linux切割开，以每个数字为分隔符。这样标准的str.split就不能完成任务了。但是在re模块中有一个re">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","isplay":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.xshawn.top/2017/01/19/python_magic_2/"/>
+
+
+
+
+
+  <title>Python 奇技淫巧 (二) 字符串、文本 | Shawn's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shawn's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个实习生的伪技术博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br />
+            
+            links
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.xshawn.top/2017/01/19/python_magic_2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python 奇技淫巧 (二) 字符串、文本</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-19T14:51:00+08:00">
+                2017-01-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<h5 id="文章中的代码仅在Python3中测试成功，没有在Python2中测试。"><a href="#文章中的代码仅在Python3中测试成功，没有在Python2中测试。" class="headerlink" title="文章中的代码仅在Python3中测试成功，没有在Python2中测试。"></a>文章中的代码仅在Python3中测试成功，没有在Python2中测试。</h5></blockquote>
+<h1 id="0X00-split升级"><a href="#0X00-split升级" class="headerlink" title="0X00 split升级"></a>0X00 split升级</h1><p>字符串有一个<code>split</code>方法，可以用某个字符或字符串把源字符串切开。但是存在一个弊端，切割位置是固定的，不能灵活切割。有这样一个需求，将这个字符串<code>hello 1 wrld 2 python 3 linux</code>切割开，以每个数字为分隔符。这样标准的<code>str.split</code>就不能完成任务了。但是在<code>re</code>模块中有一个<code>re.split</code>可以完成这任务。这个方法的分隔符不是使用准确不变的字符/串而是使用正则表达式。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># coding=utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> re</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    my_str = <span class="string">'hello 1 wrld 2 python 3 linux'</span></div><div class="line">    res = re.split(<span class="string">'[0-9]'</span>, my_str)</div><div class="line">    print(res)</div></pre></td></tr></table></figure></p>
+<p>这里使用的正则表达式就是普通的字符串形式，而不需要<code>re.compile</code>进行编译。有了这个方法就可以更加灵活地切割字符串了。</p>
+<h1 id="0X01-字符串开头结尾的匹配"><a href="#0X01-字符串开头结尾的匹配" class="headerlink" title="0X01 字符串开头结尾的匹配"></a>0X01 字符串开头结尾的匹配</h1><p>当我们有一堆的url，想在url中找到http开头且.jpg结尾的图片文件，以前我总是直接<code>str.strip(&#39;http://&#39;) == str</code>来判断开头是不是’<a href="http://&#39;但是这样太蠢了，而且也不是很靠谱、因为万一开头不是而结尾是的话就会误判。这里有两个方法可以非常简单地做出这种判断：`str.startswith()`和`str.endswitch()`两个。一个是用来判断字符串是否以xxx开头、另一个是用来判断字符串是否以xxx结尾。" target="_blank" rel="external">http://&#39;但是这样太蠢了，而且也不是很靠谱、因为万一开头不是而结尾是的话就会误判。这里有两个方法可以非常简单地做出这种判断：`str.startswith()`和`str.endswitch()`两个。一个是用来判断字符串是否以xxx开头、另一个是用来判断字符串是否以xxx结尾。</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># coding=utf-8</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    url = <span class="string">'http://blog.just666.cn/img/01.jpg'</span></div><div class="line">    print(url.startswith(<span class="string">'http://'</span>))</div><div class="line">    print(url.endswith(<span class="string">'.jpg'</span>))</div></pre></td></tr></table></figure></p>
+<p>这种方式可以有一个简单的改变，使用列表推导式来批量判断。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># coding=utf-8</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    url_list = [<span class="string">'http://hey.sdf.we/sdfw.jpg'</span>,</div><div class="line">                <span class="string">'http://asdf.ser.x/zxvw.jpg'</span>,</div><div class="line">                <span class="string">'http://sdf.re.xcv/ind.html'</span>,</div><div class="line">                <span class="string">'http://zx.er.cxv/held.html'</span>,</div><div class="line">                <span class="string">'http://zx.sdf.vs/hell.jpg'</span>]</div><div class="line">	<span class="comment"># 这里是列表推导式</span></div><div class="line">    jpg_list = [jpg <span class="keyword">for</span> jpg <span class="keyword">in</span> url_list <span class="keyword">if</span> jpg.endswith(<span class="string">'.jpg'</span>)]</div><div class="line">    print(jpg_list)</div></pre></td></tr></table></figure></p>
+<p>也可以将后两行换成<code>print(all(jpg.startswith(&#39;.jpg&#39;) for jpg in url_list))</code>就会输出<code>False</code>因为并不是所有都以’.jpg’结尾。<br>还可以使用匹配的方式，比如你需要在N多url中找到’http/ftp’这两个协议的url，可以这么写<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># coding=utf-8</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    choices = [<span class="string">'http://'</span>, <span class="string">'ftp://'</span>]</div><div class="line">    choices = tuple(choices)	<span class="comment"># 这里必须要使用元组类型</span></div><div class="line"></div><div class="line">    url = <span class="string">'http://www.baidu.com'</span></div><div class="line">    print(url.startswith(choices))</div><div class="line"></div><div class="line">    url = <span class="string">'ftp://192.168.1.2'</span></div><div class="line">    print(url.startswith(choices))</div><div class="line"></div><div class="line">    url = <span class="string">'https://www.taoba.com'</span></div><div class="line">    print(url.startswith(choices))</div></pre></td></tr></table></figure></p>
+<p><code>startswith</code>和<code>endswitch</code>两个函数完全可以被正则表达式替代，但是对于简单匹配来说没必要用正则表达式，这两个函数比正则要快且可读性搞书写快。</p>
+<h1 id="0X02-Shell通配符"><a href="#0X02-Shell通配符" class="headerlink" title="0X02 Shell通配符"></a>0X02 Shell通配符</h1><p>在匹配字符串的时候不仅可以使用比较复杂的正则表达式，还可以用比较简单的通配符。使用通配符需要注意的一个问题就是大小写。在Linux/Unix/Mac上要区分大小写，在Windows上不区分大小写。<code>fnmatch</code>下有两个方法，<code>fnmatch</code>按操作系统来判断到底区不区分大小写，而<code>fnmatchcase</code>则强制区分大小写。使用方法如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> fnmatch <span class="keyword">import</span> fnmatch, fnmatchcase</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>filename = <span class="string">'hello.c'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>fnmatch(filename, <span class="string">'*.c'</span>)</div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>fnmatch(filename, <span class="string">'hell?.c'</span>)</div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>fnmatch(filename, <span class="string">'hellO.c'</span>)</div><div class="line"><span class="keyword">False</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>fnmatch(filename, <span class="string">'hello.c'</span>)</div><div class="line"><span class="keyword">True</span></div></pre></td></tr></table></figure></p>
+<h1 id="0X03-查找替换"><a href="#0X03-查找替换" class="headerlink" title="0X03 查找替换"></a>0X03 查找替换</h1><p>将字符串A中所有的某个子字符串B替换为另外的字符串C，可以简单的使用字符串的<code>replace</code>函数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># coding=utf-8</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    text = <span class="string">'hello world hello python'</span></div><div class="line">    print(text.replace(<span class="string">'hello'</span>, <span class="string">'hey'</span>))</div></pre></td></tr></table></figure></p>
+<p>还有一种使用<code>re</code>模块的方案，可以使用正则匹配来查找并替换。<code>re.sub()</code>方法可以做到这一点。这里sub的第一个参数是匹配的正则表达式，第二个参数是替换的字符串（其中\1 \2 \3表示匹配的编号），第三个参数就是待匹配替换的字符串了。这个例子将<code>1/19/2017</code>转变为<code>2017/1/19</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># coding=utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> re</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    text = <span class="string">'hello world 1/19/2017'</span></div><div class="line">    print(re.sub(<span class="string">r'(\d+)/(\d+)/(\d+)'</span>, <span class="string">r'\3-\1-\2'</span>, text))</div></pre></td></tr></table></figure></p>
+<h1 id="0X04-Unicode大法好"><a href="#0X04-Unicode大法好" class="headerlink" title="0X04 Unicode大法好"></a>0X04 Unicode大法好</h1><p>我们有的时候会遇到一些奇怪的字符串问题，比如看起来明明完全一样的两个字符串在对比的时候居然不相等。得益于Python3使用的Unicode我们可以简单的对字符串统一规范。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># coding=utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> unicodedata</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    s1 = <span class="string">'char: \u00f1'</span></div><div class="line">    s2 = <span class="string">'char: n\u0303'</span></div><div class="line">    print(s1)</div><div class="line">    print(s2)</div><div class="line">    print(s1 == s2, <span class="string">'   '</span>, len(s1), <span class="string">'   '</span>, len(s2))</div><div class="line">    </div><div class="line">    <span class="comment"># 改一下编码</span></div><div class="line">    s1 = unicodedata.normalize(<span class="string">'NFC'</span>, s1)</div><div class="line">    s2 = unicodedata.normalize(<span class="string">'NFC'</span>, s2)</div><div class="line">    print(s1)</div><div class="line">    print(s2)</div><div class="line">    print(s1 == s2, <span class="string">'   '</span>, len(s1), <span class="string">'   '</span>, len(s2))</div></pre></td></tr></table></figure></p>
+<p>这里面用到的那个奇怪的字符我也不知道是什么，是在《Python Cookbok》这本书上找的例子。就是说看起来<code>\u00f1</code>这个字符和<code>n\u0303</code>是一样的，但是很明显前者是一个字符而后者是两个字符，所以我们在对比的时候才会出现字符串不相同甚至长度不同的问题。然后引入了<code>unicodedata</code>模块之后用里面的<code>normalize</code>方法可以将字符串规范化，<code>s1 = unicodedata.normalize(&#39;NFC&#39;, s1)</code>就是将s1采用NFC方式规范。所谓NFC方式就是 <strong>全组成</strong> 也就是说“如果可能的话就是用单个代码点，也就是s1那种方式”（这里和近场通讯的NFC很明显没半点关系）。可选的除了NFC还有NFD（尽量使用组合字符，也就是s2那种方式），还支持NFKC和NFKD这里就自行Google一下吧。</p>
+<h1 id="0X05-字符串对齐"><a href="#0X05-字符串对齐" class="headerlink" title="0X05 字符串对齐"></a>0X05 字符串对齐</h1><p>有的时候我们需要对字符串进行对齐操作，比如在终端中模拟界面之类的。可以使用C语言风格的%10S这种去替代，但是有更好用简单的方法，就是使用字符串内置的<code>ljust/rjust/center</code>方法。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># coding=utf-8</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    text = <span class="string">'Main Menu'</span></div><div class="line">    print(<span class="string">'左对齐：'</span>, text.ljust(<span class="number">30</span>))</div><div class="line">    print(<span class="string">'右对齐：'</span>, text.rjust(<span class="number">30</span>))</div><div class="line">    print(<span class="string">'中对齐：'</span>, text.center(<span class="number">30</span>))</div><div class="line"></div><div class="line">    print(<span class="string">'左对齐填充：'</span>, text.ljust(<span class="number">30</span>, <span class="string">'+'</span>))</div><div class="line">    print(<span class="string">'右对齐填充：'</span>, text.rjust(<span class="number">30</span>, <span class="string">'='</span>))</div><div class="line">    print(<span class="string">'中对齐填充：'</span>, text.center(<span class="number">30</span>, <span class="string">'*'</span>))</div></pre></td></tr></table></figure></p>
+<p>还有一个炫酷的融合函数叫<code>format</code>。这个函数接收两个参数，第一个参数是待处理字符串，第二个参数是选项。具体选项如下：其中’^’是居中，’&gt;’是右对齐，’&lt;’是左对齐，后面跟着的数字是宽度，对齐字符前面是填充字符。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># coding=utf-8</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    text = <span class="string">'Main Menu'</span></div><div class="line">    print(format(text, <span class="string">'&gt;20'</span>))</div><div class="line">    print(format(text, <span class="string">'&lt;20'</span>))</div><div class="line">    print(format(text, <span class="string">'^20'</span>))</div><div class="line"></div><div class="line">    print(format(text, <span class="string">'-&gt;20'</span>))</div><div class="line">    print(format(text, <span class="string">'=&lt;20'</span>))</div><div class="line">    print(format(text, <span class="string">'*^20'</span>))</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/Wechat.png" alt="Shawn WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/Alipay.jpg" alt="Shawn Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Shawn
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.xshawn.top/2017/01/19/python_magic_2/" title="Python 奇技淫巧 (二) 字符串、文本">http://blog.xshawn.top/2017/01/19/python_magic_2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/String/" rel="tag"># String</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/15/python_magic_1/" rel="next" title="Python 奇技淫巧 (一) 列表、集合、字典">
+                <i class="fa fa-chevron-left"></i> Python 奇技淫巧 (一) 列表、集合、字典
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/21/python_magic_3/" rel="prev" title="Python 奇技淫巧 (三) 函数">
+                Python 奇技淫巧 (三) 函数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">Shawn</p>
+            <p class="site-description motion-element" itemprop="description">Want to be Engineer.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#文章中的代码仅在Python3中测试成功，没有在Python2中测试。"><span class="nav-number">1.</span> <span class="nav-text">文章中的代码仅在Python3中测试成功，没有在Python2中测试。</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-split升级"><span class="nav-number"></span> <span class="nav-text">0X00 split升级</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-字符串开头结尾的匹配"><span class="nav-number"></span> <span class="nav-text">0X01 字符串开头结尾的匹配</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-Shell通配符"><span class="nav-number"></span> <span class="nav-text">0X02 Shell通配符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-查找替换"><span class="nav-number"></span> <span class="nav-text">0X03 查找替换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-Unicode大法好"><span class="nav-number"></span> <span class="nav-text">0X04 Unicode大法好</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-字符串对齐"><span class="nav-number"></span> <span class="nav-text">0X05 字符串对齐</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-atom.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python,linux,编程,网络,笔记,教程" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="0X00 什么是字典字典，顾名思义就是通过一个条件可以找到相应的值，字典由Key-Value组成。像是下面这样创建一个字典字典中的数据是没有顺序的，不像列表一样有顺序，在字典中是没有固定顺序的123456789&amp;gt;&amp;gt;&amp;gt; a = &amp;#123;&apos;name&apos;:&apos;xiaoming&apos;, &apos;sex&apos;:&apos;F&apos;, &apos;age&apos;:22&amp;#125;  #直接创建一个字典&amp;gt;&amp;gt;&amp;gt; prin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python之字典">
+<meta property="og:url" content="http://blog.xshawn.top/2016/09/13/python_dict/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="0X00 什么是字典字典，顾名思义就是通过一个条件可以找到相应的值，字典由Key-Value组成。像是下面这样创建一个字典字典中的数据是没有顺序的，不像列表一样有顺序，在字典中是没有固定顺序的123456789&amp;gt;&amp;gt;&amp;gt; a = &amp;#123;&apos;name&apos;:&apos;xiaoming&apos;, &apos;sex&apos;:&apos;F&apos;, &apos;age&apos;:22&amp;#125;  #直接创建一个字典&amp;gt;&amp;gt;&amp;gt; prin">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-02T14:09:30.066Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python之字典">
+<meta name="twitter:description" content="0X00 什么是字典字典，顾名思义就是通过一个条件可以找到相应的值，字典由Key-Value组成。像是下面这样创建一个字典字典中的数据是没有顺序的，不像列表一样有顺序，在字典中是没有固定顺序的123456789&amp;gt;&amp;gt;&amp;gt; a = &amp;#123;&apos;name&apos;:&apos;xiaoming&apos;, &apos;sex&apos;:&apos;F&apos;, &apos;age&apos;:22&amp;#125;  #直接创建一个字典&amp;gt;&amp;gt;&amp;gt; prin">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","isplay":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.xshawn.top/2016/09/13/python_dict/"/>
+
+
+
+
+
+  <title>Python之字典 | Shawn's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shawn's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个实习生的伪技术博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br />
+            
+            links
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.xshawn.top/2016/09/13/python_dict/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python之字典</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-13T20:03:00+08:00">
+                2016-09-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="0X00-什么是字典"><a href="#0X00-什么是字典" class="headerlink" title="0X00 什么是字典"></a>0X00 什么是字典</h1><p>字典，顾名思义就是通过一个条件可以找到相应的值，字典由Key-Value组成。像是下面这样创建一个字典<br>字典中的数据是没有顺序的，不像列表一样有顺序，在字典中是没有固定顺序的<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = &#123;<span class="string">'name'</span>:<span class="string">'xiaoming'</span>, <span class="string">'sex'</span>:<span class="string">'F'</span>, <span class="string">'age'</span>:<span class="number">22</span>&#125;  <span class="comment">#直接创建一个字典</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> a</div><div class="line">    &#123;<span class="string">'age'</span>: <span class="number">22</span>, <span class="string">'name'</span>: <span class="string">'xiaoming'</span>, <span class="string">'sex'</span>: <span class="string">'F'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> a[<span class="string">'name'</span>]</div><div class="line">    xiaoming</div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>b = dict(name=<span class="string">'xiaogang'</span>, sex=<span class="string">'M'</span>, age=<span class="number">23</span>)	 <span class="comment">#通过dict函数创建一个字典</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> b[<span class="string">'name'</span>]</div><div class="line">    xiaogang</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>下文说的Key就是键， Value就是值<br>Key-Value 就是键值对，一个键对应着一个值<br>Key的值是可以随意改变的，但是Key的类型是固定的不能改变<br>如果为一个不存在的键赋值，那么会自动添加这个K-V</p>
+</blockquote>
+<h1 id="0X01-字典操作"><a href="#0X01-字典操作" class="headerlink" title="0X01 字典操作"></a>0X01 字典操作</h1><h2 id="len-测量长度"><a href="#len-测量长度" class="headerlink" title="len 测量长度"></a>len 测量长度</h2><p>测量这个字典中有多少<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'username'</span>:<span class="string">'admin'</span>, <span class="string">'password'</span>:<span class="string">'123456'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> len(d)</div><div class="line">	<span class="number">2</span></div></pre></td></tr></table></figure></p>
+<h2 id="d-k-调用字典"><a href="#d-k-调用字典" class="headerlink" title="d[k] 调用字典"></a>d[k] 调用字典</h2><p>根据已知的Key来查找Key所对应的Value<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'username'</span>:<span class="string">'admin'</span>, <span class="string">'password'</span>:<span class="string">'123456'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> d[<span class="string">'username'</span>]</div><div class="line">	admin</div></pre></td></tr></table></figure></p>
+<h2 id="d-k-v-字典赋值"><a href="#d-k-v-字典赋值" class="headerlink" title="d[k] = v    字典赋值"></a>d[k] = v    字典赋值</h2><p>为某个特定的Key赋值，如果这个Key在字典中不存在则创建这个Key<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'username'</span>:<span class="string">'admin'</span>, <span class="string">'password'</span>:<span class="string">'123456'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d[<span class="string">'password'</span>] = <span class="string">'2336666'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> d[<span class="string">'password'</span>]</div><div class="line">	<span class="number">2336666</span></div></pre></td></tr></table></figure></p>
+<h2 id="del-d-k-删除Key-Value"><a href="#del-d-k-删除Key-Value" class="headerlink" title="del d[k] 删除Key-Value"></a>del d[k] 删除Key-Value</h2><p>删除相应的Key和Value<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'username'</span>:<span class="string">'admin'</span>, <span class="string">'password'</span>:<span class="string">'123456'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> d[<span class="string">'username'</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> d</div><div class="line">	&#123;<span class="string">'password'</span>: <span class="string">'123456'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> d[<span class="string">'username'</span>]	<span class="comment">#删除一个不存在的K-V会抛出异常</span></div><div class="line">    Traceback (most recent call last):</div><div class="line">      File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">    KeyError: <span class="string">'username'</span></div></pre></td></tr></table></figure></p>
+<h2 id="k-in-d-成员检查"><a href="#k-in-d-成员检查" class="headerlink" title="k in d 成员检查"></a>k in d 成员检查</h2><p>检查某字典中是否存在某Key，成员检查时用的是Key而不是Value<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'username'</span>:<span class="string">'admin'</span>, <span class="string">'password'</span>:<span class="string">'123456'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'username'</span> <span class="keyword">in</span> d</div><div class="line">	<span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'phonenumber'</span> <span class="keyword">in</span> d</div><div class="line">	<span class="keyword">False</span></div></pre></td></tr></table></figure></p>
+<h1 id="0X02-字典的递归"><a href="#0X02-字典的递归" class="headerlink" title="0X02 字典的递归"></a>0X02 字典的递归</h1><p>字典中是Key-Value，然而字典的Value是可以是字典的，也就是Key-Value的Value是字典，也就是递归。<br>这样就可以建立一个递归的字典，字典里的字典可以是一层一层递归包括下去<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>phones = &#123;</div><div class="line">        <span class="string">'xiaoming'</span>:&#123;</div><div class="line">        <span class="string">'num'</span>:<span class="string">'123'</span>,</div><div class="line">        <span class="string">'addr'</span>:<span class="string">'hebei'</span></div><div class="line">        &#125;,</div><div class="line">        <span class="string">'xiaohua'</span>:&#123;</div><div class="line">        <span class="string">'num'</span>:<span class="string">'456'</span>,</div><div class="line">        <span class="string">'addr'</span>:<span class="string">'sichuan'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> phones</div><div class="line">    &#123;<span class="string">'xiaoming'</span>: &#123;<span class="string">'num'</span>: <span class="string">'123'</span>, <span class="string">'addr'</span>: <span class="string">'hebei'</span>&#125;, <span class="string">'xiaohua'</span>: &#123;<span class="string">'num'</span>: <span class="string">'456'</span>, <span class="string">'addr'</span>: <span class="string">'sichuan'</span>&#125;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> phones[<span class="string">'xiaoming'</span>]</div><div class="line">    &#123;<span class="string">'num'</span>: <span class="string">'123'</span>, <span class="string">'addr'</span>: <span class="string">'hebei'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> phones[<span class="string">'xiaoming'</span>][<span class="string">'addr'</span>]</div><div class="line">    hebei</div></pre></td></tr></table></figure></p>
+<h1 id="0X03-字典方法"><a href="#0X03-字典方法" class="headerlink" title="0X03 字典方法"></a>0X03 字典方法</h1><p>字典有好多方法可以调用，对字典进行操作</p>
+<h2 id="clear-清除"><a href="#clear-清除" class="headerlink" title="clear 清除"></a>clear 清除</h2><p>clear可以清除字典所有项，这项操作是直接操作原来的字典而不是修改字典然后返回新的字典<br>下面展示一下这个方法的用处<br>A<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>x = &#123;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>y = x</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x[<span class="string">'key'</span>] = <span class="string">'value'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>y</div><div class="line">	&#123;<span class="string">'key'</span>: <span class="string">'value'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x = &#123;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>y</div><div class="line">	&#123;<span class="string">'key'</span>: <span class="string">'value'</span>&#125;</div></pre></td></tr></table></figure></p>
+<p>B<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>x = &#123;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>y = x</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x[<span class="string">'key'</span>] = <span class="string">'value'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>y</div><div class="line">	&#123;<span class="string">'key'</span>: <span class="string">'value'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x.clear()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>y</div><div class="line">	&#123;&#125;</div></pre></td></tr></table></figure></p>
+<p>对比A和B这两种情况，就大概知道什么时候clear方法可以发挥用处了</p>
+<h2 id="copy-复制"><a href="#copy-复制" class="headerlink" title="copy 复制"></a>copy 复制</h2><p>可以复制一个全新的字典出来，并返回这个新的字典。字典的复制分为浅度复制和深度复制<br>浅度复制<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>x = &#123;<span class="string">'username'</span>:<span class="string">'admin'</span>, <span class="string">'machines'</span>:[<span class="string">'foo'</span>, <span class="string">'bar'</span>, <span class="string">'baz'</span>]&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>y = x.copy()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>y[<span class="string">'username'</span>] = <span class="string">'mlh'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>y[<span class="string">'machines'</span>].remove(<span class="string">'bar'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>y</div><div class="line">    &#123;<span class="string">'username'</span>: <span class="string">'mlh'</span>, <span class="string">'machines'</span>: [<span class="string">'foo'</span>, <span class="string">'baz'</span>]&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x</div><div class="line">    &#123;<span class="string">'username'</span>: <span class="string">'admin'</span>, <span class="string">'machines'</span>: [<span class="string">'foo'</span>, <span class="string">'baz'</span>]&#125;</div></pre></td></tr></table></figure></p>
+<p>深度复制<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> copy <span class="keyword">import</span> deepcopy</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d[<span class="string">'names'</span>] = [<span class="string">'Alfred'</span>, <span class="string">'Bertrand'</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c = d.copy()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>dc = deepcopy(d)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d[<span class="string">'names'</span>].append(<span class="string">'Clive'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c</div><div class="line">    &#123;<span class="string">'names'</span>: [<span class="string">'Alfred'</span>, <span class="string">'Bertrand'</span>, <span class="string">'Clive'</span>]&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>dc</div><div class="line">    &#123;<span class="string">'names'</span>: [<span class="string">'Alfred'</span>, <span class="string">'Bertrand'</span>]&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="fromkeys-空字典"><a href="#fromkeys-空字典" class="headerlink" title="fromkeys 空字典"></a>fromkeys 空字典</h2><p>使用给定的键来建立一个没有值的字典，也可以给一个默认的值让所有键的值都是这个默认值<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>dict.fromkeys([<span class="string">'name'</span>, <span class="string">'age'</span>])	<span class="comment">#一个纯空的字典</span></div><div class="line">    &#123;<span class="string">'name'</span>: <span class="keyword">None</span>, <span class="string">'age'</span>:<span class="keyword">None</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>dict.fromkeys([<span class="string">'name'</span>, <span class="string">'age'</span>], <span class="string">'unknow'</span>)   <span class="comment">#给键创建一个默认值</span></div><div class="line">    &#123;<span class="string">'name'</span>:<span class="string">'unknow'</span>, <span class="string">'age'</span>:<span class="string">'unknow'</span>&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="get-获取"><a href="#get-获取" class="headerlink" title="get 获取"></a>get 获取</h2><p>比较宽松的获取数据，以前用d[k]的方式调用一个值的话，如果这个键不存在就会抛出异常，用get获取就不会这样<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> d.get(<span class="string">'name'</span>)  <span class="comment">#获取一个不存在的数据，不会抛出异常，而显示None</span></div><div class="line">    <span class="keyword">None</span></div></pre></td></tr></table></figure></p>
+<h2 id="has-key-判断键"><a href="#has-key-判断键" class="headerlink" title="has_key 判断键"></a>has_key 判断键</h2><p>判断字典中是否有这个键，返回True和False<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'name'</span>:<span class="string">'admin'</span>, <span class="string">'password'</span>:<span class="string">'123456'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.has_key(<span class="string">'name'</span>)</div><div class="line">    <span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.has_key(<span class="string">'hehe'</span>)</div><div class="line">    <span class="keyword">False</span></div></pre></td></tr></table></figure></p>
+<h2 id="items-iteritems-返回字典"><a href="#items-iteritems-返回字典" class="headerlink" title="items iteritems 返回字典"></a>items iteritems 返回字典</h2><p>items 可以将整个字典转化成列表并返回<br>iteritems 可以将整个字典转化成迭代器返回<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'username'</span>:<span class="string">'admin'</span>, <span class="string">'password'</span>:<span class="string">'123'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.items()</div><div class="line">    [(<span class="string">'username'</span>, <span class="string">'admin'</span>), (<span class="string">'password'</span>, <span class="string">'123'</span>)]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.iteritems()</div><div class="line">    &lt;built-<span class="keyword">in</span> method iteritems of dict object at <span class="number">0x7f62ac08e6e0</span>&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>list(d.iteritems())</div><div class="line">    [(<span class="string">'username'</span>, <span class="string">'admin'</span>), (<span class="string">'password'</span>, <span class="string">'123'</span>)]</div></pre></td></tr></table></figure></p>
+<h2 id="keys-iterkeys-返回键"><a href="#keys-iterkeys-返回键" class="headerlink" title="keys iterkeys 返回键"></a>keys iterkeys 返回键</h2><p>keys 以列表的方式返回整个字典中所有的key<br>iterkeys 以迭代器的方式返回整个字典中所有的key<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'username'</span>:<span class="string">'admin'</span>, <span class="string">'password'</span>:<span class="string">'123'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.keys()</div><div class="line">    [<span class="string">'username'</span>, <span class="string">'password'</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.iterkeys()</div><div class="line">    &lt;dictionary-keyiterator object at <span class="number">0x7f62ac0972b8</span>&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="pop-出栈"><a href="#pop-出栈" class="headerlink" title="pop 出栈"></a>pop 出栈</h2><p>因为字典中是没有顺序的，所以出栈的时候必须自己指定一个Key才能弹出这个K-V，如果了解“栈”这个数据结构的话就能非常清晰这个方法。使用pop弹出一个数据的时候回在原字典中删除这个数据并返回这个数据。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'username'</span>:<span class="string">'admin'</span>, <span class="string">'password'</span>:<span class="string">'123'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.pop(<span class="string">'password'</span>)</div><div class="line">    <span class="string">'123'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d</div><div class="line">    &#123;<span class="string">'username'</span>: <span class="string">'admin'</span>&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="popitem-随机出栈"><a href="#popitem-随机出栈" class="headerlink" title="popitem 随机出栈"></a>popitem 随机出栈</h2><p>随机从字典中弹出一组K-V<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'one'</span>:<span class="string">'1'</span>, <span class="string">'two'</span>:<span class="string">'2'</span>, <span class="string">'three'</span>:<span class="string">'3'</span>, <span class="string">'four'</span>:<span class="string">'4'</span>, <span class="string">'five'</span>:<span class="string">'5'</span>, <span class="string">'six'</span>:<span class="string">'6'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.popitem()</div><div class="line">    (<span class="string">'six'</span>, <span class="string">'6'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.popitem()</div><div class="line">    (<span class="string">'three'</span>, <span class="string">'3'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.popitem()</div><div class="line">    (<span class="string">'two'</span>, <span class="string">'2'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.popitem()</div><div class="line">    (<span class="string">'four'</span>, <span class="string">'4'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.popitem()</div><div class="line">    (<span class="string">'five'</span>, <span class="string">'5'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.popitem()</div><div class="line">    (<span class="string">'one'</span>, <span class="string">'1'</span>)</div></pre></td></tr></table></figure></p>
+<h2 id="setdefault-设置默认"><a href="#setdefault-设置默认" class="headerlink" title="setdefault 设置默认"></a>setdefault 设置默认</h2><p>给字典中某个Key设定一个默认的Value，当这个Key没有Value的时候就默认为那个默认的Value，如果有数据则默认Value不会生效<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.setdefault(<span class="string">'name'</span>, <span class="string">'N/A'</span>)</div><div class="line">    <span class="string">'N/A'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d</div><div class="line">    &#123;<span class="string">'name'</span>: <span class="string">'N/A'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d[<span class="string">'name'</span>] = <span class="string">'admin'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d.setdefault(<span class="string">'name'</span>, <span class="string">'N/A'</span>)</div><div class="line">    <span class="string">'admin'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d</div><div class="line">    &#123;<span class="string">'name'</span>: <span class="string">'admin'</span>&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="update-更新字典"><a href="#update-更新字典" class="headerlink" title="update 更新字典"></a>update 更新字典</h2><p>可以用一个新的字典去更新旧的字典，新旧字典中Key重合的部分以新字典为准，旧字典中有的Key且新字典中没有的话则不变，旧字典中没有的Key且新字典中有的话则添加这个K-V<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = &#123;<span class="string">'username'</span>:<span class="string">'admin'</span>, <span class="string">'password'</span>:<span class="string">'123456'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>b = &#123;<span class="string">'password'</span>:<span class="string">'2336666'</span>, <span class="string">'sex'</span>:<span class="string">'F'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a.update(b)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">    &#123;<span class="string">'username'</span>: <span class="string">'admin'</span>, <span class="string">'password'</span>: <span class="string">'2336666'</span>, <span class="string">'sex'</span>: <span class="string">'F'</span>&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="values-intervalues"><a href="#values-intervalues" class="headerlink" title="values intervalues"></a>values intervalues</h2><p>values 返回字典中所有的值组成的列表<br>intervalues 返回字典中所有的值相应的迭代器</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/Wechat.png" alt="Shawn WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/Alipay.jpg" alt="Shawn Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Shawn
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.xshawn.top/2016/09/13/python_dict/" title="Python之字典">http://blog.xshawn.top/2016/09/13/python_dict/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/07/python_list_tumple/" rel="next" title="Python之序列：列表、元组">
+                <i class="fa fa-chevron-left"></i> Python之序列：列表、元组
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/14/python_oop/" rel="prev" title="Python之面向对象">
+                Python之面向对象 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">Shawn</p>
+            <p class="site-description motion-element" itemprop="description">Want to be Engineer.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-什么是字典"><span class="nav-number">1.</span> <span class="nav-text">0X00 什么是字典</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-字典操作"><span class="nav-number">2.</span> <span class="nav-text">0X01 字典操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#len-测量长度"><span class="nav-number">2.1.</span> <span class="nav-text">len 测量长度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#d-k-调用字典"><span class="nav-number">2.2.</span> <span class="nav-text">d[k] 调用字典</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#d-k-v-字典赋值"><span class="nav-number">2.3.</span> <span class="nav-text">d[k] = v    字典赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#del-d-k-删除Key-Value"><span class="nav-number">2.4.</span> <span class="nav-text">del d[k] 删除Key-Value</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#k-in-d-成员检查"><span class="nav-number">2.5.</span> <span class="nav-text">k in d 成员检查</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-字典的递归"><span class="nav-number">3.</span> <span class="nav-text">0X02 字典的递归</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-字典方法"><span class="nav-number">4.</span> <span class="nav-text">0X03 字典方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#clear-清除"><span class="nav-number">4.1.</span> <span class="nav-text">clear 清除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#copy-复制"><span class="nav-number">4.2.</span> <span class="nav-text">copy 复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fromkeys-空字典"><span class="nav-number">4.3.</span> <span class="nav-text">fromkeys 空字典</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#get-获取"><span class="nav-number">4.4.</span> <span class="nav-text">get 获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#has-key-判断键"><span class="nav-number">4.5.</span> <span class="nav-text">has_key 判断键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#items-iteritems-返回字典"><span class="nav-number">4.6.</span> <span class="nav-text">items iteritems 返回字典</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#keys-iterkeys-返回键"><span class="nav-number">4.7.</span> <span class="nav-text">keys iterkeys 返回键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pop-出栈"><span class="nav-number">4.8.</span> <span class="nav-text">pop 出栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#popitem-随机出栈"><span class="nav-number">4.9.</span> <span class="nav-text">popitem 随机出栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setdefault-设置默认"><span class="nav-number">4.10.</span> <span class="nav-text">setdefault 设置默认</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#update-更新字典"><span class="nav-number">4.11.</span> <span class="nav-text">update 更新字典</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#values-intervalues"><span class="nav-number">4.12.</span> <span class="nav-text">values intervalues</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

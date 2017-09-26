@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-atom.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux,ACL,权限," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="0X00 ACL是什么ACL的全称是Access Control List访问控制列表。在Linux中可以给文件设置权限，-rwx-rw-rw这样，但是这里并不能细分，只能分到用户、组、其他用户。如果我想给某个单独的用户设置权限的话是做不到的。所以有了ACL的出现。通过ACL可以给Linux下的文件提供详细的访问控制，比如我们在设置了基本的rwx权限之后，可以通过ACL在细分用户对文件的权限。 0">
+<meta name="keywords" content="Linux,ACL,权限">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux权限控制列表 ACL修改">
+<meta property="og:url" content="http://blog.xshawn.top/2016/11/02/linux_acl/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="0X00 ACL是什么ACL的全称是Access Control List访问控制列表。在Linux中可以给文件设置权限，-rwx-rw-rw这样，但是这里并不能细分，只能分到用户、组、其他用户。如果我想给某个单独的用户设置权限的话是做不到的。所以有了ACL的出现。通过ACL可以给Linux下的文件提供详细的访问控制，比如我们在设置了基本的rwx权限之后，可以通过ACL在细分用户对文件的权限。 0">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-02T14:41:57.678Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux权限控制列表 ACL修改">
+<meta name="twitter:description" content="0X00 ACL是什么ACL的全称是Access Control List访问控制列表。在Linux中可以给文件设置权限，-rwx-rw-rw这样，但是这里并不能细分，只能分到用户、组、其他用户。如果我想给某个单独的用户设置权限的话是做不到的。所以有了ACL的出现。通过ACL可以给Linux下的文件提供详细的访问控制，比如我们在设置了基本的rwx权限之后，可以通过ACL在细分用户对文件的权限。 0">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","isplay":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.xshawn.top/2016/11/02/linux_acl/"/>
+
+
+
+
+
+  <title>Linux权限控制列表 ACL修改 | Shawn's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shawn's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个实习生的伪技术博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br />
+            
+            links
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.xshawn.top/2016/11/02/linux_acl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux权限控制列表 ACL修改</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-02T17:16:00+08:00">
+                2016-11-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="0X00-ACL是什么"><a href="#0X00-ACL是什么" class="headerlink" title="0X00 ACL是什么"></a>0X00 ACL是什么</h1><p>ACL的全称是<code>Access Control List</code>访问控制列表。在Linux中可以给文件设置权限，<code>-rwx-rw-rw</code>这样，但是这里并不能细分，只能分到用户、组、其他用户。如果我想给某个单独的用户设置权限的话是做不到的。所以有了ACL的出现。通过ACL可以给Linux下的文件提供详细的访问控制，比如我们在设置了基本的<code>rwx</code>权限之后，可以通过ACL在细分用户对文件的权限。</p>
+<h1 id="0X01-查看文件的ACL"><a href="#0X01-查看文件的ACL" class="headerlink" title="0X01 查看文件的ACL"></a>0X01 查看文件的ACL</h1><p>使用<code>getfacl</code>命令可以查看文件的ACL和详细的权限设置。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@iZ28jaak5nnZ ~]<span class="comment"># ls -l</span></div><div class="line">total 4</div><div class="line">-rwxr-xr-x 1 root root 1714 Oct 28 22:24 hello.py</div><div class="line">[root@iZ28jaak5nnZ ~]<span class="comment"># getfacl hello.py</span></div><div class="line"><span class="comment"># file: hello.py</span></div><div class="line"><span class="comment"># owner: root</span></div><div class="line"><span class="comment"># group: root</span></div><div class="line">user::rwx</div><div class="line">group::r-x</div><div class="line">other::r-x</div></pre></td></tr></table></figure></p>
+<p>这里显示了文件名、所属用户、所属组、还有相对应的权限。</p>
+<h1 id="0X02-创建测试用户-组-文件"><a href="#0X02-创建测试用户-组-文件" class="headerlink" title="0X02 创建测试用户/组/文件"></a>0X02 创建测试用户/组/文件</h1><p>先创建测试用户、测试组、测试文件。创建了<code>xiaoming</code>和<code>xiaohong</code>两个用户，在<code>china</code>组，创建了一个<code>jack</code>用户在<code>usa</code>组。然后用root用户在<code>/tmp/</code>目录下创建了一个acltest目录，用来做测试，因为这个目录是任何人都可以访问的，但是由于是root用户创建的子目录，所以要给这个目录<code>777</code>的权限，让其他用户可以在里面测试。现在里面又创建了一些目录和文件，但是全部都是root用户的，文件权限是<code>644</code>，目录权限是<code>755</code>。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@iZ28jaak5nnZ ~]<span class="comment"># groupadd china</span></div><div class="line">[root@iZ28jaak5nnZ ~]<span class="comment"># useradd xiaoming -g china</span></div><div class="line">[root@iZ28jaak5nnZ ~]<span class="comment"># useradd xiaohong -g china</span></div><div class="line">[root@iZ28jaak5nnZ ~]<span class="comment"># groupadd usa</span></div><div class="line">[root@iZ28jaak5nnZ ~]<span class="comment"># useradd jack -g usa</span></div><div class="line">[root@iZ28jaak5nnZ ~]<span class="comment"># cd /tmp</span></div><div class="line">[root@iZ28jaak5nnZ tmp]<span class="comment"># mkdir acltest</span></div><div class="line">[root@iZ28jaak5nnZ tmp]<span class="comment"># chmod 777 acltest</span></div><div class="line">[root@iZ28jaak5nnZ tmp]<span class="comment"># cd acltest/</span></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># touch file_&#123;1,3&#125;</span></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># mkdir dir_&#123;1,3&#125;</span></div></pre></td></tr></table></figure></p>
+<h1 id="0X03-设置文件的ACL"><a href="#0X03-设置文件的ACL" class="headerlink" title="0X03 设置文件的ACL"></a>0X03 设置文件的ACL</h1><p>使用<code>setfacl</code>命令可以设置文件ACL。这个命令有下面这几个常用参数</p>
+<h2 id="setfacl-各个参数"><a href="#setfacl-各个参数" class="headerlink" title="setfacl 各个参数"></a>setfacl 各个参数</h2><ul>
+<li>所谓的后续ACL就是在默认ACL的基础上添加的新的规则。</li>
+</ul>
+<h3 id="m-设置后续ACL"><a href="#m-设置后续ACL" class="headerlink" title="-m 设置后续ACL"></a>-m 设置后续ACL</h3><p>对某一个文件/目录设置某一个用户的访问权限， u表示用户 冒号后面是用户名 再一个冒号后面是权限 最后接文件/目录<br><code>[root@iZ28jaak5nnZ acltest]# setfacl -m u:user_1:rwx file_1</code></p>
+<p>对某一个文件/目录设置某一个用户组的访问权限，u表示组 冒号后面是组名 再一个冒号后面是权限 最后接文件/目录<br><code>[root@iZ28jaak5nnZ acltest]# setfacl -m g:group_1:rwx file_1</code></p>
+<h3 id="x-删除后续ACL"><a href="#x-删除后续ACL" class="headerlink" title="-x 删除后续ACL"></a>-x 删除后续ACL</h3><p>删除之前添加的ACL项，指定用户或者指定组都是可以的，语法和上面差不多。这里删除的是一条ACL数据，下面说的-b参数是删除所有的ACL数据<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># setfacl -x u:xiaoming file_1</span></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># getfacl file_1</span></div><div class="line"><span class="comment"># file: file_1</span></div><div class="line"><span class="comment"># owner: root</span></div><div class="line"><span class="comment"># group: root</span></div><div class="line">user::rw-</div><div class="line">group::r--</div><div class="line">mask::r--</div><div class="line">other::r--</div></pre></td></tr></table></figure></p>
+<h3 id="b-删除所有后续ACL"><a href="#b-删除所有后续ACL" class="headerlink" title="-b 删除所有后续ACL"></a>-b 删除所有后续ACL</h3><p>这里是删除之前创建的所有ACL，包括下面会说的默认ACL<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># getfacl file_1</span></div><div class="line"><span class="comment"># file: file_1</span></div><div class="line"><span class="comment"># owner: root</span></div><div class="line"><span class="comment"># group: root</span></div><div class="line">user::rw-</div><div class="line">user:xiaoming:rwx</div><div class="line">user:xiaohong:rw-</div><div class="line">group::r--</div><div class="line">mask::rwx</div><div class="line">other::r--</div><div class="line"></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># setfacl -b file_1</span></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># getfacl file_1</span></div><div class="line"><span class="comment"># file: file_1</span></div><div class="line"><span class="comment"># owner: root</span></div><div class="line"><span class="comment"># group: root</span></div><div class="line">user::rw-</div><div class="line">group::r--</div><div class="line">other::r--</div></pre></td></tr></table></figure></p>
+<h3 id="d-设置默认ACL"><a href="#d-设置默认ACL" class="headerlink" title="-d 设置默认ACL"></a>-d 设置默认ACL</h3><p>设置默认ACL只能为目录设置，为目录设置了ACL之后里面新建的目录和文件都是使用这个默认的ACL<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># getfacl dir_1</span></div><div class="line"><span class="comment"># file: dir_1</span></div><div class="line"><span class="comment"># owner: root</span></div><div class="line"><span class="comment"># group: root</span></div><div class="line">user::rwx</div><div class="line">group::r-x</div><div class="line">other::r-x</div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># setfacl -m d:u:jack:rwx dir_1	# 设置目录的默认ACL</span></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># getfacl dir_1	# 我们可以看到现在出现了一段默认ACL</span></div><div class="line"><span class="comment"># file: dir_1</span></div><div class="line"><span class="comment"># owner: root</span></div><div class="line"><span class="comment"># group: root</span></div><div class="line">user::rwx</div><div class="line">group::r-x</div><div class="line">other::r-x</div><div class="line">default:user::rwx</div><div class="line">default:user:jack:rwx</div><div class="line">default:group::r-x</div><div class="line">default:mask::rwx</div><div class="line">default:other::r-x</div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># cd dir_1</span></div><div class="line">[root@iZ28jaak5nnZ dir_1]<span class="comment"># touch hello</span></div><div class="line">[root@iZ28jaak5nnZ dir_1]<span class="comment"># getfacl hello	# 新建的文件也使用这些默认设置</span></div><div class="line"><span class="comment"># file: hello</span></div><div class="line"><span class="comment"># owner: root</span></div><div class="line"><span class="comment"># group: root</span></div><div class="line">user::rw-</div><div class="line">user:jack:rwx			<span class="comment">#effective:rw-</span></div><div class="line">group::r-x			<span class="comment">#effective:r--</span></div><div class="line">mask::rw-</div><div class="line">other::r--</div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># setfacl -m u::rwx -d dir_3	# 设置为每个用户，也可以修改为用户组</span></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># getfacl dir_3</span></div><div class="line"><span class="comment"># file: dir_3</span></div><div class="line"><span class="comment"># owner: root</span></div><div class="line"><span class="comment"># group: root</span></div><div class="line">user::rwx</div><div class="line">group::r-x</div><div class="line">other::r-x</div><div class="line">default:user::rwx</div><div class="line">default:group::r-x</div><div class="line">default:other::r-x</div></pre></td></tr></table></figure></p>
+<h3 id="k-删除默认ACL"><a href="#k-删除默认ACL" class="headerlink" title="-k 删除默认ACL"></a>-k 删除默认ACL</h3><p>这里可以删除之前设置的默认ACL，只限默认ACL<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># getfacl dir_3 # 查看ACL，这里显示有默认的ACL</span></div><div class="line"><span class="comment"># file: dir_3</span></div><div class="line"><span class="comment"># owner: root</span></div><div class="line"><span class="comment"># group: root</span></div><div class="line">user::rwx</div><div class="line">group::r-x</div><div class="line">other::r-x</div><div class="line">default:user::rwx</div><div class="line">default:group::r-x</div><div class="line">default:other::r-x</div><div class="line"></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># setfacl -k dir_3	# 删除dir_3的默认ACL</span></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># getfacl dir_3</span></div><div class="line"><span class="comment"># file: dir_3</span></div><div class="line"><span class="comment"># owner: root</span></div><div class="line"><span class="comment"># group: root</span></div><div class="line">user::rwx</div><div class="line">group::r-x</div><div class="line">other::r-x</div></pre></td></tr></table></figure></p>
+<h3 id="R-递归设置ACL"><a href="#R-递归设置ACL" class="headerlink" title="-R 递归设置ACL"></a>-R 递归设置ACL</h3><p>给某一个目录设置递归的ACL之后这个目录和这个目录里的文件和子目录全部都会应用这个ACL，也就是说是相当于应用到了这个目录下的所有文件和目录<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 首先创建一下测试用的目录结构</span></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># mkdir -p dir1/dir2/dir3</span></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># touch dir1/hello.c</span></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># touch dir1/dir2/hey.c</span></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># setfacl -m u:jack:r -R dir1	递归设置ACL</span></div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># getfacl dir1</span></div><div class="line"><span class="comment"># file: dir1</span></div><div class="line"><span class="comment"># owner: root</span></div><div class="line"><span class="comment"># group: root</span></div><div class="line">user::rwx</div><div class="line">user:jack:r--</div><div class="line">group::r-x</div><div class="line">mask::r-x</div><div class="line">other::r-x</div><div class="line">[root@iZ28jaak5nnZ acltest]<span class="comment"># getfacl dir1/hello.c </span></div><div class="line"><span class="comment"># file: dir1/hello.c</span></div><div class="line"><span class="comment"># owner: root</span></div><div class="line"><span class="comment"># group: root</span></div><div class="line">user::rw-</div><div class="line">user:jack:r--</div><div class="line">group::r--</div><div class="line">mask::r--</div><div class="line">other::r--</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/Wechat.png" alt="Shawn WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/Alipay.jpg" alt="Shawn Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Shawn
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.xshawn.top/2016/11/02/linux_acl/" title="Linux权限控制列表 ACL修改">http://blog.xshawn.top/2016/11/02/linux_acl/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/ACL/" rel="tag"># ACL</a>
+          
+            <a href="/tags/权限/" rel="tag"># 权限</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/28/linux_nmcli_ip/" rel="next" title="使用nmcli和ip命令配置CentOS/RHEL的网络">
+                <i class="fa fa-chevron-left"></i> 使用nmcli和ip命令配置CentOS/RHEL的网络
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/02/linux_crontab/" rel="prev" title="Linux 中计划任务和周期任务">
+                Linux 中计划任务和周期任务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">Shawn</p>
+            <p class="site-description motion-element" itemprop="description">Want to be Engineer.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-ACL是什么"><span class="nav-number">1.</span> <span class="nav-text">0X00 ACL是什么</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-查看文件的ACL"><span class="nav-number">2.</span> <span class="nav-text">0X01 查看文件的ACL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-创建测试用户-组-文件"><span class="nav-number">3.</span> <span class="nav-text">0X02 创建测试用户/组/文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-设置文件的ACL"><span class="nav-number">4.</span> <span class="nav-text">0X03 设置文件的ACL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#setfacl-各个参数"><span class="nav-number">4.1.</span> <span class="nav-text">setfacl 各个参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#m-设置后续ACL"><span class="nav-number">4.1.1.</span> <span class="nav-text">-m 设置后续ACL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x-删除后续ACL"><span class="nav-number">4.1.2.</span> <span class="nav-text">-x 删除后续ACL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#b-删除所有后续ACL"><span class="nav-number">4.1.3.</span> <span class="nav-text">-b 删除所有后续ACL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#d-设置默认ACL"><span class="nav-number">4.1.4.</span> <span class="nav-text">-d 设置默认ACL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#k-删除默认ACL"><span class="nav-number">4.1.5.</span> <span class="nav-text">-k 删除默认ACL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#R-递归设置ACL"><span class="nav-number">4.1.6.</span> <span class="nav-text">-R 递归设置ACL</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

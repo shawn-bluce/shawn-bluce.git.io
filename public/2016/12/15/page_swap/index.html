@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-atom.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="操作系统,虚拟内存,算法," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="0X00 最优算法—不可能实现算法最优算法听起来很棒，但是 实现起来是不可能的 。最优算法是：当发生缺页中断时，将最晚会用到的页换出。也就是说，有三个页，现在发生了缺页中断，第一个页在第201条指令的时候会用到，第二个页在第5001条指令的时候会用到，第三个页在第20000条指令的时候会用到，那么第三个页面就是最晚会被用到的，就将其换出。这样确实是最好的效率，但是真正实现不了的原因是：程序不可能知">
+<meta name="keywords" content="操作系统,虚拟内存,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简述几种简单的页面置换算法">
+<meta property="og:url" content="http://blog.xshawn.top/2016/12/15/page_swap/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="0X00 最优算法—不可能实现算法最优算法听起来很棒，但是 实现起来是不可能的 。最优算法是：当发生缺页中断时，将最晚会用到的页换出。也就是说，有三个页，现在发生了缺页中断，第一个页在第201条指令的时候会用到，第二个页在第5001条指令的时候会用到，第三个页在第20000条指令的时候会用到，那么第三个页面就是最晚会被用到的，就将其换出。这样确实是最好的效率，但是真正实现不了的原因是：程序不可能知">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://qiniu.just666.cn//article/image/clock.png">
+<meta property="og:updated_time" content="2017-09-02T14:47:07.006Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简述几种简单的页面置换算法">
+<meta name="twitter:description" content="0X00 最优算法—不可能实现算法最优算法听起来很棒，但是 实现起来是不可能的 。最优算法是：当发生缺页中断时，将最晚会用到的页换出。也就是说，有三个页，现在发生了缺页中断，第一个页在第201条指令的时候会用到，第二个页在第5001条指令的时候会用到，第三个页在第20000条指令的时候会用到，那么第三个页面就是最晚会被用到的，就将其换出。这样确实是最好的效率，但是真正实现不了的原因是：程序不可能知">
+<meta name="twitter:image" content="http://qiniu.just666.cn//article/image/clock.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","isplay":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.xshawn.top/2016/12/15/page_swap/"/>
+
+
+
+
+
+  <title>简述几种简单的页面置换算法 | Shawn's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shawn's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个实习生的伪技术博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br />
+            
+            links
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.xshawn.top/2016/12/15/page_swap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">简述几种简单的页面置换算法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-15T17:14:00+08:00">
+                2016-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="0X00-最优算法—不可能实现算法"><a href="#0X00-最优算法—不可能实现算法" class="headerlink" title="0X00 最优算法—不可能实现算法"></a>0X00 最优算法—不可能实现算法</h1><p>最优算法听起来很棒，但是 <strong>实现起来是不可能的</strong> 。最优算法是：当发生缺页中断时，将最晚会用到的页换出。也就是说，有三个页，现在发生了缺页中断，第一个页在第201条指令的时候会用到，第二个页在第5001条指令的时候会用到，第三个页在第20000条指令的时候会用到，那么第三个页面就是最晚会被用到的，就将其换出。这样确实是最好的效率，但是真正实现不了的原因是：程序不可能知道自己在什么时候需要哪些内存，所以就不能找到最晚会被用到的页。因为要用未来的事情来判断所以我一般称之为未来算法。虽说实现不了，也不是说这个算法就没意义了。这个算法最大的意义就在于可以比较效率。效率越是接近最优算法的就越好，当一个算法已经能达到最优算法效率的101%时，就没必要累死累活的去优化效率了，可以去找一些别的瓶颈了。</p>
+<h1 id="0X01-最近未使用—NRU"><a href="#0X01-最近未使用—NRU" class="headerlink" title="0X01 最近未使用—NRU"></a>0X01 最近未使用—NRU</h1><p>如果说最优算法叫未来算法的话，那么这个最近未使用就可以叫做历史算法，这样就好理解了。当系统发生缺页中断的时候，在内存中找到最久没被用过的页，将其换出。有一种实现方法：给每一个页设置一个 <strong>R(read)位和M(modify)位</strong> 。当一个进程启动的时候将这个进程的所有页的RM位都设置为0。然后每访问一个页就将R位置为1，每修改一个页就将M置为1。系统每隔一段时间就将所有页的R置为0。那么这里就会出现四种页，其实这里只是一个表示，比如第1类。不可能出现一个没被访问就修改的页，但是第3类页经过一段时间之后将R置为0的话就是第1类了。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">类别   |    访问   |   修改    | R | M</div><div class="line">--------------------------------------</div><div class="line">第0类：| 没有被访问 | 没有被修改 | 0 | 0 </div><div class="line">第1类：| 没有被访问 | 已经被修改 | 0 | 1 </div><div class="line">第2类：| 已经被访问 | 没有被修改 | 1 | 0 </div><div class="line">第3类：| 已经被访问 | 已经被修改 | 1 | 1 </div><div class="line">--------------------------------------</div></pre></td></tr></table></figure></p>
+<p>现在内存中的每个页都是这0到4的其中一种。那么当发生缺页中断的时候，NRU算法就会从类别编号最小的一堆页中 <strong>随机</strong> 换出。</p>
+<h1 id="0X02-先进先出—队列置换算法-FIFO"><a href="#0X02-先进先出—队列置换算法-FIFO" class="headerlink" title="0X02 先进先出—队列置换算法 FIFO"></a>0X02 先进先出—队列置换算法 FIFO</h1><p>这种算法相对容易实现，就像是数据结构中的 <strong>队列</strong> 一样。每次的新页放在队列尾部，当发生缺页中断时将队列头部的页踢掉，将新页放到队列尾部。这种算法有一个非常严重的问题就是会踢掉一些必要的页，比如操作系统核心功能。想想系统启动的时候，首先加入了10000个页以用来运行操作系统，但是发生缺页中断的时候就会将核心页换出去，然后因为核心页被换出去了就需要再换进来，有可能就造成了连续10000个页从队首换到了队尾，产生了20000个操作。</p>
+<h1 id="0X03-第二次机会—FIFO改进"><a href="#0X03-第二次机会—FIFO改进" class="headerlink" title="0X03 第二次机会—FIFO改进"></a>0X03 第二次机会—FIFO改进</h1><p>因为FIFO会将所有队尾直接踢出去，第二次机会就是给了每个页面再一次机会。也就是说：每个页面还是有一个R位，然后有一个时间位用来记录装入时间。每当发生缺页中断的时候查看队首页的R值，如果R值为0那么就将其换出，否则就将其R值设置为0，并设置‘装入时间’（在哪个时钟的时候装入的），然后再从队首的下一个页开始判断。</p>
+<h1 id="0X04-时钟算法—CLOCK"><a href="#0X04-时钟算法—CLOCK" class="headerlink" title="0X04 时钟算法—CLOCK"></a>0X04 时钟算法—CLOCK</h1><p>因为二次机会算法还是基于单向链表的，所以会经常需要在链表中移动页面，虽然是在内存中操作但还是会浪费资源。这里就把单向链表改成了 <strong>环形链表</strong> 。当发生缺页中断的时候，检查指针指向的页面，如果页的R位是0则提出这个页面将新的页加到这个位置，并设置R位为1；否则就将当前的R位设置为0并将指针下移。所以时钟算法也可以理解成是第二次机会算法的改进版本。</p>
+<p><img src="http://qiniu.just666.cn//article/image/clock.png" alt="时钟算法"></p>
+<blockquote>
+<p>图片来源：《现代操作系统》 Andrew S. Tanenbaum</p>
+</blockquote>
+<h1 id="0X05-最近最少使用置换算法—LRU"><a href="#0X05-最近最少使用置换算法—LRU" class="headerlink" title="0X05 最近最少使用置换算法—LRU"></a>0X05 最近最少使用置换算法—LRU</h1><p>有这样一种情况：“在前面几条指令中频繁使用的页很可能在后面的及条指令中被使用”，所以说已经很久没有用过的页很可能在未来的一段时间内也不会被用到。所以可以在发生缺页中断的时候将最久未使用的页替换出去。为了实现LRU算法需要将所有页串成一个链表，链表的一端是最常使用的页，另一端则是最不常用的页，每次调用一个页的时候都要将整个链表更新，但移动整个链表是很慢的。</p>
+<p>可以通过特殊硬件来实现LRU。</p>
+<p>第一种方案：这里需要一个64位的计数器，计数器在每条指令执行完成之后自动加一，且每个页表项中需要需要足够容纳这个计数器。在每次访问内存的时候将当前计数器的值赋值给该页表项的对应区域。当发生缺页中断的时候找到每个页表项中该值最小的，这个页表项就是最近最少使用的。</p>
+<p>需要注意的一点是： <strong>这个计数器只有一个</strong> 而不是每个页表项一个；每个页表项里只是有一个可以容纳这个计数器的位置，也就是说要有一个64位的空间来保存数字。这里保存的数字不会随着指令的执行而自增，随着指令执行自增的就只有那个唯一的计数器。</p>
+<p>第二种方案：假设某机器有n个页框，那么LRU硬件就是一个n * n的矩阵，初始化为零矩阵。当访问页框k时 <strong>先</strong> 将k行全部置1， <strong>再</strong> 将k列全部置0。在任意时间二进制数值最小的行就是最近最少使用的，第二小的就是下一个最近最少使用的。</p>
+<h1 id="0X06-最不常用置换算法—NFU"><a href="#0X06-最不常用置换算法—NFU" class="headerlink" title="0X06 最不常用置换算法—NFU"></a>0X06 最不常用置换算法—NFU</h1><p>因为LRU算法需要独立的硬件设备，然而大多数计算机并没有这种硬件，所以需要一个能用软件实现的解决方案。这种成为NFU的最不常用置换算法就是一种使用软件模拟LRU的实现。在NFU中针对每一个页设置一个计数器，每当发生缺页中断时刷新所有的页对应的计数器，先将每一个页的R值（R值用来标识该页是否用过，为0或1）加到计数器上，再将R置0。这个计数器基本可以反映某个页的使用频率。当发生缺页中断的时候就可以踢出计数器最小的页。</p>
+<p>这个算法的一大问题就是：记忆力太强。比如说我开机的时候开机相关的页可能调用了10万次，开机之后其他的东西并没有这么高的使用率，但是因为这些页的计数器太大了，所以不会被轻易踢出去，就会导致有一批‘元老页’滞留在内存中浪费空间。</p>
+<p>可以通过一个简单的小修改解决这个问题：首先在R值加到计数器之前先将计数器右移一位（二进制移位，最后一位抛掉），其次将R位加入到计数器的最左端，而不是最右端（简单的NFU是加入到最右端的）。经过这种修改的算法称之为 <strong>老化算法</strong> 。因为这种算法中新的操作会对计数器产生较大的影响，可以让以前的计数器迅速变老，所以称为老化算法。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/Wechat.png" alt="Shawn WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/Alipay.jpg" alt="Shawn Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Shawn
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.xshawn.top/2016/12/15/page_swap/" title="简述几种简单的页面置换算法">http://blog.xshawn.top/2016/12/15/page_swap/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
+          
+            <a href="/tags/虚拟内存/" rel="tag"># 虚拟内存</a>
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/12/python_threading/" rel="next" title="Python使用threading实现多线程">
+                <i class="fa fa-chevron-left"></i> Python使用threading实现多线程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/15/linux_mysql_chinese/" rel="prev" title="解决Linux下MySQL/MariaDB中文变问号？问题">
+                解决Linux下MySQL/MariaDB中文变问号？问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">Shawn</p>
+            <p class="site-description motion-element" itemprop="description">Want to be Engineer.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-最优算法—不可能实现算法"><span class="nav-number">1.</span> <span class="nav-text">0X00 最优算法—不可能实现算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-最近未使用—NRU"><span class="nav-number">2.</span> <span class="nav-text">0X01 最近未使用—NRU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-先进先出—队列置换算法-FIFO"><span class="nav-number">3.</span> <span class="nav-text">0X02 先进先出—队列置换算法 FIFO</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-第二次机会—FIFO改进"><span class="nav-number">4.</span> <span class="nav-text">0X03 第二次机会—FIFO改进</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-时钟算法—CLOCK"><span class="nav-number">5.</span> <span class="nav-text">0X04 时钟算法—CLOCK</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-最近最少使用置换算法—LRU"><span class="nav-number">6.</span> <span class="nav-text">0X05 最近最少使用置换算法—LRU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-最不常用置换算法—NFU"><span class="nav-number">7.</span> <span class="nav-text">0X06 最不常用置换算法—NFU</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

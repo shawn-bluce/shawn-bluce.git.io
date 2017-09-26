@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-atom.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux,nmcli,ip,网络," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="0X00 查看网络配置文件在CentOS中网络是以配置文件的形式存在系统里的，在/etc/sysconfig/network-scripts/目录下，一般情况下网卡的配置文件都在这里了，以ifcfg-就是配置文件了，打开配置文件看一下。下面注释一下关键的配置项12345678910111213141516171819TYPE=Ethernet	# 网络类型BOOTPROTO=static	# 协议">
+<meta name="keywords" content="Linux,nmcli,ip,网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用nmcli和ip命令配置CentOS&#x2F;RHEL的网络">
+<meta property="og:url" content="http://blog.xshawn.top/2016/10/28/linux_nmcli_ip/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="0X00 查看网络配置文件在CentOS中网络是以配置文件的形式存在系统里的，在/etc/sysconfig/network-scripts/目录下，一般情况下网卡的配置文件都在这里了，以ifcfg-就是配置文件了，打开配置文件看一下。下面注释一下关键的配置项12345678910111213141516171819TYPE=Ethernet	# 网络类型BOOTPROTO=static	# 协议">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-02T14:45:28.334Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用nmcli和ip命令配置CentOS&#x2F;RHEL的网络">
+<meta name="twitter:description" content="0X00 查看网络配置文件在CentOS中网络是以配置文件的形式存在系统里的，在/etc/sysconfig/network-scripts/目录下，一般情况下网卡的配置文件都在这里了，以ifcfg-就是配置文件了，打开配置文件看一下。下面注释一下关键的配置项12345678910111213141516171819TYPE=Ethernet	# 网络类型BOOTPROTO=static	# 协议">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","isplay":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.xshawn.top/2016/10/28/linux_nmcli_ip/"/>
+
+
+
+
+
+  <title>使用nmcli和ip命令配置CentOS/RHEL的网络 | Shawn's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shawn's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个实习生的伪技术博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br />
+            
+            links
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.xshawn.top/2016/10/28/linux_nmcli_ip/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用nmcli和ip命令配置CentOS/RHEL的网络</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-28T17:42:00+08:00">
+                2016-10-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="0X00-查看网络配置文件"><a href="#0X00-查看网络配置文件" class="headerlink" title="0X00 查看网络配置文件"></a>0X00 查看网络配置文件</h1><p>在CentOS中网络是以配置文件的形式存在系统里的，在<code>/etc/sysconfig/network-scripts/</code>目录下，一般情况下网卡的配置文件都在这里了，以<code>ifcfg-</code>就是配置文件了，打开配置文件看一下。下面注释一下关键的配置项<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">TYPE=Ethernet	# 网络类型</div><div class="line">BOOTPROTO=static	# 协议取值，常见的是static和dhcp</div><div class="line">IPADDR=10.13.7.33	# 给网卡ip赋值</div><div class="line">NETMASK=255.255.255.0	# 给网卡子网掩码赋值</div><div class="line">DEFROUTE=yes</div><div class="line">PEERDNS=yes</div><div class="line">PEERROUTES=yes</div><div class="line">IPV4_FAILURE_FATAL=no</div><div class="line">IPV6INIT=yes</div><div class="line">IPV6_AUTOCONF=yes</div><div class="line">IPV6_DEFROUTE=yes</div><div class="line">IPV6_PEERDNS=yes</div><div class="line">IPV6_PEERROUTES=yes</div><div class="line">IPV6_FAILURE_FATAL=no</div><div class="line">NAME=enp0s8</div><div class="line">USERCTL=no	# 是否允许非root用户控制</div><div class="line">UUID=4c967913-c4c9-4961-ae03-de7865f144d0	# 网卡的唯一标识码</div><div class="line">DEVICE=enp0s8	# 设备名</div><div class="line">ONBOOT=no	# 是否在开机时激活</div></pre></td></tr></table></figure></p>
+<p>但是一般不建议直接使用编辑器修改网络配置文件，因为这样容易出现一些语法错误和逻辑错误，所以建议使用命令行来管理配置网络，虽然本质上都是去修改配置文件。但是使用命令行去管理网络，命令都是确保配置没有问题才会写入到文件，所以会更加安全。包括下面介绍的<code>ip</code>和<code>nmcli</code>命令，都是通过修改配置文件来完成功能的。</p>
+<h1 id="0X01-ifconfig-命令"><a href="#0X01-ifconfig-命令" class="headerlink" title="0X01 ifconfig 命令"></a>0X01 ifconfig 命令</h1><p>这个命令在CentOS7中已经不建议使用了，不过由于之前的版本都是在用这个命令，还是说一下。<code>ifconfig</code>是<code>interface configuration</code>的缩写，也就是接口配置。</p>
+<h2 id="查看网络"><a href="#查看网络" class="headerlink" title="查看网络"></a>查看网络</h2><p>直接输入这个命令就可以看到现在启动着的所有网络。也可以接上某个特定的网卡来查看单独的信息<code>ifconfig enp0s3</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># ifconfig</span></div><div class="line">enp0s8: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</div><div class="line">        ether 08:00:27:79:c4:b1  txqueuelen 1000  (Ethernet)</div><div class="line">        RX packets 0  bytes 0 (0.0 B)</div><div class="line">        RX errors 0  dropped 0  overruns 0  frame 0</div><div class="line">        TX packets 0  bytes 0 (0.0 B)</div><div class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</div><div class="line"></div><div class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</div><div class="line">        inet 127.0.0.1  netmask 255.0.0.0</div><div class="line">        inet6 ::1  prefixlen 128  scopeid 0x10&lt;host&gt;</div><div class="line">        loop  txqueuelen 0  (Local Loopback)</div><div class="line">        RX packets 0  bytes 0 (0.0 B)</div><div class="line">        RX errors 0  dropped 0  overruns 0  frame 0</div><div class="line">        TX packets 0  bytes 0 (0.0 B)</div><div class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</div></pre></td></tr></table></figure></p>
+<p>如果想查看包括已经关闭了的网络时，使用<code>ifconfig -a</code>就可以了</p>
+<blockquote>
+<p>最后的那个lo是回环网络，暂时不用管</p>
+</blockquote>
+<h2 id="开关网络"><a href="#开关网络" class="headerlink" title="开关网络"></a>开关网络</h2><p><code>ifconfig</code>还可以开关网络，命令后面接<code>interface name</code>也就是网卡名，然后接上<code>up/down</code>就可以开关网络了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># ifconfig enp0s8 down	# 关闭网络</span></div><div class="line">[root@localhost ~]<span class="comment"># ifconfig</span></div><div class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</div><div class="line">        inet 127.0.0.1  netmask 255.0.0.0</div><div class="line">        inet6 ::1  prefixlen 128  scopeid 0x10&lt;host&gt;</div><div class="line">        loop  txqueuelen 0  (Local Loopback)</div><div class="line">        RX packets 0  bytes 0 (0.0 B)</div><div class="line">        RX errors 0  dropped 0  overruns 0  frame 0</div><div class="line">        TX packets 0  bytes 0 (0.0 B)</div><div class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</div><div class="line"></div><div class="line">[root@localhost ~]<span class="comment"># ifconfig enp0s8 up	# 打开网络</span></div><div class="line">[root@localhost ~]<span class="comment"># ifconfig</span></div><div class="line">enp0s8: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</div><div class="line">        inet 123.123.123.2  netmask 255.255.255.128  broadcast 123.123.123.1</div><div class="line">        ether 08:00:27:79:c4:b1  txqueuelen 1000  (Ethernet)</div><div class="line">        RX packets 0  bytes 0 (0.0 B)</div><div class="line">        RX errors 0  dropped 0  overruns 0  frame 0</div><div class="line">        TX packets 0  bytes 0 (0.0 B)</div><div class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</div><div class="line"></div><div class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</div><div class="line">        inet 127.0.0.1  netmask 255.0.0.0</div><div class="line">        inet6 ::1  prefixlen 128  scopeid 0x10&lt;host&gt;</div><div class="line">        loop  txqueuelen 0  (Local Loopback)</div><div class="line">        RX packets 0  bytes 0 (0.0 B)</div><div class="line">        RX errors 0  dropped 0  overruns 0  frame 0</div><div class="line">        TX packets 0  bytes 0 (0.0 B)</div><div class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</div></pre></td></tr></table></figure></p>
+<h2 id="配置网络"><a href="#配置网络" class="headerlink" title="配置网络"></a>配置网络</h2><p><code>ifconfig</code>命令可以在不重启的情况下开关网络接口，修改IP、掩码、网关等信息。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># ifconfig enp0s8	# 查看ep0s8的网卡信息</span></div><div class="line">enp0s8: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</div><div class="line">        ether 08:00:27:79:c4:b1  txqueuelen 1000  (Ethernet)</div><div class="line">        RX packets 0  bytes 0 (0.0 B)</div><div class="line">        RX errors 0  dropped 0  overruns 0  frame 0</div><div class="line">        TX packets 0  bytes 0 (0.0 B)</div><div class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</div><div class="line"></div><div class="line">[root@localhost ~]<span class="comment"># ifconfig enp0s8 123.233.233.123	# 修改ip为123.233.233.123</span></div><div class="line">[root@localhost ~]<span class="comment"># ifconfig enp0s8</span></div><div class="line">enp0s8: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</div><div class="line">        inet 123.233.233.123  netmask 255.0.0.0  broadcast 123.255.255.255</div><div class="line">        ether 08:00:27:79:c4:b1  txqueuelen 1000  (Ethernet)</div><div class="line">        RX packets 0  bytes 0 (0.0 B)</div><div class="line">        RX errors 0  dropped 0  overruns 0  frame 0</div><div class="line">        TX packets 0  bytes 0 (0.0 B)</div><div class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</div><div class="line"></div><div class="line">[root@localhost ~]<span class="comment"># ifconfig enp0s8 netmask 255.255.255.0	# 修改子网掩码为255.255.255.0</span></div><div class="line">[root@localhost ~]<span class="comment"># ifconfig enp0s8</span></div><div class="line">enp0s8: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</div><div class="line">        inet 123.233.233.123  netmask 255.255.255.0  broadcast 123.233.233.255</div><div class="line">        ether 08:00:27:79:c4:b1  txqueuelen 1000  (Ethernet)</div><div class="line">        RX packets 0  bytes 0 (0.0 B)</div><div class="line">        RX errors 0  dropped 0  overruns 0  frame 0</div><div class="line">        TX packets 0  bytes 0 (0.0 B)</div><div class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</div><div class="line">[root@localhost ~]<span class="comment"># ifconfig enp0s8 123.123.123.2 netmask 255.255.255.128	# 当然也可以把这些写成一行</span></div><div class="line">[root@localhost ~]<span class="comment"># ifconfig enp0s8</span></div><div class="line">enp0s8: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</div><div class="line">        inet 123.123.123.2  netmask 255.255.255.128  broadcast 123.123.123.</div><div class="line">        ether 08:00:27:79:c4:b1  txqueuelen 1000  (Ethernet)</div><div class="line">        RX packets 0  bytes 0 (0.0 B)</div><div class="line">        RX errors 0  dropped 0  overruns 0  frame 0</div><div class="line">        TX packets 0  bytes 0 (0.0 B)</div><div class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</div></pre></td></tr></table></figure></p>
+<h1 id="0X02-nmtui-简单的类图形管理工具"><a href="#0X02-nmtui-简单的类图形管理工具" class="headerlink" title="0X02 nmtui 简单的类图形管理工具"></a>0X02 nmtui 简单的类图形管理工具</h1><p>在终端中输入<code>nmtui</code>就可以打开一个类图形的界面，用这个界面可以更简单得管理配置网络，但是不能做比较细致的配置，而且使用比较简单，所以这里就不多做介绍了，可以自己在终端上打开看看。这个命令的一大优点是可以在ssh远程连接的时候使用，在Windows下的XShell等软件中都可以直接调出。</p>
+<h1 id="0X03-ip-命令"><a href="#0X03-ip-命令" class="headerlink" title="0X03 ip 命令"></a>0X03 ip 命令</h1><p>ip是现在推荐使用的命令，功能比较强大。</p>
+<h2 id="ip命令管理设备开关"><a href="#ip命令管理设备开关" class="headerlink" title="ip命令管理设备开关"></a>ip命令管理设备开关</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># ip link show enp0s8	# 这个命令大致相当于 ifconfig enp0s8 查看这个网卡的信息</span></div><div class="line">3: enp0s8: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc pfifo_fast state DOWN mode DEFAULT qlen 1000</div><div class="line">    link/ether 08:00:27:79:c4:b1 brd ff:ff:ff:ff:ff:ff</div><div class="line">[root@localhost ~]<span class="comment"># ip link set dev enp0s8 up	# 设置一个device，enp0s8，打开</span></div><div class="line">[root@localhost ~]<span class="comment"># ip link show enp0s8</span></div><div class="line">3: enp0s8: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc pfifo_fast state DOWN mode DEFAULT qlen 1000</div><div class="line">    link/ether 08:00:27:79:c4:b1 brd ff:ff:ff:ff:ff:ff</div><div class="line">[root@localhost ~]<span class="comment"># ip link set dev enp0s8 down	# 设置 设备 网卡名 打开/关闭</span></div><div class="line">[root@localhost ~]<span class="comment"># ip link show enp0s8</span></div><div class="line">3: enp0s8: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc pfifo_fast state DOWN mode DEFAULT qlen 1000</div><div class="line">    link/ether 08:00:27:79:c4:b1 brd ff:ff:ff:ff:ff:ff</div></pre></td></tr></table></figure>
+<h2 id="ip命令修改网卡MAC地址"><a href="#ip命令修改网卡MAC地址" class="headerlink" title="ip命令修改网卡MAC地址"></a>ip命令修改网卡MAC地址</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># ip link set dev enp0s8 address 00:00:ff:bb:aa:22	# 修改网卡的物理地址，也就是MAC地址</span></div><div class="line">[root@localhost ~]<span class="comment"># ip link show enp0s8</span></div><div class="line">3: enp0s8: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc pfifo_fast state DOWN mode DEFAULT qlen 1000</div><div class="line">    link/ether 00:00:ff:bb:aa:22 brd ff:ff:ff:ff:ff:ff</div></pre></td></tr></table></figure>
+<h1 id="0X04-nmcli-管理网络"><a href="#0X04-nmcli-管理网络" class="headerlink" title="0X04 nmcli 管理网络"></a>0X04 nmcli 管理网络</h1><p><code>nmcli</code>是<code>network manager command line interface</code>的简写，这个命令可以用来管理配置网络。</p>
+<h2 id="查看网络接口状态"><a href="#查看网络接口状态" class="headerlink" title="查看网络接口状态"></a>查看网络接口状态</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># nmcli -p g</span></div><div class="line">=============================================================</div><div class="line">                    NetworkManager status</div><div class="line">=============================================================</div><div class="line">STATE      CONNECTIVITY  WIFI-HW  WIFI     WWAN-HW  WWAN    </div><div class="line">-------------------------------------------------------------</div><div class="line">connected  full          enabled  enabled  enabled  enabled</div></pre></td></tr></table></figure>
+<h2 id="查看修改主机名"><a href="#查看修改主机名" class="headerlink" title="查看修改主机名"></a>查看修改主机名</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># nmcli general hostname</span></div><div class="line">localhost.localdomain</div><div class="line">[root@localhost ~]<span class="comment"># nmcli general hostname test</span></div><div class="line">[root@localhost ~]<span class="comment"># nmcli general hostname</span></div><div class="line"><span class="built_in">test</span></div></pre></td></tr></table></figure>
+<h2 id="查看网络设备"><a href="#查看网络设备" class="headerlink" title="查看网络设备"></a>查看网络设备</h2><p>以前可以用ifconfig来查看网络设备，ip命令也可以查看。可以直接查看所有的，也可以指定某一个设备查看。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># nmcli device show	# 莎看所有设备</span></div><div class="line">GENERAL.DEVICE:                         enp0s3</div><div class="line">GENERAL.TYPE:                           ethernet</div><div class="line">GENERAL.HWADDR:                         08:00:27:35:C7:CE</div><div class="line">GENERAL.MTU:                            1500</div><div class="line">.......................	<span class="comment"># 输出太多，就不全放在这里了</span></div><div class="line">IP6.ADDRESS[1]:                         ::1/128</div><div class="line">IP6.GATEWAY:                 </div><div class="line">[root@localhost ~]<span class="comment"># nmcli device show enp0s8	# 查看指定设备</span></div><div class="line">GENERAL.DEVICE:                         enp0s8</div><div class="line">GENERAL.TYPE:                           ethernet</div><div class="line">GENERAL.HWADDR:                         08:00:27:79:C4:B1</div><div class="line">GENERAL.MTU:                            1500</div><div class="line">GENERAL.STATE:                          100 (connected)</div><div class="line">GENERAL.CONNECTION:                     enp0s8</div><div class="line">GENERAL.CON-PATH:                       /org/freedesktop/NetworkManager/ActiveConnection/7</div><div class="line">WIRED-PROPERTIES.CARRIER:               off</div><div class="line">IP4.ADDRESS[1]:                         123.123.123.2/25</div><div class="line">IP4.GATEWAY:                            </div><div class="line">IP6.GATEWAY:</div></pre></td></tr></table></figure></p>
+<h2 id="修改网卡配置"><a href="#修改网卡配置" class="headerlink" title="修改网卡配置"></a>修改网卡配置</h2><p>一个设备可以有多个连接，在CentOS7中网络是以连接管理的。虽然每个设备可以有多个连接，但是同时生效的只能有一个。我们可以使用<code>nmcli connection</code>查看连接<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># nmcli connection show</span></div><div class="line">NAME    UUID                                  TYPE            DEVICE </div><div class="line">enp0s8  ae99f48d-5f20-4a9c-a487-c4ebafa3f92e  802-3-ethernet  enp0s8 </div><div class="line">enp0s3  2edc4731-888c-4102-8ff5-236ea47eeedb  802-3-ethernet  enp0s3</div></pre></td></tr></table></figure></p>
+<p>我们可以进行如下操作<code>nmcli connection add/delete/edit</code>也就是增删改三个操作。<br>每一个连接都有一个名字，我们可以根据名字索引来操作对应到的连接。我们先来删除掉之前配置的网络。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># nmcli connection delete enp0s8 	# 这样可以删掉之前的连接</span></div><div class="line">Connection <span class="string">'enp0s8'</span> (ae99f48d-5f20-4a9c-a487-c4ebafa3f92e) successfully deleted.</div></pre></td></tr></table></figure></p>
+<p>然后添加一个新的连接，名字叫’test_conn’，接口是’enp0s8’，类型是’ethernet’也就是以太网，ip使用v4版本123.123.123.123，子网掩码是24位，ipv4的网关是123.123.123.1<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># nmcli connection add con-name 'test_conn' ifname enp0s8 type ethernet ip4 123.123.123.123/24 gw4 123.123.123.1</span></div><div class="line">Connection <span class="string">'test_conn'</span> (05c7cd70-a48e-4a12-a0de-9d57724cf0d0) successfully added.</div><div class="line">[root@localhost ~]<span class="comment"># nmcli connection show test_conn</span></div><div class="line"><span class="comment"># 这行命令的输出太多了就不展示了。但是我们可以通过这行命令看到自己创建的连接，信息和自己填写的命令相对应。</span></div></pre></td></tr></table></figure></p>
+<p>修改一个连接可以使用<code>nmcli connection modify</code>，下面我们来测试一下修改一个连接<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># nmcli connection show test_conn | grep ipv4.dns	# 使用grep搜索查看dns设置</span></div><div class="line">ipv4.dns:                               </div><div class="line">ipv4.dns-search:                        </div><div class="line">[root@localhost ~]<span class="comment"># nmcli connection modify test_conn ipv4.dns 8.8.8.8	# 修改ipv4的dns地址</span></div><div class="line">[root@localhost ~]<span class="comment"># nmcli connection show test_conn | grep ipv4.dns</span></div><div class="line">ipv4.dns:                               8.8.8.8</div><div class="line">ipv4.dns-search:</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/Wechat.png" alt="Shawn WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/Alipay.jpg" alt="Shawn Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Shawn
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.xshawn.top/2016/10/28/linux_nmcli_ip/" title="使用nmcli和ip命令配置CentOS/RHEL的网络">http://blog.xshawn.top/2016/10/28/linux_nmcli_ip/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/nmcli/" rel="tag"># nmcli</a>
+          
+            <a href="/tags/ip/" rel="tag"># ip</a>
+          
+            <a href="/tags/网络/" rel="tag"># 网络</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/27/python_execption/" rel="next" title="Python 异常处理 捕获异常">
+                <i class="fa fa-chevron-left"></i> Python 异常处理 捕获异常
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/02/linux_acl/" rel="prev" title="Linux权限控制列表 ACL修改">
+                Linux权限控制列表 ACL修改 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">Shawn</p>
+            <p class="site-description motion-element" itemprop="description">Want to be Engineer.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-查看网络配置文件"><span class="nav-number">1.</span> <span class="nav-text">0X00 查看网络配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-ifconfig-命令"><span class="nav-number">2.</span> <span class="nav-text">0X01 ifconfig 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看网络"><span class="nav-number">2.1.</span> <span class="nav-text">查看网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开关网络"><span class="nav-number">2.2.</span> <span class="nav-text">开关网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置网络"><span class="nav-number">2.3.</span> <span class="nav-text">配置网络</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-nmtui-简单的类图形管理工具"><span class="nav-number">3.</span> <span class="nav-text">0X02 nmtui 简单的类图形管理工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-ip-命令"><span class="nav-number">4.</span> <span class="nav-text">0X03 ip 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ip命令管理设备开关"><span class="nav-number">4.1.</span> <span class="nav-text">ip命令管理设备开关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ip命令修改网卡MAC地址"><span class="nav-number">4.2.</span> <span class="nav-text">ip命令修改网卡MAC地址</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-nmcli-管理网络"><span class="nav-number">5.</span> <span class="nav-text">0X04 nmcli 管理网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看网络接口状态"><span class="nav-number">5.1.</span> <span class="nav-text">查看网络接口状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看修改主机名"><span class="nav-number">5.2.</span> <span class="nav-text">查看修改主机名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看网络设备"><span class="nav-number">5.3.</span> <span class="nav-text">查看网络设备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改网卡配置"><span class="nav-number">5.4.</span> <span class="nav-text">修改网卡配置</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
