@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png?v=7.4.1">
+  <link rel="mask-icon" href="/favicon.png?v=7.4.1" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: true,
+    sidebar: {"position":"left","width":300,"display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: true,
+    lazyload: false,
+    pangu: true,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":"auto","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="好多人的VPS或是服务器就只跑了一个小服务或是小程序，虽然我们多数人的VPS性能比较差但是只跑一个小服务一个小程序未免还是有些浪费。大可将其充分利用起来，毕竟性能再差也是一个24小时不停机且带有一个独立公网IP的机器。这里我介绍一下我跑在VPS上的一些服务和使用中的一些经验和建议，希望可以给各位带来些许的帮助吧。 0X00 操作系统通常我们自己的VPS性能都不怎么强，很多人都是买的单核512M内存">
+<meta name="keywords" content="VPS,Shadowsocks,git,Server,blog,proxy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把自己的VPS&#x2F;Server用起来">
+<meta property="og:url" content="https://blog.just666.com/2018/11/22/using-vps/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="好多人的VPS或是服务器就只跑了一个小服务或是小程序，虽然我们多数人的VPS性能比较差但是只跑一个小服务一个小程序未免还是有些浪费。大可将其充分利用起来，毕竟性能再差也是一个24小时不停机且带有一个独立公网IP的机器。这里我介绍一下我跑在VPS上的一些服务和使用中的一些经验和建议，希望可以给各位带来些许的帮助吧。 0X00 操作系统通常我们自己的VPS性能都不怎么强，很多人都是买的单核512M内存">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-22T15:34:27.347Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="把自己的VPS&#x2F;Server用起来">
+<meta name="twitter:description" content="好多人的VPS或是服务器就只跑了一个小服务或是小程序，虽然我们多数人的VPS性能比较差但是只跑一个小服务一个小程序未免还是有些浪费。大可将其充分利用起来，毕竟性能再差也是一个24小时不停机且带有一个独立公网IP的机器。这里我介绍一下我跑在VPS上的一些服务和使用中的一些经验和建议，希望可以给各位带来些许的帮助吧。 0X00 操作系统通常我们自己的VPS性能都不怎么强，很多人都是买的单核512M内存">
+  <link rel="canonical" href="https://blog.just666.com/2018/11/22/using-vps/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>把自己的VPS/Server用起来 | Shawn's Blog</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w"></script>
+  <script pjax>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shawn's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+          
+        
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">123</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">92</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-链接">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>链接</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="点这里没用，不信你试试" aria-label="点这里没用，不信你试试"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></span>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2018/11/22/using-vps/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">把自己的VPS/Server用起来
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-22 21:02:14" itemprop="dateCreated datePublished" datetime="2018-11-22T21:02:14+08:00">2018-11-22</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>好多人的VPS或是服务器就只跑了一个小服务或是小程序，虽然我们多数人的VPS性能比较差但是只跑一个小服务一个小程序未免还是有些浪费。大可将其充分利用起来，毕竟性能再差也是一个24小时不停机且带有一个独立公网IP的机器。这里我介绍一下我跑在VPS上的一些服务和使用中的一些经验和建议，希望可以给各位带来些许的帮助吧。</p>
+<h1 id="0X00-操作系统"><a href="#0X00-操作系统" class="headerlink" title="0X00 操作系统"></a>0X00 操作系统</h1><p>通常我们自己的VPS性能都不怎么强，很多人都是买的单核512M内存的，所以Windows Server系统通常是不用想了。那么众多的Linux发行版本又该如何选择呢？其实因为我们是个人使用，不用过分考虑发行版本的区别，哪个用着习惯就用哪个。我自己的VPS用过一段时间的Fedora和Debian，都是很不错的。如果是针对Linux新手的话我还是比较建议使用Ubuntu和CentOS，因为这两个系统的用户群体很大，出现问题时候在网络上也更容易找到相关的解决方案。</p>
+<p>还有就是图形界面，Linux作为服务器操作系统时是完全没有必要安装图形界面的。想必购买了VPS的用户应该也多少能操作一下Linux，就更没有必要浪费系统资源和时间去安装图形界面和VNC了。</p>
+<h1 id="0X01-机场建设"><a href="#0X01-机场建设" class="headerlink" title="0X01 机场建设"></a>0X01 机场建设</h1><p>大家如果购买的是国外的VPS那么多数情况下都是为了跨过长城，不过好多人在使用的都是基于命令行的Shadowsocks服务，不仅配置起来不太直观，分享给其他人用的时候也不好管理。有一个开源项目<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dvLWlnbml0ZS9pZ25pdGU=" title="https://github.com/go-ignite/ignite">ignite<i class="fa fa-external-link"></i></span>可以部署一整套的Shadowsocks管理系统。这样你的VPS就不再是飞机跑道了，而是进化成了一个国际机场 :)</p>
+<p>这是一个Go语言实现的基于Web的Shadowsocks管理工具。多个用户使用时会创建多个Docker容器，每个连接使用独立的环境与公网端口便于管理。</p>
+<p>配置好后可以在admin端创建邀请码，每个邀请码对应着使用时间与可用的流量。将邀请码分发给其他人后，其他人登录到你的client端便可以使用激活码注册自己的用户，并且启动一个新的Shadowsocks连接。作为管理员可以实时观察各位用户的剩余时间和剩余流量，并且可以进行延长时间和重置流量等操作。</p>
+<a id="more"></a>
+<h1 id="0X02-搭建博客"><a href="#0X02-搭建博客" class="headerlink" title="0X02 搭建博客"></a>0X02 搭建博客</h1><p>搭建博客也是一个常规操作了，通常的选择是两种：以<span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL3poLWNuLw==" title="https://hexo.io/zh-cn/">Hexo<i class="fa fa-external-link"></i></span>为代表的静态博客和以<span class="exturl" data-url="aHR0cHM6Ly9jbi53b3JkcHJlc3Mub3JnLw==" title="https://cn.wordpress.org/">Wordpress<i class="fa fa-external-link"></i></span>为代表的动态博客。这里更推荐使用Hexo，这也是处于对VPS性能的考虑。我们的VPS通常性能都不强劲，所以使用静态博客可以每次编辑完博文后编译上传，每次用户访问时也只是访问了几个静态文件，再加上Nginx的配合完全可以实现个人博客的需求。Wordpress类的动态博客虽然扩展性很强，评论和浏览量等常见功能的高度集成也很方便，不过问题在于博客的运行需要数据库来支持，这在我们的低性能VPS上通常会导致访问速度缓慢。</p>
+<p>静态博客对比与动态博客还有一个好处就是非常便于迁移，针对静态博客只需要修改一下地址重新发布就算是完成了迁移；但是动态博客迁移不仅要重新配置PHP或是其他语言的运行环境，还需要备份并迁移数据库。</p>
+<p>相比来说动态博客最大的优势就在于大量的插件与“动态”本身，很多比较大的网站也都是使用Wordpress搭建的。</p>
+<h1 id="0X03-自己的Github"><a href="#0X03-自己的Github" class="headerlink" title="0X03 自己的Github"></a>0X03 自己的Github</h1><p>众所周知Github上的私有仓库是收费的，国外的Gitlab与国内的gitee个人是可以使用免费私有仓库的，不过有时候为了折腾我们还是可以打造一个自己的私人Github。其中<span class="exturl" data-url="aHR0cHM6Ly9nb2dzLmlvLw==" title="https://gogs.io/">Gogs<i class="fa fa-external-link"></i></span>就是一个极易搭建的自助Git服务，可以简单的使用docker部署，甚至可以直接下载二进制文件运行。而且Gogs对系统配置要求极低，运行在VPS甚至是树梅派上都是没问题的。</p>
+<p>部署好Gogs后也可以使用Web进行仓库与用户的管理，通过git命令进行版本控制<code>push pull clone</code>，就像Github一样。并且由于是国人主导开发的项目，整个系统与帮助文档等都是100%汉化的，对新手来说是相当有好的。</p>
+<h1 id="0X04-代理下载点"><a href="#0X04-代理下载点" class="headerlink" title="0X04 代理下载点"></a>0X04 代理下载点</h1><p>代理下载点就比较简单，每次遇到在国内网络环境中下载特别慢的文件，我都喜欢在VPS上下载好再从VPS上拖回来。在VPS上可以使用aria2来进行多线程下载，拖回本地的时候可以在VPS上长期启一个Nginx作为下载站，也可以在文件目录下通过命令<code>python3 -m http.server</code>临时启一个web服务，等文件拖回来了再关掉。</p>
+<h1 id="0X05-注意安全"><a href="#0X05-注意安全" class="headerlink" title="0X05 注意安全"></a>0X05 注意安全</h1><p>毕竟我们的VPS都是处在公网环境下的，所以一定要注意安全。比如防火墙不要彻底关掉，用到哪个端口就开放哪个端口；ssh尽量使用公钥验证登录而非密码；对外开放的服务比如数据库或web端的密码不要使用弱密码。</p>
+<p>一旦自己的VPS被拿下，轻则被删库跑路，重则拿着你的用户名密码到处撞库，搞不好就会有更多的损失。所以平时自己不同网站不同用户的密码也尽量区分开吧。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>觉得写的还凑合可以请我喝杯肥宅快乐水喔</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/Wechatpay.png" alt="Shawn 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/Alipay.png" alt="Shawn 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Shawn</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.just666.com/2018/11/22/using-vps/" title="把自己的VPS/Server用起来">https://blog.just666.com/2018/11/22/using-vps/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/VPS/" rel="tag"><i class="fa fa-tag"></i> VPS</a>
+            
+              <a href="/tags/Shadowsocks/" rel="tag"><i class="fa fa-tag"></i> Shadowsocks</a>
+            
+              <a href="/tags/git/" rel="tag"><i class="fa fa-tag"></i> git</a>
+            
+              <a href="/tags/Server/" rel="tag"><i class="fa fa-tag"></i> Server</a>
+            
+              <a href="/tags/blog/" rel="tag"><i class="fa fa-tag"></i> blog</a>
+            
+              <a href="/tags/proxy/" rel="tag"><i class="fa fa-tag"></i> proxy</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2018/11/19/linux-text/" rel="next" title="Linux上的简单文本处理">
+                  <i class="fa fa-chevron-left"></i> Linux上的简单文本处理
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2018/11/25/manage-our-time/" rel="prev" title="如何将自己的时间管理起来">
+                  如何将自己的时间管理起来 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-操作系统"><span class="nav-text">0X00 操作系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-机场建设"><span class="nav-text">0X01 机场建设</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-搭建博客"><span class="nav-text">0X02 搭建博客</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-自己的Github"><span class="nav-text">0X03 自己的Github</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-代理下载点"><span class="nav-text">0X04 代理下载点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-注意安全"><span class="nav-text">0X05 注意安全</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/uploads/naruto.png" alt="Shawn">
+  <p class="site-author-name" itemprop="name">Shawn</p>
+  <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">123</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="GitHub &rarr; https://github.com/shawn-bluce"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="bWFpbHRvOnNoYXduYmx1Y2VAZ21haWwuY29t" title="E-Mail &rarr; mailto:shawnbluce@gmail.com"><i class="fa fa-fw fa-inbox"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zcGFjZS5iaWxpYmlsaS5jb20vMTUzODc5MTc=" title="Bilibili &rarr; https://space.bilibili.com/15387917"><i class="fa fa-fw fa-video-camera"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy84OTY5ODc1L3NoYXdu" title="StackOverflow &rarr; https://stackoverflow.com/users/8969875/shawn"><i class="fa fa-fw fa-stack-overflow"></i></span>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn <br> 月亮很圆，圆也没用，没用也圆</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v3.8.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Pisces</span> v7.4.1</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.staticfile.org/animejs/2.2.0/anime.min.js"></script>
+  <script src="//cdn.staticfile.org/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var id = element.id || '';
+    var src = element.src || '';
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (id !=='') {
+      script.id = element.id;
+    }
+    if (src !== '') {
+      script.src = src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+    </div>
+</body>
+</html>

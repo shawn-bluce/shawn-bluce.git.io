@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png?v=7.4.1">
+  <link rel="mask-icon" href="/favicon.png?v=7.4.1" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: true,
+    sidebar: {"position":"left","width":300,"display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: true,
+    lazyload: false,
+    pangu: true,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":"auto","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="0X00 文件 ‘文件’是进程创建的逻辑单元。  —《现代操作系统（原书第三版）》文件我们再熟悉不过了，电脑磁盘上存的都是文件。在Windows里和Unix系列系统里，表面看上去文件之间还是有一点点小的区别。比如，在Windows里主要还是以文件的后缀名来标识文件具体是什么类型的，图片还是视频；在Unix系列里文件的后缀名就没那么重要，主要后缀名是用来帮助人们识别文件类型的，操作系统并不很关心。">
+<meta name="keywords" content="File System,Operation System">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件系统简述">
+<meta property="og:url" content="https://blog.just666.com/2016/11/16/filesystem/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="0X00 文件 ‘文件’是进程创建的逻辑单元。  —《现代操作系统（原书第三版）》文件我们再熟悉不过了，电脑磁盘上存的都是文件。在Windows里和Unix系列系统里，表面看上去文件之间还是有一点点小的区别。比如，在Windows里主要还是以文件的后缀名来标识文件具体是什么类型的，图片还是视频；在Unix系列里文件的后缀名就没那么重要，主要后缀名是用来帮助人们识别文件类型的，操作系统并不很关心。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-08-21T07:34:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文件系统简述">
+<meta name="twitter:description" content="0X00 文件 ‘文件’是进程创建的逻辑单元。  —《现代操作系统（原书第三版）》文件我们再熟悉不过了，电脑磁盘上存的都是文件。在Windows里和Unix系列系统里，表面看上去文件之间还是有一点点小的区别。比如，在Windows里主要还是以文件的后缀名来标识文件具体是什么类型的，图片还是视频；在Unix系列里文件的后缀名就没那么重要，主要后缀名是用来帮助人们识别文件类型的，操作系统并不很关心。">
+  <link rel="canonical" href="https://blog.just666.com/2016/11/16/filesystem/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>文件系统简述 | Shawn's Blog</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w"></script>
+  <script pjax>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shawn's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+          
+        
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">123</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">92</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-链接">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>链接</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="点这里没用，不信你试试" aria-label="点这里没用，不信你试试"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></span>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2016/11/16/filesystem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">文件系统简述
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-16 13:49:00" itemprop="dateCreated datePublished" datetime="2016-11-16T13:49:00+08:00">2016-11-16</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="0X00-文件"><a href="#0X00-文件" class="headerlink" title="0X00 文件"></a>0X00 文件</h1><p><strong> ‘文件’是进程创建的逻辑单元。 </strong> —《现代操作系统（原书第三版）》<br>文件我们再熟悉不过了，电脑磁盘上存的都是文件。在Windows里和Unix系列系统里，表面看上去文件之间还是有一点点小的区别。比如，在Windows里主要还是以文件的后缀名来标识文件具体是什么类型的，图片还是视频；在Unix系列里文件的后缀名就没那么重要，主要后缀名是用来帮助人们识别文件类型的，操作系统并不很关心。<br><strong> 真正的文件类型 </strong> 是文件的本质类型，不是我们常说的exe类型、doc类型、更不是什么图片类型和视频类型。在Windows下有常见的普通文件和目录。<em>没错，目录其实是文件的</em>。在Unix里，还有一些叫字符特殊文件和块特殊文件的。<br><a id="more"></a></p>
+<h1 id="0X01-文件的元数据"><a href="#0X01-文件的元数据" class="headerlink" title="0X01 文件的元数据"></a>0X01 文件的元数据</h1><p>文件里最重要的东西肯定是文件内容了，但是文件存在磁盘里是还有一些其他的相关数据也被存进去了的，那些数据被称之为<strong>元数据</strong>。想一下文件的相关信息，在Windows里右键一个文件选择属性或者在Linux里使用<code>ls -l</code>看到的文件的详细信息，这些几乎全部都是文件的元数据，都存到了磁盘中。常见的元数据有下面这些:创建者、拥有者、权限标志、文件大小、锁等等。比如说我们在Linux下输入<code>ls -l</code>能看到文件的大小、权限、所属者，这些都是文件的元数据。</p>
+<h1 id="0X02-MBR-主引导记录"><a href="#0X02-MBR-主引导记录" class="headerlink" title="0X02 MBR-主引导记录"></a>0X02 MBR-主引导记录</h1><p>经常装系统的话应该比较熟悉这个词‘主引导记录’，在以前的磁盘上常用的就是这种称为MBR的磁盘分区方式，其实现在还有好多在用MBR的，不过由于MBR的原理导致不支持2TB以上的磁盘且不支持4个以上的主分区，所以用的越来越少了，取而代之的是GPT。不过由于MBR比较简单，就先介绍一下MBR。<br>计算机在启动的时候，BIOS会读取MBR的分区表来找到引导分区并引导操作系统。可以启动的分区称为活动分区，必须要是活动的分区才可以引导系统启动；MBR的分区表只能容纳四个分区，如果需要更多的分区就需要创建扩展分区。可以在一个MBR的分区表中创建三个主分区，在最后一个位置创建一个扩展分区。实际上最后一个扩展分区是不能直接使用的，相当于扩展分区在磁盘上花了一块当另一个磁盘用、在扩展分区头部还有一个扩展分区的分区表，里面保存着逻辑分区的分区信息，且这个分区表的空间比较大，所以逻辑分区可以创建好多个。</p>
+<h1 id="0X03-文件存储"><a href="#0X03-文件存储" class="headerlink" title="0X03 文件存储"></a>0X03 文件存储</h1><p>文件存储在磁盘中有好多种分配方案，这些方案各有利弊。随着存储介质、CPU等设备的发展和人们需求的变化，出现了下面这些比较好的方案。</p>
+<h2 id="连续分配"><a href="#连续分配" class="headerlink" title="连续分配"></a>连续分配</h2><p>首先我们把磁盘想象成一个超长的条形存储设备，这样就比较好理解（然而实际上现在常见的磁盘是区分盘面、磁道、柱面、扇区的）。<br>早期的磁盘和现代的CD-ROM是使用这种连续分配方式存储数据的。连续分配，由字面可知是把文件连续的从头到尾得存到磁盘里，这种方式读写都非常快，但是却非常不适合日常使用。考虑下面这种情况，我有下面这些文件<br><code>[  A  ][  B  ][  C  ][  D  ][  E  ][  F  ]</code>整个磁盘大小为6GB，每个文件都有1GB，刚刚好用完整个磁盘。但是当我删除了B和E两个文件的时候就会变成下面这样，空余两个1GB的位置出来，但是这两个空间不连续<br><code>[  A  ][     ][  C  ][  D  ][     ][  F  ]</code>现在我有2GB的空间。系统需要维护一个空闲空间列表来让后来的文件放在这些空闲的地方，因为如果不维护这张表的话，当磁盘写满过一次就再也不能写入新的数据了。虽然我们维护了一张这样的表也并不能很让人满意，比如有一个1.5GB的文件想存到磁盘里，系统就会查找连续的空余空间，但是并没有一个连续的高达1.5GB的空间，所以并不能把文件存进去，显然这并不能让人满意。而且，这些还都是建立在一个前提之下的，就是说“存储文件之前必须知道文件的大小”，然而事实上很多时候是不知道的，比如我们打开了AE（一款渲染视频的软件）来制作一段视频特效，然而在生成视频的时候没有人知道这个文件最后是多大的，所以就并不适用于这种情况。但是这种分配方案就没有优点了吗？也不是的。比如我们需要将数据刻录到CD-ROM上，因为CD-ROM是只读设备，所以在第一次刻录之后就没有修改的可能了，那么我们就可以通过这种方案直接将已有的数据顺序刻录到光盘里，这样以后的读取就会变得很快了。然后针对磁盘有了下面的‘链表分配方案’</p>
+<h2 id="链表分配"><a href="#链表分配" class="headerlink" title="链表分配"></a>链表分配</h2><p>使用链表分配方案时，目录下的每一个文件都只保留文件的头指针，每个文件都是一个链表，这样我们就可以顺着指针的指向把整个文件从文件系统中遍历出来。虽然链表分配方案成功的利用起来了空闲空间，但是还是有下面两个比较严重的问题：</p>
+<ol>
+<li>每次想要访问文件的第n个节点时候，都要从文件头开始访问，有n-1次磁盘的访问是无效的，所以这种方案对随机读取非常慢；</li>
+<li>因为每个磁盘块的大小都是2的n次幂，保存的大小也就是2的n次幂，但是因为文件头被指针占去了一定的字节，就导致实际存储的文件并不是2的n次幂。虽然这个问题并不是致命的，但是确实会让系统变慢，也会让面向系统的编程变得困难很多。</li>
+</ol>
+<p>内存链表解决了链表分配的一些问题。</p>
+<h2 id="内存链表分配"><a href="#内存链表分配" class="headerlink" title="内存链表分配"></a>内存链表分配</h2><p>内存链表分配是将磁盘里所有文件的所有块都做成链表，依旧是每个文件一个链表。但是这次将链表整个存放到内存中，这样在随机访问的时候因为链表全都在内存中就会非常快。但是由于要对每一个文件建立存储，且存放在内存中，所以这种文件系统并不适合用于小文件大磁盘。对于一个200GB的磁盘，里面充满了1KB的块，那么根据系统优化之后这张表需要600~800MB的内存，然而现在动辄TB级的磁盘，则非常不适用。这种内存链表分配方案中维护的表称之为‘文件分配表’英文也就是我们熟悉的‘File Allocation Table-----FAT’<br>为了克服内存链表分配的内存占用大的问题，有了i-Node方案。</p>
+<h2 id="i-Node"><a href="#i-Node" class="headerlink" title="i-Node"></a>i-Node</h2><p>i-Node方案在磁盘头部预留一段空间用来存放i-Node，这里的i-Node是一种数据结构，里面包含了文件的一些元数据和文件所有块的相关信息，所以根据一个i-Node就可以找到着整个文件。因为每个i-Node的预留空间都是固定的，如果文件太大太分散就会导致一个i-Node并不能存储完所有信息，那么i-Node中最后一段就保存了另一个i-Node的地址，然后在另一个i-Node中继续保存信息。因为i-Node是保存在磁盘里的，所以不会影响到内存，只有当文件真正打开的时候才会将数据加载到内存。所以内存占用是核同时打开的文件数量相关的。在Linux中我们使用<code>ls -l -i</code>就可以看到每个文件的i-Node编号。现在的大多数文件系统都采用这种方案了，比如EXT、NTFS、XFS等。</p>
+<h1 id="0X04-文件共享"><a href="#0X04-文件共享" class="headerlink" title="0X04 文件共享"></a>0X04 文件共享</h1><p>首先明确两点：1. 这里说的文件共享并不是说将一个文件通过网络传输给他人的那种文件共享； 2. 系统中的文件结构不是树状，而是图。（当Windows中我们给一个文件建立了一个快捷方式并放在了另一个目录里的时候，就形成了图解构）<br>这里的文件共享主要就是链接的问题，关于链接的内容可以在我博客里找到。<span class="exturl" data-url="aHR0cDovL2Jsb2cuanVzdDY2Ni5jbi9pbmRleC5waHAvYXJjaGl2ZXMvMTAv" title="http://blog.just666.cn/index.php/archives/10/">Linux软连接/硬链接 理解Linux链接<i class="fa fa-external-link"></i></span><br>每个文件会保存指向自己的链接数，当只想自己的链接数为0的时候，那么这块数据就抛弃掉了。</p>
+<h1 id="0X05-文件系统"><a href="#0X05-文件系统" class="headerlink" title="0X05 文件系统"></a>0X05 文件系统</h1><h2 id="日志结构文件系统"><a href="#日志结构文件系统" class="headerlink" title="日志结构文件系统"></a>日志结构文件系统</h2><p>因为现在的CPU运算能力和磁盘容量、内存容量等都有了非常大的进步，所以在不实际访问磁盘只在高速缓存上就能访问到很多需要的数据，所以根据这种情况，就出现了日志结构文件系统(Log-structred File System)。这种文件系统将文件操作结构化成日志。在这种文件系统中每次将数据读写缓存到内存，然后定时定量地将数据从内存写入磁盘。</p>
+<h2 id="日志文件系统"><a href="#日志文件系统" class="headerlink" title="日志文件系统"></a>日志文件系统</h2><p>日志文件系统比日志结构文件系统有更强的鲁棒性（Roubst 也就是健壮性）。在这种文件系统中进行文件操作时，先记录下要干什么，然后再开始操作。这样不管什么时候出了错误，都可以根据日志来恢复操作。比如在Unix中删除一个文件分成三个步骤：1.在目录中删除文件 2.释放i-Node到空间i-Node节点池 3.强磁盘块归还到操作系统。 如果完成了第一步，就死机了，那么由于日志的存在就可以在知道这个操作究竟要干什么，在恢复开机的时候就可以继续完成这次操作。当所有的任务项都完成了的时候就删除这个日志。</p>
+<h2 id="虚拟文件系统"><a href="#虚拟文件系统" class="headerlink" title="虚拟文件系统"></a>虚拟文件系统</h2><p>在Windows里用的是多根目录的方式，也就是有多个根目录，比如C盘D盘E盘等，但是在Linux中我们使用的是单根目录形式，如果要同时使用几种文件系统比如：根目录使用XFS、/home使用ext4、/usr目录使用ext3、那么久需要使用一种叫做虚拟文件系统的技术。两个不同的文件系统之间需要连接的话需要使用VFS（虚拟文件系统）接口来将两个文件系统连起来。使用这种虚拟文件系统的技术就可以让同一个根目录下面挂载有不同文件系统的设备。</p>
+<h1 id="0X06-磁盘分块"><a href="#0X06-磁盘分块" class="headerlink" title="0X06 磁盘分块"></a>0X06 磁盘分块</h1><p>已知文件在磁盘里是按照块存储的，那么每个块分配多大就成为了一个问题。因为在磁盘底层，每个文件占用的块都是整数，比如我一个块是1kb，那么我有一个2.5kb的文件也要占用3个块，甚至是1字节的文件也要占用1kb，每个块中剩余的部分是不能存储其他文件的。从这方面看来分块越大就越浪费空间，块越小磁盘空间利用率越高。那么我们把块都分成最小，这样就行了吗？显然没有这么简单。因为磁盘在读写数据的时候是按照块来的，所以分的块越大读写的速度越快，因为磁盘里的总块数少，块越小越慢。总结下来是这样：随着块大小的提升，磁盘读写效率会提高，但是空间利用率会降低。统计所得，分块大小为4kb最容易获得最佳性能。</p>
+<h1 id="0X07-缓冲区"><a href="#0X07-缓冲区" class="headerlink" title="0X07 缓冲区"></a>0X07 缓冲区</h1><p>现在的文件系统都支持缓冲区写入。缓冲区写入对应的另一种是‘同步写入’。缓冲区写入：程序生成的或者用户的数据首先写入到内存中，当达到一定时间或者一定量的时候一次性写入磁盘；同步写入：将程序和用户产生的数据实时写入磁盘里。下面对比一下这两种的优缺点</p>
+<p><strong>同步写入优点</strong>：数据实时同步，出现数据丢失的可能性很小<br><strong>同步写入缺点</strong>：由于数据产生很慢，所以磁盘利用率不高，且长期占据磁盘<br><strong>缓冲写入优点</strong>：数据首先写入比磁盘快得多的内存中，再统一写入磁盘只会短时间占用磁盘，且占用磁盘时利用率高<br><strong>缓冲写入缺点</strong>：当数据在缓冲区没有写入磁盘时系统发生异常或者崩溃，数据非常容易丢失</p>
+<p>这里有两段Python的代码，展示了缓冲区写入和同步写入的速度差异，首先是使用同步写入方式写入<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> ctime</span><br><span class="line"></span><br><span class="line">f = open(<span class="string">'D:/list.txt'</span>, <span class="string">'r+'</span>, <span class="number">0</span>)    <span class="comment">#不使用缓冲</span></span><br><span class="line">start_time = ctime()    <span class="comment">#开始时间</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3000000</span>):</span><br><span class="line">    f.write(<span class="string">'hello,world\n'</span>)</span><br><span class="line">f.close()</span><br><span class="line">end_time = ctime()  <span class="comment">#结束时间</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> start_time</span><br><span class="line"><span class="keyword">print</span> end_time</span><br></pre></td></tr></table></figure></p>
+<p>运行结果是这样的，我们看到写入300W行’hello,world’用了8秒，最后生成的数据量是37.1MB<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Thu Nov 17 11:12:21 2016</span><br><span class="line">Thu Nov 17 11:12:29 2016</span><br></pre></td></tr></table></figure></p>
+<p>然后使用Python默认大小的缓冲区试试：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> ctime</span><br><span class="line"></span><br><span class="line">f = open(<span class="string">'D:/list.txt'</span>, <span class="string">'r+'</span>, <span class="number">-1</span>)    <span class="comment">#使用默认缓冲区大小</span></span><br><span class="line">start_time = ctime()    <span class="comment">#开始时间</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3000000</span>):</span><br><span class="line">    f.write(<span class="string">'hello,world\n'</span>)</span><br><span class="line">f.close()</span><br><span class="line">end_time = ctime()  <span class="comment">#结束时间</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> start_time</span><br><span class="line"><span class="keyword">print</span> end_time</span><br></pre></td></tr></table></figure></p>
+<p>运行结果是这样的，我们看到这次写入相同的数据只用了1秒<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Thu Nov 17 11:18:04 2016</span><br><span class="line">Thu Nov 17 11:18:05 2016</span><br></pre></td></tr></table></figure></p>
+<h1 id="0X08-坏块屏蔽"><a href="#0X08-坏块屏蔽" class="headerlink" title="0X08 坏块屏蔽"></a>0X08 坏块屏蔽</h1><p>在磁盘这种物理结构里出现错误是比较正常的，尤其是机械磁盘磁臂在旋转的时候与磁道的摩擦会产生部分坏块。这些坏块上的数据会发生丢失或者错误，那么怎么屏蔽这些坏块呢？之前在那些分区软件里看到过坏块屏蔽，感觉非常高端，其实原理是很简单的。比如磁盘里有23块坏块，那么修复程序就创建一个文件，指定这个文件就存储在这23个坏块上，且对操作系统不可见，那么操作系统虽然知道这里有文件，但是不会去管他，这样就相当于屏蔽了磁盘里的坏块。</p>
+<h1 id="0X09-提升文件系统性能-高速缓存"><a href="#0X09-提升文件系统性能-高速缓存" class="headerlink" title="0X09 提升文件系统性能 高速缓存"></a>0X09 提升文件系统性能 高速缓存</h1><p>高速缓存就是将即将需要的文件和经常使用的文件放在磁盘的高速缓存里，因为高速缓存的速度比磁盘要快得多，所以就可以通过这种方式来提高I/O效率。<br>在Unix里有一个系统调用sync，在Windows里有一个FlushFileBuffers，是用来将高速缓存里的数据同步写入到磁盘里的。在Unix系列系统中每隔30秒就执行一次sync将数据写入，在Windows中则是实时的。这两种方案并没有谁好谁坏之分，各有优劣。</p>
+<h1 id="0X0A-磁盘碎片整理"><a href="#0X0A-磁盘碎片整理" class="headerlink" title="0X0A 磁盘碎片整理"></a>0X0A 磁盘碎片整理</h1><p>因为绝大多数的现代文件系统都采用了链表存储的方案，所以在使用磁盘一段时间之后文件都是分散的放在磁盘的各个角落的，这样的话读写文件就会变得比较慢，文件越零散读写就越慢。那么我们可以手动将磁盘进行整理，将分散的文件数据聚合到一起，当然也只能是尽量，因为某些数据是不能被移动的，比如页文件、休眠文件、日志。当零散的文件变成连续的文件的时候读写的效率就会有大幅度提升。但是由于各个操作系统采用的文件系统的内部实现不同，导致几乎只有Windows需要对磁盘进行手动整理。当然所谓的手动整理也是有软件支持的，不需要用户自己去操作磁盘。但是因为Windows的发展，也几乎不再需要手动进行整理了。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>觉得写的还凑合可以请我喝杯肥宅快乐水喔</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/Wechatpay.png" alt="Shawn 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/Alipay.png" alt="Shawn 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Shawn</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.just666.com/2016/11/16/filesystem/" title="文件系统简述">https://blog.just666.com/2016/11/16/filesystem/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/File-System/" rel="tag"><i class="fa fa-tag"></i> File System</a>
+            
+              <a href="/tags/Operation-System/" rel="tag"><i class="fa fa-tag"></i> Operation System</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/11/02/linux-crontab/" rel="next" title="Linux 中计划任务和周期任务">
+                  <i class="fa fa-chevron-left"></i> Linux 中计划任务和周期任务
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/11/17/firewall-cmd/" rel="prev" title="CentOS7中使用firewall-Cmd控制端口和端口转发">
+                  CentOS7中使用firewall-Cmd控制端口和端口转发 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-文件"><span class="nav-text">0X00 文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-文件的元数据"><span class="nav-text">0X01 文件的元数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-MBR-主引导记录"><span class="nav-text">0X02 MBR-主引导记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-文件存储"><span class="nav-text">0X03 文件存储</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#连续分配"><span class="nav-text">连续分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表分配"><span class="nav-text">链表分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存链表分配"><span class="nav-text">内存链表分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i-Node"><span class="nav-text">i-Node</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-文件共享"><span class="nav-text">0X04 文件共享</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-文件系统"><span class="nav-text">0X05 文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#日志结构文件系统"><span class="nav-text">日志结构文件系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志文件系统"><span class="nav-text">日志文件系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟文件系统"><span class="nav-text">虚拟文件系统</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-磁盘分块"><span class="nav-text">0X06 磁盘分块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X07-缓冲区"><span class="nav-text">0X07 缓冲区</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X08-坏块屏蔽"><span class="nav-text">0X08 坏块屏蔽</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X09-提升文件系统性能-高速缓存"><span class="nav-text">0X09 提升文件系统性能 高速缓存</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0A-磁盘碎片整理"><span class="nav-text">0X0A 磁盘碎片整理</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/uploads/naruto.png" alt="Shawn">
+  <p class="site-author-name" itemprop="name">Shawn</p>
+  <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">123</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="GitHub &rarr; https://github.com/shawn-bluce"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="bWFpbHRvOnNoYXduYmx1Y2VAZ21haWwuY29t" title="E-Mail &rarr; mailto:shawnbluce@gmail.com"><i class="fa fa-fw fa-inbox"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zcGFjZS5iaWxpYmlsaS5jb20vMTUzODc5MTc=" title="Bilibili &rarr; https://space.bilibili.com/15387917"><i class="fa fa-fw fa-video-camera"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy84OTY5ODc1L3NoYXdu" title="StackOverflow &rarr; https://stackoverflow.com/users/8969875/shawn"><i class="fa fa-fw fa-stack-overflow"></i></span>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn <br> 月亮很圆，圆也没用，没用也圆</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v3.8.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Pisces</span> v7.4.1</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.staticfile.org/animejs/2.2.0/anime.min.js"></script>
+  <script src="//cdn.staticfile.org/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var id = element.id || '';
+    var src = element.src || '';
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (id !=='') {
+      script.id = element.id;
+    }
+    if (src !== '') {
+      script.src = src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+    </div>
+</body>
+</html>

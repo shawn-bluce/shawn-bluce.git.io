@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png?v=7.4.1">
+  <link rel="mask-icon" href="/favicon.png?v=7.4.1" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: true,
+    sidebar: {"position":"left","width":300,"display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: true,
+    lazyload: false,
+    pangu: true,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":"auto","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="0X00 使用docker部署的优势在使用docker部署之前，一般都是直接将MySQL和Redis这类服务直接安装在机器上的。以至于好多新手才开始安装使用的时候经常会出问题，出了问题解决不了就重装系统然后再重装软件，而且如果想同时用MySQL5和MySQL8就非常麻烦了。话说回来，在生产环境服务器上其实还是很多直装的服务的，不过其实使用docker部署一套相同的环境是非常有利于自己本地开发的。">
+<meta name="keywords" content="Database,Docker,MySQL,Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Docker部署MySQL和Redis">
+<meta property="og:url" content="https://blog.just666.com/2019/11/14/docker-mysql-redis/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="0X00 使用docker部署的优势在使用docker部署之前，一般都是直接将MySQL和Redis这类服务直接安装在机器上的。以至于好多新手才开始安装使用的时候经常会出问题，出了问题解决不了就重装系统然后再重装软件，而且如果想同时用MySQL5和MySQL8就非常麻烦了。话说回来，在生产环境服务器上其实还是很多直装的服务的，不过其实使用docker部署一套相同的环境是非常有利于自己本地开发的。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-14T14:33:18.288Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Docker部署MySQL和Redis">
+<meta name="twitter:description" content="0X00 使用docker部署的优势在使用docker部署之前，一般都是直接将MySQL和Redis这类服务直接安装在机器上的。以至于好多新手才开始安装使用的时候经常会出问题，出了问题解决不了就重装系统然后再重装软件，而且如果想同时用MySQL5和MySQL8就非常麻烦了。话说回来，在生产环境服务器上其实还是很多直装的服务的，不过其实使用docker部署一套相同的环境是非常有利于自己本地开发的。">
+  <link rel="canonical" href="https://blog.just666.com/2019/11/14/docker-mysql-redis/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>使用Docker部署MySQL和Redis | Shawn's Blog</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w"></script>
+  <script pjax>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shawn's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+          
+        
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">123</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">92</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-链接">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>链接</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="点这里没用，不信你试试" aria-label="点这里没用，不信你试试"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></span>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2019/11/14/docker-mysql-redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">使用Docker部署MySQL和Redis
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-14 20:56:35" itemprop="dateCreated datePublished" datetime="2019-11-14T20:56:35+08:00">2019-11-14</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="0X00-使用docker部署的优势"><a href="#0X00-使用docker部署的优势" class="headerlink" title="0X00 使用docker部署的优势"></a>0X00 使用docker部署的优势</h1><p>在使用docker部署之前，一般都是直接将MySQL和Redis这类服务直接安装在机器上的。以至于好多新手才开始安装使用的时候经常会出问题，出了问题解决不了就重装系统然后再重装软件，而且如果想同时用MySQL5和MySQL8就非常麻烦了。话说回来，在生产环境服务器上其实还是很多直装的服务的，不过其实使用docker部署一套相同的环境是非常有利于自己本地开发的。</p>
+<p>我个人看来使用docker部署的优势有这几点比较明显的：</p>
+<ol>
+<li>很容易做到开发环境、测试环境和生产环境的“环境与版本”大统一；</li>
+<li>很容易在开发环境本地同时部署多套不同版本的同一服务；（比如你负责8个项目，这8个项目要用8个不同版本的MySQL）</li>
+<li>能很快部署一套开发环境；（事实证明在一台网络环境好的机器上，能在5分钟内部署一套数据库）</li>
+<li>整理好配置文件后可以很容易备份整套配置；</li>
+<li>安全问题，在物理机上直接装了MySQL，如果部署不够仔细的话有数据库被攻破后危及服务器的风险，而Docker部署的由于容器所在就不会有这种问题；</li>
+</ol>
+<a id="more"></a>
+<h1 id="0X01-使用docker部署MySQL"><a href="#0X01-使用docker部署MySQL" class="headerlink" title="0X01 使用docker部署MySQL"></a>0X01 使用docker部署MySQL</h1><p>首先把最新的镜像拉下来<code>docker pull mysql:latest</code>，然后可以使用<code>docker run --name your_first_mysql -e MYSQL_ROOT_PASSWORD=your_password -d mysql:latest</code>这个命令来启动一个MySQL了。</p>
+<p>现在来尝试连接一下MySQL吧（其实并不能，现在连端口都没映射出来，不信可以连一下试试）。要想真正连到刚刚的MySQL里的话需要这样操作<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建MySQL容器</span></span><br><span class="line">docker run --name your_first_mysql -e MYSQL_ROOT_PASSWORD=your_password -d mysql:latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入到MySQL容器里</span></span><br><span class="line">docker <span class="built_in">exec</span> -it your_first_mysql bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在容器里</span></span><br><span class="line">root@b42296a45a92:/<span class="comment"># mysql -p</span></span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 9</span><br><span class="line">Server version: 8.0.18 MySQL Community Server - GPL</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type <span class="string">'help;'</span> or <span class="string">'\h'</span> <span class="keyword">for</span> <span class="built_in">help</span>. Type <span class="string">'\c'</span> to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt; show databases;</span><br><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| sys                |</span><br><span class="line">+--------------------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>可以发现这次终于连上了，不过这样直接启动还是有诸多问题存在的：容器被删除后数据也就没了、其他程序很难连接到这个MySQL上、只设置了密码还有好多配置没动呢。。。先不管这些个问题，只需要知道现在这个服务已经成功启动了就好，具体的配置会在<code>docker-compose编排</code>中介绍。</p>
+<h1 id="0X02-使用docker部署Redis"><a href="#0X02-使用docker部署Redis" class="headerlink" title="0X02 使用docker部署Redis"></a>0X02 使用docker部署Redis</h1><p>首先把最新的镜像拉下来<code>docker pull redis:latest</code>，然后就可以用<code>docker run --name your_first_redis redis -d</code>这个命令来启动一个Redis了。</p>
+<p>现在来试试连接到Redis吧（不知道你发现了没有，我完全就是在重复上面的过程。就算刚才没发现，现在也该发现了。既然你都发现了那我也就不重复了，直接来看docker-compose的编排吧）</p>
+<h1 id="0X03-使用docker-compose编排"><a href="#0X03-使用docker-compose编排" class="headerlink" title="0X03 使用docker-compose编排"></a>0X03 使用docker-compose编排</h1><p>作为开发人员而非运维，<code>docker-compose</code>的使用次数是非常高的。通常来说使用Docker都是在Unix like环境中（也就是指的Linux、MacOS或者BSD），那我们安装和使用它就很方便了：<code>pip install docker-compose --user</code>就可以了。显然这又是一个Python编写的工具，装好就可以开始编写<code>docker-compose.yml</code>文件了下面看一下我完整的这个实例文件</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  mysql:</span>    <span class="comment"># 服务的名字</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">mysql:latest</span> <span class="comment"># 使用最新的MySQL镜像</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">dev_mysql_latest</span>  <span class="comment"># 指定一个容器名</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span> <span class="comment"># 自动重启（开机后也自动启动）</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">bridge</span>  <span class="comment"># 指定网络为桥接</span></span><br><span class="line"><span class="attr">    volumes:</span>  <span class="comment"># 挂载的目录</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./data/mysql:/var/lib/mysql</span> <span class="comment"># 将容器中的/var/lib/mysql挂载到当前目录下的data/mysql（MySQL的数据文件，防止容器删除后数据丢失）</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./config/mysql:/etc/mysql/conf.d</span>  <span class="comment"># 挂载好配置文件的目录（没有特殊配置的时候可以不用写这行）</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"3306:3306"</span> <span class="comment"># 将容器的3306端口映射到本地的3306</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">MYSQL_ROOT_PASSWORD=test_passwd</span> <span class="comment"># MySQL的root密码「必填」</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># 以下皆为选填</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">MYSQL_DATABASE=test_db</span>  <span class="comment"># 如指定，则在容器生成时创建该数据库</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">MYSQL_USER=test_user</span>  <span class="comment"># 新用户名</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">MYSQL_PASSWORD=test_passwd</span> <span class="comment"># 新用户的密码</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">MYSQL_ALLOW_EMPTY_PASSWORD=no</span> <span class="comment"># 不允许使用空密码</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">MYSQL_RANDOM_ROOT_PASSWORD=no</span> <span class="comment"># 不适用随机密码（为yes时会随机生成一个密码并输出到stdout上，通常是你看到的窗口）</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">MYSQL_ONETIME_PASSWORD=onetime_passwd</span> <span class="comment"># 一次性密码（使用时，第一次登录会强制要求修改密码）</span></span><br><span class="line"></span><br><span class="line"><span class="attr">  redis:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">redis:latest</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">dev_redis_latest</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">bridge</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"6379:6379"</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-server</span> <span class="bullet">--requirepass</span> <span class="string">"mypassword"</span>  <span class="comment"># 指定容器运行的命令，命令处设置密码</span></span><br></pre></td></tr></table></figure>
+<p>接下来在这个<code>docker-compose.yml</code>所在的目录下执行<code>docker-compose up -d</code>，这时候两个服务就都在后台悄悄启动好并可以连接使用了。如果不想同时开启所有的服务可以在后面接服务名，例如：<code>docker-compose up -d redis</code>。</p>
+<h1 id="0X04-其他关于docker与docker-compose"><a href="#0X04-其他关于docker与docker-compose" class="headerlink" title="0X04 其他关于docker与docker-compose"></a>0X04 其他关于docker与docker-compose</h1><ol>
+<li><code>docker exec -it dev_mysql_latest bash</code>可以接入到<code>dev_mysql_latest</code>容器的bash中进行简单的操作；</li>
+<li><code>docker-compose up -d</code>中的<code>-d</code>是在后台的意思，可以不加这个参数从而把输出都打在终端上方便调试；</li>
+<li><code>docker-compose stop</code>和<code>docker-compose rm</code>分别是停止容器和销毁容器，容器必须先停止再销毁；</li>
+<li>如果想直接销毁容器可以使用<code>docker-compose down</code>，从输出可以看到就是先执行了<code>stop</code>再执行了<code>rm</code>。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>觉得写的还凑合可以请我喝杯肥宅快乐水喔</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/Wechatpay.png" alt="Shawn 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/Alipay.png" alt="Shawn 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Shawn</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.just666.com/2019/11/14/docker-mysql-redis/" title="使用Docker部署MySQL和Redis">https://blog.just666.com/2019/11/14/docker-mysql-redis/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/Database/" rel="tag"><i class="fa fa-tag"></i> Database</a>
+            
+              <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i> Docker</a>
+            
+              <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+            
+              <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i> Redis</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/11/12/python-thread-process-pool/" rel="next" title="Python中的线程、进程池">
+                  <i class="fa fa-chevron-left"></i> Python中的线程、进程池
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/11/19/python-oop-2/" rel="prev" title="Python之面向对象 2">
+                  Python之面向对象 2 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-使用docker部署的优势"><span class="nav-text">0X00 使用docker部署的优势</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-使用docker部署MySQL"><span class="nav-text">0X01 使用docker部署MySQL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-使用docker部署Redis"><span class="nav-text">0X02 使用docker部署Redis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-使用docker-compose编排"><span class="nav-text">0X03 使用docker-compose编排</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-其他关于docker与docker-compose"><span class="nav-text">0X04 其他关于docker与docker-compose</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/uploads/naruto.png" alt="Shawn">
+  <p class="site-author-name" itemprop="name">Shawn</p>
+  <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">123</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="GitHub &rarr; https://github.com/shawn-bluce"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="bWFpbHRvOnNoYXduYmx1Y2VAZ21haWwuY29t" title="E-Mail &rarr; mailto:shawnbluce@gmail.com"><i class="fa fa-fw fa-inbox"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zcGFjZS5iaWxpYmlsaS5jb20vMTUzODc5MTc=" title="Bilibili &rarr; https://space.bilibili.com/15387917"><i class="fa fa-fw fa-video-camera"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy84OTY5ODc1L3NoYXdu" title="StackOverflow &rarr; https://stackoverflow.com/users/8969875/shawn"><i class="fa fa-fw fa-stack-overflow"></i></span>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn <br> 月亮很圆，圆也没用，没用也圆</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v3.8.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Pisces</span> v7.4.1</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.staticfile.org/animejs/2.2.0/anime.min.js"></script>
+  <script src="//cdn.staticfile.org/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var id = element.id || '';
+    var src = element.src || '';
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (id !=='') {
+      script.id = element.id;
+    }
+    if (src !== '') {
+      script.src = src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+    </div>
+</body>
+</html>

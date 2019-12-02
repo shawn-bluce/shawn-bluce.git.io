@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png?v=7.4.1">
+  <link rel="mask-icon" href="/favicon.png?v=7.4.1" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: true,
+    sidebar: {"position":"left","width":300,"display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: true,
+    lazyload: false,
+    pangu: true,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":"auto","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="0X00 什么是REST风格的API众所周知http协议有GET/PUT/POST/PATCH/DELETE等众多方法，还能在提交请求和发送响应的时候携带数据。REST风格的API就是使用了这些HTTP特性的API。针对一个URL可以有多种动词(方法)来表示不同的操作。更多详细的内容可以点击查看阮一峰的博客：理解RESTful架构">
+<meta name="keywords" content="Python,Flask,API">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Flask设计实现一套API【成绩管理系统】">
+<meta property="og:url" content="https://blog.just666.com/2017/06/03/flask-build-api/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="0X00 什么是REST风格的API众所周知http协议有GET/PUT/POST/PATCH/DELETE等众多方法，还能在提交请求和发送响应的时候携带数据。REST风格的API就是使用了这些HTTP特性的API。针对一个URL可以有多种动词(方法)来表示不同的操作。更多详细的内容可以点击查看阮一峰的博客：理解RESTful架构">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-08-21T07:34:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Flask设计实现一套API【成绩管理系统】">
+<meta name="twitter:description" content="0X00 什么是REST风格的API众所周知http协议有GET/PUT/POST/PATCH/DELETE等众多方法，还能在提交请求和发送响应的时候携带数据。REST风格的API就是使用了这些HTTP特性的API。针对一个URL可以有多种动词(方法)来表示不同的操作。更多详细的内容可以点击查看阮一峰的博客：理解RESTful架构">
+  <link rel="canonical" href="https://blog.just666.com/2017/06/03/flask-build-api/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>使用Flask设计实现一套API【成绩管理系统】 | Shawn's Blog</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w"></script>
+  <script pjax>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shawn's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+          
+        
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">123</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">92</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-链接">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>链接</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="点这里没用，不信你试试" aria-label="点这里没用，不信你试试"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></span>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2017/06/03/flask-build-api/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">使用Flask设计实现一套API【成绩管理系统】
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-03 15:37:00" itemprop="dateCreated datePublished" datetime="2017-06-03T15:37:00+08:00">2017-06-03</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="0X00-什么是REST风格的API"><a href="#0X00-什么是REST风格的API" class="headerlink" title="0X00 什么是REST风格的API"></a>0X00 什么是REST风格的API</h1><p>众所周知http协议有<code>GET/PUT/POST/PATCH/DELETE</code>等众多方法，还能在提交请求和发送响应的时候携带数据。REST风格的API就是使用了这些HTTP特性的API。针对一个URL可以有多种动词(方法)来表示不同的操作。<br>更多详细的内容可以点击查看阮一峰的博客：<span class="exturl" data-url="aHR0cDovL3d3dy5ydWFueWlmZW5nLmNvbS9ibG9nLzIwMTEvMDkvcmVzdGZ1bC5odG1s" title="http://www.ruanyifeng.com/blog/2011/09/restful.html">理解RESTful架构<i class="fa fa-external-link"></i></span></p>
+<a id="more"></a>
+<h1 id="0X01-怎么选用HTTP动词"><a href="#0X01-怎么选用HTTP动词" class="headerlink" title="0X01 怎么选用HTTP动词"></a>0X01 怎么选用HTTP动词</h1><p>常见的动词有这五种，可以对应自己的需求选用</p>
+<table>
+<thead>
+<tr>
+<th>动词</th>
+<th>类似的SQL关键字</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>SELECT</td>
+<td>获取资源</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>CREATE</td>
+<td>创建资源</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>UPDATE</td>
+<td>更新资源（需要提供改变后的完整资源）</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>UPDATE</td>
+<td>更新资源（需要提供改变的属性）</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>DELETE</td>
+<td>删除资源</td>
+</tr>
+</tbody>
+</table>
+<h1 id="0X02-设计URL"><a href="#0X02-设计URL" class="headerlink" title="0X02 设计URL"></a>0X02 设计URL</h1><p>REST风格的API因为可以用HTTP的动词，所以URL中是不带有动词的，如果我要获取某个学生的信息应该是<code>[GET] http://api.example.com/student/id=12345678900</code>。HTTP动词理论上是能满足各种情况下的需求的，所以URL中只应该出现名词而不应该出现动词。这里用阮一峰举的例子来说明一下</p>
+<table>
+<thead>
+<tr>
+<th>动词</th>
+<th>路径</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/zoos</td>
+<td>列出所有动物园</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/zoos</td>
+<td>新建一个动物园</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/zoos/ID</td>
+<td>获取某个指定动物园的信息</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/zoos/ID</td>
+<td>更新某个指定动物园的信息（提供该动物园的全部信息）</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>/zoos/ID</td>
+<td>更新某个指定动物园的信息（提供该动物园的部分信息）</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/zoos/ID</td>
+<td>删除某个动物园</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/zoos/ID/animals</td>
+<td>列出某个指定动物园的所有动物</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/zoos/ID/animals/ID</td>
+<td>删除某个指定动物园的指定动物</td>
+</tr>
+</tbody>
+</table>
+<h1 id="0X03-状态码"><a href="#0X03-状态码" class="headerlink" title="0X03 状态码"></a>0X03 状态码</h1><p>状态码是HTTP中的一大优势，一个响应可以只靠状态码来判请求结果。这些是常见的状态码，自己设计API的时候要严格按照规范来设计状态码，可以提高代码和API的可读性和可理解性。</p>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>信息</th>
+<th>请求类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK</td>
+<td>[GET]</td>
+<td>服务器成功返回用户请求的数据，该操作是幂等的（Idempotent）。</td>
+</tr>
+<tr>
+<td>201</td>
+<td>CREATED</td>
+<td>[POST/PUT/PATCH]</td>
+<td>用户新建或修改数据成功。</td>
+</tr>
+<tr>
+<td>202</td>
+<td>Accepted</td>
+<td>[*]</td>
+<td>表示一个请求已经进入后台排队（异步任务）。</td>
+</tr>
+<tr>
+<td>204</td>
+<td>NO CONTENT</td>
+<td>[DELETE]</td>
+<td>用户删除数据成功。</td>
+</tr>
+<tr>
+<td>400</td>
+<td>INVALID REQUEST</td>
+<td>[POST/PUT/PATCH]</td>
+<td>用户发出的请求有错误，服务器没有进行新建或修改数据的操作，该操作是幂等的。</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>[*]</td>
+<td>表示用户没有权限（令牌、用户名、密码错误）。</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>[*]</td>
+<td>表示用户得到授权（与401错误相对），但是访问是被禁止的。</td>
+</tr>
+<tr>
+<td>404</td>
+<td>NOT FOUND</td>
+<td>[*]</td>
+<td>用户发出的请求针对的是不存在的记录，服务器没有进行操作，该操作是幂等的。</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Not Acceptable</td>
+<td>[GET]</td>
+<td>用户请求的格式不可得（比如用户请求JSON格式，但是只有XML格式）。</td>
+</tr>
+<tr>
+<td>410</td>
+<td>Gone</td>
+<td>[GET]</td>
+<td>用户请求的资源被永久删除，且不会再得到的。</td>
+</tr>
+<tr>
+<td>422</td>
+<td>Unprocesable entity</td>
+<td>[POST/PUT/PATCH]</td>
+<td>当创建一个对象时，发生一个验证错误。</td>
+</tr>
+<tr>
+<td>500</td>
+<td>INTERNAL SERVER ERROR</td>
+<td>[*]</td>
+<td>服务器发生错误，用户将无法判断发出的请求是否成功。</td>
+</tr>
+</tbody>
+</table>
+<h1 id="0X04-如何用Python实现"><a href="#0X04-如何用Python实现" class="headerlink" title="0X04 如何用Python实现"></a>0X04 如何用Python实现</h1><p>Python有大量第三方库可以实现REST风格的API，我这里选用的是相对轻量化的一个 <span class="exturl" data-url="aHR0cDovL2ZsYXNrLnBvY29vLm9yZy8=" title="http://flask.pocoo.org/">Flask<i class="fa fa-external-link"></i></span>。安装这个库最简单的方式还是用pip，根据环境变量的不同可能具体命令有所不同，在我的Linux上是用<code>pip3 install flask</code>就可以直接安装好的。<br>安装好后进入Python的交互式界面输入<code>import flask</code>如果没有出现<code>Import Error</code>就是安装好了。</p>
+<h1 id="0X05创建数据库和表"><a href="#0X05创建数据库和表" class="headerlink" title="0X05创建数据库和表"></a>0X05创建数据库和表</h1><p>现在可以开始设计API了。既然是成绩管理系统，那么首先就要创建一个数据库，我这里的数据库是用的MariaDB。</p>
+<table>
+<thead>
+<tr>
+<th>列名</th>
+<th>类型</th>
+<th>含义</th>
+<th>键</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>int</td>
+<td>编号</td>
+<td>主键</td>
+</tr>
+<tr>
+<td>name</td>
+<td>varchar(10)</td>
+<td>学生姓名</td>
+<td></td>
+</tr>
+<tr>
+<td>number</td>
+<td>char(11)</td>
+<td>学号</td>
+<td></td>
+</tr>
+<tr>
+<td>python</td>
+<td>float</td>
+<td>Py成绩</td>
+<td></td>
+</tr>
+<tr>
+<td>cpp</td>
+<td>float</td>
+<td>c++成绩</td>
+<td></td>
+</tr>
+<tr>
+<td>os</td>
+<td>float</td>
+<td>操作系统成绩</td>
+<td></td>
+</tr>
+<tr>
+<td>network</td>
+<td>float</td>
+<td>计算机网络成绩</td>
+<td></td>
+</tr>
+<tr>
+<td>total</td>
+<td>float</td>
+<td>总分</td>
+<td></td>
+</tr>
+<tr>
+<td>ave</td>
+<td>float</td>
+<td>平均分</td>
+</tr>
+</tbody>
+</table>
+<h1 id="0X06-创建Py脚本"><a href="#0X06-创建Py脚本" class="headerlink" title="0X06 创建Py脚本"></a>0X06 创建Py脚本</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从这里指定路径、方法、返回数据</span></span><br><span class="line"><span class="meta">@app.route('/', methods=['GET'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;h1&gt;hello,world&lt;/h1&gt;'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> app.test_request_context():</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+<p>这段代码写好之后运行起来会在本地监听5000端口(默认的)，然后当你用浏览器访问<code>http://localhost:5000/</code>的时候就像你返回<code>&lt;h1&gt;hello,world&lt;/h1&gt;</code>，在浏览器页面下看到的就是一行大号的hello,world。因为在浏览器的地址栏输入URL按回车之后就是向那个URL发送了GET请求，也就正好调用了<code>index()</code>方法。</p>
+<p>这里先将与API无关的代码填好，下面开始正式完成各项功能。其实也就是连接了数据库而已<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">database = pymysql.connect(<span class="string">"db_host"</span>, <span class="string">"db_username"</span>, <span class="string">"db_password"</span>, <span class="string">"db_name"</span>)</span><br><span class="line">cursor = database.cursor()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/', methods=['GET'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;h1&gt;hello,world&lt;/h1&gt;'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> app.test_request_context():</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure></p>
+<h1 id="0X07-实现一个构造返回Json数据的方法"><a href="#0X07-实现一个构造返回Json数据的方法" class="headerlink" title="0X07 实现一个构造返回Json数据的方法"></a>0X07 实现一个构造返回Json数据的方法</h1><p>首先我们选择使用Json来作为数据传输格式，因为Json相对XML来说更轻量一点，现在也更流行。规定客户端每次请求会后服务器都会返回下面这样类型的Json数据<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"time"</span>: <span class="string">"unix_time"</span>,</span><br><span class="line">    “e_msg": "error_message",</span><br><span class="line">    "search_list": &#123;</span><br><span class="line">    	"item0": &#123;</span><br><span class="line">        	"name": "name",</span><br><span class="line">            "number": "number",</span><br><span class="line">            "python": "marks",</span><br><span class="line">            "os": "marks",</span><br><span class="line">            "network": "marks",</span><br><span class="line">            "cpp": "marks",</span><br><span class="line">            "total": "marks",</span><br><span class="line">            "ave": "ave"</span><br><span class="line">        &#125;,"item1" : &#123;</span><br><span class="line">        	"name": "name",</span><br><span class="line">            "number": "number",</span><br><span class="line">            "python": "marks",</span><br><span class="line">            "os": "marks",</span><br><span class="line">            "network": "marks",</span><br><span class="line">            "cpp": "marks",</span><br><span class="line">            "total": "marks",</span><br><span class="line">            "ave": "ave"</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>API提供增删查改功能，增删改只通过状态码就可以判断执行结果，只有查询的时候才会需要从响应中获取数据。</p>
+<h1 id="0X08-增加一条新的数据"><a href="#0X08-增加一条新的数据" class="headerlink" title="0X08 增加一条新的数据"></a>0X08 增加一条新的数据</h1><p>添加一条新数据按照标准应该使用动词<code>POST</code>，根据URL中只有名词不用动词只有名词的标准，隧将URL设计成<code>http://localhost/student</code>，再依据标准添加版本号上去，变成<code>http://localhost/v1/student</code>。<br>具体功能代码实现如下，<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route('/v1/student', methods=['POST']) # 路径为/v1/student，方法为POST</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_student</span><span class="params">()</span>:</span></span><br><span class="line">    data = request.get_data().decode(<span class="string">'utf-8'</span>)   <span class="comment"># 将客户端传来的数据解码</span></span><br><span class="line">    json_data = json.loads(data)    <span class="comment"># 将数据转为Json</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 从Json中获取数据</span></span><br><span class="line">    name = json_data[<span class="string">'name'</span>]</span><br><span class="line">    number = str(json_data[<span class="string">'number'</span>])</span><br><span class="line">    python = json_data[<span class="string">'python'</span>]</span><br><span class="line">    cpp = json_data[<span class="string">'cpp'</span>]</span><br><span class="line">    os = json_data[<span class="string">'os'</span>]</span><br><span class="line">    network = json_data[<span class="string">'network'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算总分平均分</span></span><br><span class="line">    total = python + cpp + os + network</span><br><span class="line">    ave = total / <span class="number">4</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 查询数据库中是否有该学生的信息</span></span><br><span class="line">    sql = <span class="string">"SELECT COUNT(*) FROM student.marks WHERE number=\"%s\""</span> % number</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    count = cursor.fetchall()[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">    database.commit()</span><br><span class="line">    <span class="keyword">if</span> count &gt;= <span class="number">1</span>:  <span class="comment"># 该学生信息已经存在，返回400错误</span></span><br><span class="line">        <span class="keyword">return</span> build_json(e_msg=<span class="string">"student early exist"</span>), <span class="number">400</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 向数据库中插入数据</span></span><br><span class="line">    sql = <span class="string">"INSERT INTO student.marks (name, number, python, os, network, cpp, total, ave)"</span> \</span><br><span class="line">          <span class="string">"VALUES (\"%s\", \"%s\", %s, %s, %s, %s, %s, %s)"</span> % (name, number, python, os,</span><br><span class="line">                                                               network, cpp, total, ave)</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    database.commit()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 请求成功，返回201状态码</span></span><br><span class="line">    <span class="keyword">return</span> build_json(), <span class="number">201</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="0X09-删除已经存在的数据"><a href="#0X09-删除已经存在的数据" class="headerlink" title="0X09 删除已经存在的数据"></a>0X09 删除已经存在的数据</h1><p>根据标准，将API设计成<code>DELETE</code>方法，URL为<code>http://localhost/v1/student/number=&lt;number&gt;</code><br>第一行的<code>number=&lt;number&gt;</code>可以将url中符合这种规范的匹配出来，配合方法定义时的参数，可以直接将url参数传入到方法体中。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route('/v1/student/number=&lt;number&gt;', methods=['DELETE'])  # 路径为/v1/student, 方法为DELETE</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete_student</span><span class="params">(number)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> number.isdigit():    <span class="comment"># 判断number是否合法</span></span><br><span class="line">        <span class="keyword">return</span> build_json(e_msg=<span class="string">"number should be digit"</span>), <span class="number">403</span></span><br><span class="line">    sql = <span class="string">"DELETE FROM student.marks WHERE number=\"%s\""</span> % number</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    database.commit()</span><br><span class="line">    <span class="keyword">return</span> build_json(), <span class="number">204</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="0X0A-查询学生成绩"><a href="#0X0A-查询学生成绩" class="headerlink" title="0X0A 查询学生成绩"></a>0X0A 查询学生成绩</h1><p>根据标准，将API设计成<code>GET</code>方法，URL为<code>http://localhost/v1/student/sort_by=&lt;sort_by&gt;</code>。提供了<code>python/cpp/network/os/total/ave</code>排序方式，（其实是数据库实现的）。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route('/v1/student/sort_by=&lt;sort_by&gt;', methods=['GET'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_student</span><span class="params">(sort_by)</span>:</span></span><br><span class="line">    <span class="comment"># 判断排序的key是否正确</span></span><br><span class="line">    <span class="keyword">if</span> sort_by <span class="keyword">not</span> <span class="keyword">in</span> [<span class="string">'python'</span>, <span class="string">'cpp'</span>, <span class="string">'os'</span>, <span class="string">'network'</span>, <span class="string">'total'</span>, <span class="string">'ave'</span>]:</span><br><span class="line">        <span class="keyword">return</span> build_json(e_msg=<span class="string">"sort_by key not found"</span>), <span class="number">404</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 构建查询SQL</span></span><br><span class="line">    sql = <span class="string">"SELECT name, number, python, cpp, os, network, total, ave FROM student.marks ORDER BY %s DESC"</span> % sort_by</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    database.commit()</span><br><span class="line">    res = cursor.fetchall() <span class="comment"># 获取查询结果</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 构建查询结果Json</span></span><br><span class="line">    res_list = &#123;&#125;</span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> res:</span><br><span class="line">        res_list[<span class="string">'item'</span> + str(count)] = &#123;</span><br><span class="line">            <span class="string">'name'</span>: i[<span class="number">0</span>],</span><br><span class="line">            <span class="string">'number'</span>: i[<span class="number">1</span>],</span><br><span class="line">            <span class="string">'python'</span>: i[<span class="number">2</span>],</span><br><span class="line">            <span class="string">'cpp'</span>: i[<span class="number">3</span>],</span><br><span class="line">            <span class="string">'os'</span>: i[<span class="number">4</span>],</span><br><span class="line">            <span class="string">'network'</span>: i[<span class="number">5</span>],</span><br><span class="line">            <span class="string">'total'</span>: i[<span class="number">6</span>],</span><br><span class="line">            <span class="string">'ave'</span>: [i[<span class="number">7</span>]]</span><br><span class="line">        &#125;</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> build_json(search_list=res_list), <span class="number">200</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="0X0B-修改学生成绩"><a href="#0X0B-修改学生成绩" class="headerlink" title="0X0B 修改学生成绩"></a>0X0B 修改学生成绩</h1><p>修改学生成绩和添加成绩几乎是一样的操作，只有这么几点是不太一样的。添加信息时如果学号已经存在了那就不能再添加了，而修改的时候是如果学号不存在才错误；添加和修改的SQL不同。就没有别的区别了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route('/v1/student', methods=['PUT'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">modify_student</span><span class="params">()</span>:</span></span><br><span class="line">    data = request.get_data().decode(<span class="string">'utf-8'</span>)</span><br><span class="line">    json_data = json.loads(data)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 从Json中获取数据</span></span><br><span class="line">    name = json_data[<span class="string">'name'</span>]</span><br><span class="line">    number = str(json_data[<span class="string">'number'</span>])</span><br><span class="line">    python = json_data[<span class="string">'python'</span>]</span><br><span class="line">    cpp = json_data[<span class="string">'cpp'</span>]</span><br><span class="line">    os = json_data[<span class="string">'os'</span>]</span><br><span class="line">    network = json_data[<span class="string">'network'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 查询数据库中是否有该学生的信息</span></span><br><span class="line">    sql = <span class="string">"SELECT COUNT(*) FROM student.marks WHERE number=\"%s\""</span> % number</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    count = cursor.fetchall()[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">    database.commit()</span><br><span class="line">    <span class="keyword">if</span> count &lt; <span class="number">1</span>:  <span class="comment"># 该学生信息不存在，返回404错误</span></span><br><span class="line">        <span class="keyword">return</span> build_json(e_msg=<span class="string">"student not found"</span>), <span class="number">404</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算总分平均分</span></span><br><span class="line">    total = python + cpp + os + network</span><br><span class="line">    ave = total / <span class="number">4</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 向数据库中插入数据</span></span><br><span class="line">    sql = <span class="string">"UPDATE student.marks SET name=\"%s\", python=%s, cpp=%s, os=%s, network=%s, total=%s, ave=%s WHERE number=\"%s\""</span> % (name, python, cpp, os, network, total, ave, number)</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    database.commit()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 请求成功，返回201状态码</span></span><br><span class="line">    <span class="keyword">return</span> build_json(), <span class="number">201</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="0X0C-搞定所有API"><a href="#0X0C-搞定所有API" class="headerlink" title="0X0C 搞定所有API"></a>0X0C 搞定所有API</h1><p>现在就搞定了所有的API编写。现在我把所有代码贴上来，注意这段代码是用于Python3的。如果需要测试的话可以用Python自带的<code>requests</code>模块或者<span class="exturl" data-url="aHR0cHM6Ly93d3cuZ2V0cG9zdG1hbi5jb20=" title="https://www.getpostman.com">Postman软件<i class="fa fa-external-link"></i></span>来测试该API。</p>
+<ul>
+<li>声明：代码最后一行的<code>app.run()</code>方法，现在是只在本地监听的。可以改成<code>app.run(&#39;0.0.0.0&#39;)</code>就对外部监听了。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"><span class="comment"># @Time    : 2017/6/3 11:34</span></span><br><span class="line"><span class="comment"># @Author  : Shawn</span></span><br><span class="line"><span class="comment"># @Blog    : https://blog.just666.cn</span></span><br><span class="line"><span class="comment"># @Email   : shawnbluce@gmail.com</span></span><br><span class="line"><span class="comment"># @purpose : 演示Python_API</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">database = pymysql.connect(<span class="string">"115.29.52.14"</span>, <span class="string">"shawn"</span>, <span class="string">"zhangHAO8"</span>, <span class="string">"student"</span>)</span><br><span class="line">cursor = database.cursor()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_json</span><span class="params">(search_list=None, e_msg=None)</span> -&gt; str:</span></span><br><span class="line">    json_data = &#123;<span class="string">'time'</span>: time.time(), <span class="string">'search_list'</span>: search_list, <span class="string">'e_msg'</span>: e_msg&#125;</span><br><span class="line">    <span class="keyword">return</span> json.dumps(json_data)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/', methods=['GET'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;h1&gt;hello,world&lt;/h1&gt;'</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/v1/student', methods=['POST']) # 路径为/v1/student，方法为POST</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_student</span><span class="params">()</span>:</span></span><br><span class="line">    data = request.get_data().decode(<span class="string">'utf-8'</span>)   <span class="comment"># 将客户端传来的数据解码</span></span><br><span class="line">    json_data = json.loads(data)    <span class="comment"># 将数据转为Json</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 从Json中获取数据</span></span><br><span class="line">    name = json_data[<span class="string">'name'</span>]</span><br><span class="line">    number = str(json_data[<span class="string">'number'</span>])</span><br><span class="line">    python = json_data[<span class="string">'python'</span>]</span><br><span class="line">    cpp = json_data[<span class="string">'cpp'</span>]</span><br><span class="line">    os = json_data[<span class="string">'os'</span>]</span><br><span class="line">    network = json_data[<span class="string">'network'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算总分平均分</span></span><br><span class="line">    total = python + cpp + os + network</span><br><span class="line">    ave = total / <span class="number">4</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 查询数据库中是否有该学生的信息</span></span><br><span class="line">    sql = <span class="string">"SELECT COUNT(*) FROM student.marks WHERE number=\"%s\""</span> % number</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    count = cursor.fetchall()[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">    database.commit()</span><br><span class="line">    <span class="keyword">if</span> count &gt;= <span class="number">1</span>:  <span class="comment"># 该学生信息已经存在，返回400错误</span></span><br><span class="line">        <span class="keyword">return</span> build_json(e_msg=<span class="string">"student early exist"</span>), <span class="number">400</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 向数据库中插入数据</span></span><br><span class="line">    sql = <span class="string">"INSERT INTO student.marks (name, number, python, os, network, cpp, total, ave)"</span> \</span><br><span class="line">          <span class="string">"VALUES (\"%s\", \"%s\", %s, %s, %s, %s, %s, %s)"</span> % (name, number, python, os,</span><br><span class="line">                                                               network, cpp, total, ave)</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    database.commit()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 请求成功，返回201状态码</span></span><br><span class="line">    <span class="keyword">return</span> build_json(), <span class="number">201</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/v1/student/number=&lt;number&gt;', methods=['DELETE'])  # 路径为/v1/student, 方法为DELETE</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete_student</span><span class="params">(number)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> number.isdigit():    <span class="comment"># 判断number是否合法</span></span><br><span class="line">        <span class="keyword">return</span> build_json(e_msg=<span class="string">"number should be digit"</span>), <span class="number">403</span></span><br><span class="line">    sql = <span class="string">"DELETE FROM student.marks WHERE number=\"%s\""</span> % number</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    database.commit()</span><br><span class="line">    <span class="keyword">return</span> build_json(), <span class="number">204</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/v1/student/sort_by=&lt;sort_by&gt;', methods=['GET'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_student</span><span class="params">(sort_by)</span>:</span></span><br><span class="line">    <span class="comment"># 判断排序的key是否正确</span></span><br><span class="line">    <span class="keyword">if</span> sort_by <span class="keyword">not</span> <span class="keyword">in</span> [<span class="string">'python'</span>, <span class="string">'cpp'</span>, <span class="string">'os'</span>, <span class="string">'network'</span>, <span class="string">'total'</span>, <span class="string">'ave'</span>]:</span><br><span class="line">        <span class="keyword">return</span> build_json(e_msg=<span class="string">"sort_by key not found"</span>), <span class="number">404</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 构建查询SQL</span></span><br><span class="line">    sql = <span class="string">"SELECT name, number, python, cpp, os, network, total, ave FROM student.marks ORDER BY %s DESC"</span> % sort_by</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    database.commit()</span><br><span class="line">    res = cursor.fetchall()  <span class="comment"># 获取查询结果</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 构建查询结果Json</span></span><br><span class="line">    res_list = &#123;&#125;</span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> res:</span><br><span class="line">        res_list[<span class="string">'item'</span> + str(count)] = &#123;</span><br><span class="line">            <span class="string">'name'</span>: i[<span class="number">0</span>],</span><br><span class="line">            <span class="string">'number'</span>: i[<span class="number">1</span>],</span><br><span class="line">            <span class="string">'python'</span>: i[<span class="number">2</span>],</span><br><span class="line">            <span class="string">'cpp'</span>: i[<span class="number">3</span>],</span><br><span class="line">            <span class="string">'os'</span>: i[<span class="number">4</span>],</span><br><span class="line">            <span class="string">'network'</span>: i[<span class="number">5</span>],</span><br><span class="line">            <span class="string">'total'</span>: i[<span class="number">6</span>],</span><br><span class="line">            <span class="string">'ave'</span>: [i[<span class="number">7</span>]]</span><br><span class="line">        &#125;</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> build_json(search_list=res_list), <span class="number">200</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/v1/student', methods=['PUT'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">modify_student</span><span class="params">()</span>:</span></span><br><span class="line">    data = request.get_data().decode(<span class="string">'utf-8'</span>)</span><br><span class="line">    json_data = json.loads(data)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 从Json中获取数据</span></span><br><span class="line">    name = json_data[<span class="string">'name'</span>]</span><br><span class="line">    number = str(json_data[<span class="string">'number'</span>])</span><br><span class="line">    python = json_data[<span class="string">'python'</span>]</span><br><span class="line">    cpp = json_data[<span class="string">'cpp'</span>]</span><br><span class="line">    os = json_data[<span class="string">'os'</span>]</span><br><span class="line">    network = json_data[<span class="string">'network'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 查询数据库中是否有该学生的信息</span></span><br><span class="line">    sql = <span class="string">"SELECT COUNT(*) FROM student.marks WHERE number=\"%s\""</span> % number</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    count = cursor.fetchall()[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">    database.commit()</span><br><span class="line">    <span class="keyword">if</span> count &lt; <span class="number">1</span>:  <span class="comment"># 该学生信息不存在，返回404错误</span></span><br><span class="line">        <span class="keyword">return</span> build_json(e_msg=<span class="string">"student not found"</span>), <span class="number">404</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算总分平均分</span></span><br><span class="line">    total = python + cpp + os + network</span><br><span class="line">    ave = total / <span class="number">4</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 向数据库中插入数据</span></span><br><span class="line">    sql = <span class="string">"UPDATE student.marks SET name=\"%s\", python=%s, cpp=%s, os=%s, network=%s, total=%s, ave=%s WHERE number=\"%s\""</span> \</span><br><span class="line">          % (name, python, cpp, os, network, total, ave, number)</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    database.commit()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 请求成功，返回201状态码</span></span><br><span class="line">    <span class="keyword">return</span> build_json(), <span class="number">201</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> app.test_request_context():</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>觉得写的还凑合可以请我喝杯肥宅快乐水喔</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/Wechatpay.png" alt="Shawn 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/Alipay.png" alt="Shawn 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Shawn</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.just666.com/2017/06/03/flask-build-api/" title="使用Flask设计实现一套API【成绩管理系统】">https://blog.just666.com/2017/06/03/flask-build-api/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+            
+              <a href="/tags/Flask/" rel="tag"><i class="fa fa-tag"></i> Flask</a>
+            
+              <a href="/tags/API/" rel="tag"><i class="fa fa-tag"></i> API</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2017/04/01/python-os-lib/" rel="next" title="Python中OS库的常用方法">
+                  <i class="fa fa-chevron-left"></i> Python中OS库的常用方法
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2017/06/13/python-rabbitmq/" rel="prev" title="使用Python操作消息队列RabbitMQ">
+                  使用Python操作消息队列RabbitMQ <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-什么是REST风格的API"><span class="nav-text">0X00 什么是REST风格的API</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-怎么选用HTTP动词"><span class="nav-text">0X01 怎么选用HTTP动词</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-设计URL"><span class="nav-text">0X02 设计URL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-状态码"><span class="nav-text">0X03 状态码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-如何用Python实现"><span class="nav-text">0X04 如何用Python实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05创建数据库和表"><span class="nav-text">0X05创建数据库和表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-创建Py脚本"><span class="nav-text">0X06 创建Py脚本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X07-实现一个构造返回Json数据的方法"><span class="nav-text">0X07 实现一个构造返回Json数据的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X08-增加一条新的数据"><span class="nav-text">0X08 增加一条新的数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X09-删除已经存在的数据"><span class="nav-text">0X09 删除已经存在的数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0A-查询学生成绩"><span class="nav-text">0X0A 查询学生成绩</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0B-修改学生成绩"><span class="nav-text">0X0B 修改学生成绩</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0C-搞定所有API"><span class="nav-text">0X0C 搞定所有API</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/uploads/naruto.png" alt="Shawn">
+  <p class="site-author-name" itemprop="name">Shawn</p>
+  <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">123</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="GitHub &rarr; https://github.com/shawn-bluce"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="bWFpbHRvOnNoYXduYmx1Y2VAZ21haWwuY29t" title="E-Mail &rarr; mailto:shawnbluce@gmail.com"><i class="fa fa-fw fa-inbox"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zcGFjZS5iaWxpYmlsaS5jb20vMTUzODc5MTc=" title="Bilibili &rarr; https://space.bilibili.com/15387917"><i class="fa fa-fw fa-video-camera"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy84OTY5ODc1L3NoYXdu" title="StackOverflow &rarr; https://stackoverflow.com/users/8969875/shawn"><i class="fa fa-fw fa-stack-overflow"></i></span>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn <br> 月亮很圆，圆也没用，没用也圆</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v3.8.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Pisces</span> v7.4.1</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.staticfile.org/animejs/2.2.0/anime.min.js"></script>
+  <script src="//cdn.staticfile.org/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var id = element.id || '';
+    var src = element.src || '';
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (id !=='') {
+      script.id = element.id;
+    }
+    if (src !== '') {
+      script.src = src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+    </div>
+</body>
+</html>
