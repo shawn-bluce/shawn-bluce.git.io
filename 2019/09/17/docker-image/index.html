@@ -65,7 +65,7 @@
 <meta property="og:site_name" content="Shawn&#39;s Blog">
 <meta property="og:description" content="0X00 最常见的两种构建方式构建Docker镜像的方式并不多，最常用的也就只有：编写Dockerfile和使用docker commit这两种。既然方式分为两种那么肯定是有区别的（废话），那我们来看看吧。 首先来介绍一下这两种构建方式，假设打算使用docker部署我们的服务，那么我们来使用两种方式来构建一下这个镜像吧。 0X01 docker commit像我们这种新手平时用的比较多的应该就是d">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-22T15:26:44.583Z">
+<meta property="og:updated_time" content="2019-09-22T15:26:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="正确构建Docker镜像">
 <meta name="twitter:description" content="0X00 最常见的两种构建方式构建Docker镜像的方式并不多，最常用的也就只有：编写Dockerfile和使用docker commit这两种。既然方式分为两种那么肯定是有区别的（废话），那我们来看看吧。 首先来介绍一下这两种构建方式，假设打算使用docker部署我们的服务，那么我们来使用两种方式来构建一下这个镜像吧。 0X01 docker commit像我们这种新手平时用的比较多的应该就是d">
@@ -242,7 +242,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">92</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">93</span></a>
 
   </li>
       
@@ -380,7 +380,7 @@
 <li>创建一个名为<code>Dockerfile</code>的文件，并写入以下内容</li>
 <li>在当前目录执行<code>docker build . -t our_image:latest</code>就可以了</li>
 </ol>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> fedora</span><br><span class="line"><span class="keyword">RUN</span> dnf install python3</span><br><span class="line">RUN pip3 install Django</span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> fedora</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> dnf install python3</span></span><br><span class="line"><span class="bash">RUN pip3 install Django</span></span><br></pre></td></tr></table></figure>
 <h1 id="0X03-对比两种方法"><a href="#0X03-对比两种方法" class="headerlink" title="0X03 对比两种方法"></a>0X03 对比两种方法</h1><p>两者的对比从下面几个方面来进行</p>
 <h2 id="docker-hub"><a href="#docker-hub" class="headerlink" title="docker hub"></a>docker hub</h2><p>这两种方法其中<code>docker commit</code>方法通常需要使用私有<code>docker hub</code>，而<code>Dockerfile</code>则可以不使用。因为<code>docker commit</code>完成的镜像如果要分享给其他人的话最方便的途径就是走<code>docker hub</code>（自己构建完push到hub上，其他人再pull下来），而<code>Dockerfile</code>只要保证使用的是公共的基础镜像那么所有人就都可以直接构建出目标镜像。</p>
 <blockquote>
@@ -393,7 +393,7 @@
 <p><code>Dockerfile</code>就显得难了不少，构建复杂一点的镜像往往<code>Dockerfile</code>就几十上百行了，再算上里面十多种<code>Dockerfile</code>语法，并不是所有人都能很快上手的。</p>
 <h2 id="镜像层数"><a href="#镜像层数" class="headerlink" title="镜像层数"></a>镜像层数</h2><p>众所周知<strong>Docker镜像的每次commit都会在文件系统上新增一层</strong>（反正现在你肯定知道了），而层数的增加意味着“镜像体积膨胀”。如果决定使用<code>docker commit</code>的方式维护镜像，那么不免后期会大量通过commit来更新镜像从而导致镜像层数过多，体积过大。</p>
 <p>而<code>Dockerfile</code>中的每个指令也都会为镜像摞上一层，但是可以通过换行整合的方式使之缩小很多，比如将内容写成下面这种</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span> dnf install python3 gcc \</span><br><span class="line">    &amp;&amp; cat /data/our_hosts &gt; /etc/hosts \</span><br><span class="line">    &amp;&amp; cat /log/balabala.log | grep "test" &gt; /data/test_group.log \</span><br><span class="line">    &amp;&amp; pip install Django \</span><br><span class="line">    &amp;&amp; django-admin startproject testproject</span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="bash"> dnf install python3 gcc \</span></span><br><span class="line"><span class="bash">    &amp;&amp; cat /data/our_hosts &gt; /etc/hosts \</span></span><br><span class="line"><span class="bash">    &amp;&amp; cat /<span class="built_in">log</span>/balabala.log | grep <span class="string">"test"</span> &gt; /data/test_group.log \</span></span><br><span class="line"><span class="bash">    &amp;&amp; pip install Django \</span></span><br><span class="line"><span class="bash">    &amp;&amp; django-admin startproject testproject</span></span><br></pre></td></tr></table></figure>
 <p>将本来要写很多行的整理到一个命令后面，以此来缩减镜像层数</p>
 <h2 id="镜像的可追溯性"><a href="#镜像的可追溯性" class="headerlink" title="镜像的可追溯性"></a>镜像的可追溯性</h2><p><code>Dockerfile</code>比<code>docker commit</code>具有更好的可追溯性。所谓的<strong>可追溯性</strong>就是说可以追溯这个镜像从基础镜像开始到最新的这个版本都做了什么。</p>
 <p>如果使用<code>docker commit</code>的方式维护镜像，那么可以通过commit时候的备注和shell的历史记录来追溯，但是这两种方式都是不确定的，这样时间长久下去就会导致<strong>祖传镜像</strong>的出现。所谓祖传镜像就是指那些“我也不知道这个镜像里都改过哪些配置，装过哪些软件和第三方包，反正还能用就凑合用把”的镜像。</p>
@@ -556,7 +556,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">93</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -634,7 +634,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>

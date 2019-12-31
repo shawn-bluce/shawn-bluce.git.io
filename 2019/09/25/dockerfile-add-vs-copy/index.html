@@ -65,7 +65,7 @@
 <meta property="og:site_name" content="Shawn&#39;s Blog">
 <meta property="og:description" content="0X00 就算只有一节我也要写标题众所周知Dockerfile是构建Docker镜像的优良方式，而使用Dockerfile构建镜像最重要的就是为数不多的几个命令，而本次的主题COPY和ADD就是其中两个。我们知道这两个命令都是将文件搞到Docker镜像里用的，那究竟有没有区别，有什么区别呢？ 首先我们看一下当前这个目录：12λ  ~/Workstadion/learn_docker  lsDock">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-25T17:13:04.694Z">
+<meta property="og:updated_time" content="2019-09-25T17:13:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dockerfile中的COPY与ADD指令">
 <meta name="twitter:description" content="0X00 就算只有一节我也要写标题众所周知Dockerfile是构建Docker镜像的优良方式，而使用Dockerfile构建镜像最重要的就是为数不多的几个命令，而本次的主题COPY和ADD就是其中两个。我们知道这两个命令都是将文件搞到Docker镜像里用的，那究竟有没有区别，有什么区别呢？ 首先我们看一下当前这个目录：12λ  ~/Workstadion/learn_docker  lsDock">
@@ -242,7 +242,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">92</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">93</span></a>
 
   </li>
       
@@ -365,10 +365,10 @@
       
         <h1 id="0X00-就算只有一节我也要写标题"><a href="#0X00-就算只有一节我也要写标题" class="headerlink" title="0X00 就算只有一节我也要写标题"></a>0X00 就算只有一节我也要写标题</h1><p>众所周知Dockerfile是构建Docker镜像的优良方式，而使用Dockerfile构建镜像最重要的就是为数不多的几个命令，而本次的主题<code>COPY</code>和<code>ADD</code>就是其中两个。我们知道这两个命令都是将文件搞到Docker镜像里用的，那究竟有没有区别，有什么区别呢？</p>
 <p>首先我们看一下当前这个目录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">λ  ~/Workstadion/learn_docker  ls</span><br><span class="line">Dockerfile  excited.tar</span><br></pre></td></tr></table></figure></p>
-<p>我们有着么一个Dockerfile，可以看到是基于<code>fedora</code>的一个镜像，并且将目录下的<code>excited.tar</code>放进了创建好的<code>shawn</code>目录中<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> fedora</span><br><span class="line"><span class="keyword">RUN</span> mkdir shawn</span><br><span class="line">WORKDIR shawn</span><br><span class="line">COPY excited.tar .</span><br></pre></td></tr></table></figure></p>
+<p>我们有着么一个Dockerfile，可以看到是基于<code>fedora</code>的一个镜像，并且将目录下的<code>excited.tar</code>放进了创建好的<code>shawn</code>目录中<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> fedora</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir shawn</span></span><br><span class="line"><span class="bash">WORKDIR shawn</span></span><br><span class="line"><span class="bash">COPY excited.tar .</span></span><br></pre></td></tr></table></figure></p>
 <p>我们可以看到工作目录下已经存在了一个<code>excited.tar</code>了，也就意味着我们成功将这个文件搞进去了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">λ  ~/Workstadion/learn_docker  docker build . -t wtf ; docker rm learn_docker; docker run --name learn_docker -it wtf bash</span><br><span class="line">Sending build context to Docker daemon  23.04kB</span><br><span class="line">Step 1/4 : FROM fedora</span><br><span class="line"> ---&gt; e9ed59d2baf7</span><br><span class="line">Step 2/4 : RUN mkdir shawn</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 5014855b8533</span><br><span class="line">Step 3/4 : WORKDIR shawn</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 82f9d06a4d3c</span><br><span class="line">Step 4/4 : COPY excited.tar .</span><br><span class="line"> ---&gt; 1bc293d81b33</span><br><span class="line">Successfully built 1bc293d81b33</span><br><span class="line">Successfully tagged wtf:latest</span><br><span class="line">learn_docker</span><br><span class="line">[root@f6a4f34ed504 shawn]# ls -l</span><br><span class="line">total 20</span><br><span class="line">-rw-r--r-- 1 root root 20480 Sep 25 14:15 excited.tar</span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
-<p>如果同样的操作用<code>ADD</code>呢？看上去是类似的操作实际上并不是<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> fedora</span><br><span class="line"><span class="keyword">RUN</span> mkdir shawn</span><br><span class="line">WORKDIR shawn</span><br><span class="line">ADD excited.tar .</span><br></pre></td></tr></table></figure></p>
+<p>如果同样的操作用<code>ADD</code>呢？看上去是类似的操作实际上并不是<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> fedora</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir shawn</span></span><br><span class="line"><span class="bash">WORKDIR shawn</span></span><br><span class="line"><span class="bash">ADD excited.tar .</span></span><br></pre></td></tr></table></figure></p>
 <p>我们进到容器里可以看到打包文件被拆解了（压缩文件也会被解压）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">λ  ~/Workstadion/learn_docker  docker build . -t wtf ; docker rm learn_docker; docker run --name learn_docker -it wtf bash</span><br><span class="line">Sending build context to Docker daemon  23.04kB</span><br><span class="line">Step 1/4 : FROM fedora</span><br><span class="line"> ---&gt; e9ed59d2baf7</span><br><span class="line">Step 2/4 : RUN mkdir shawn</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 5014855b8533</span><br><span class="line">Step 3/4 : WORKDIR shawn</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 82f9d06a4d3c</span><br><span class="line">Step 4/4 : ADD excited.tar .</span><br><span class="line"> ---&gt; cc1d067d0dbe</span><br><span class="line">Successfully built cc1d067d0dbe</span><br><span class="line">Successfully tagged wtf:latest</span><br><span class="line">learn_docker</span><br><span class="line">[root@89276af7b0a2 shawn]# ls -l</span><br><span class="line">total 4</span><br><span class="line">drwxr-xr-x 2 1000 1000 4096 Sep 25 14:15 excited</span><br><span class="line">[root@89276af7b0a2 shawn]# cd excited/</span><br><span class="line">[root@89276af7b0a2 excited]# ls</span><br><span class="line">file_0  file_10  file_12  file_14  file_16  file_18  file_2  file_4  file_6  file_8</span><br><span class="line">file_1  file_11  file_13  file_15  file_17  file_19  file_3  file_5  file_7  file_9</span><br></pre></td></tr></table></figure></p>
 <p>其实不止这样，<code>ADD</code> 命令还能下载文件：<code>ADD https://too.young/too/simple.pdf /hello</code>就能将文件下载下来并且命名为<code>hello</code>；如果是<code>ADD https://too.young/too/simple.pdf /hello/</code>（只是最后多了斜杠），docker会认为你想将文件下载到<code>/hello</code>的目录下，如果没有他会自己创建；还有我们不是说<code>ADD</code>能下载文件还能解压文件吗，但是这两个又不能同时生效，意味着如果你想用<code>ADD https://too.young/too/simple.zip /sometimes/naive/</code>将下载好的<code>simple.zip</code>文件解压到<code>/sometimes/naive/</code>目录里是不行的，最后结果只是将压缩包下载到了那个目录而已。</p>
 <p>总结来说的话就是 <strong><code>COPY</code>简简单单复制，<code>ADD</code>灵活多变</strong>。但是其实我们最好就直接用<code>COPY</code>命令，真的需要解压什么的操作多写一个管道符也没有多麻烦。而且其他人看管道符后面接命令参数要比分析<code>ADD</code>命令来的舒服得多。</p>
@@ -515,7 +515,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">93</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -593,7 +593,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>

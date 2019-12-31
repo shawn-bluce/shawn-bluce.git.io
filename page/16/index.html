@@ -240,7 +240,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">92</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">93</span></a>
 
   </li>
       
@@ -312,6 +312,91 @@
           <div id="content" class="content">
             
   <div id="posts" class="posts-expand">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2016/09/14/python-oop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2016/09/14/python-oop/" class="post-title-link" itemprop="url">Python之面向对象</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2016-09-14 21:53:00" itemprop="dateCreated datePublished" datetime="2016-09-14T21:53:00+08:00">2016-09-14</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="0X00-创建一个类"><a href="#0X00-创建一个类" class="headerlink" title="0X00 创建一个类"></a>0X00 创建一个类</h1><p>Python也是一个和C++、Java一样的面向对象编程语言，所以Python里也有类和对象。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span>   <span class="comment">#这是一个类</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sayHello</span><span class="params">(self)</span>:</span>     <span class="comment">#这是一个方法</span></span><br><span class="line">        <span class="keyword">print</span> <span class="string">'hello,world'</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setName</span><span class="params">(self, inputName)</span>:</span></span><br><span class="line">        self.name = inputName</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getName</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.getName()</span><br></pre></td></tr></table></figure></p>
+<p>在类中创建的方法使用def关键字定义，每个方法有一个或以上的参数，selft就是实例化的对象自己。需要返回值就return一个，不需要就可以不写return</p>
+<blockquote>
+<p>Python的类和Java的类还是有点区别，Java的类里主要写的是属性和方法，Python里不写属性，因为Java的变量需要定义而Python的变量并不需要定义，最多也就是在前面个各个属性一个变量名并赋初值</p>
+</blockquote>
+<h1 id="0X01-实例化一个对象"><a href="#0X01-实例化一个对象" class="headerlink" title="0X01 实例化一个对象"></a>0X01 实例化一个对象</h1><p>类是一个很抽象的概念，可以由类实例化好多个对象出来。Java中我们习惯说成 new一个对象，而Python中并不需要new<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xiaoming = Person() <span class="comment">#实例化了一个类</span></span><br><span class="line">xiaoming.setName(<span class="string">'xiaoming'</span>)  <span class="comment">#调用一个方法</span></span><br><span class="line"><span class="keyword">print</span> xiaoming.getName()</span><br><span class="line">xiaoming.sayHello()</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>此段代码接着上面的类声明</p>
+</blockquote>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/2016/09/14/python-oop/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
         <article itemscope itemtype="http://schema.org/Article">
   
   
@@ -631,83 +716,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2016/07/17/java-md5-base64/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2016/07/17/java-md5-base64/" class="post-title-link" itemprop="url">Java使用MD5和BASE64</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2016-07-17 23:00:00" itemprop="dateCreated datePublished" datetime="2016-07-17T23:00:00+08:00">2016-07-17</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="0X00-简介"><a href="#0X00-简介" class="headerlink" title="0X00 简介"></a>0X00 简介</h1><p>最近经常要在代码中使用到BASE64编码和MD5，所以把笔记贴在这里方便自己查找。<br>在配置postfix邮件服务器的时候发现，收到的邮件正文都是使用BASE64编码过的，所以才了解了一下这种编码。<br>MD5不算加密算法，但是可以用作摘要计算。</p>
-          <!--noindex-->
-          
-            <div class="post-button">
-              <a class="btn" href="/2016/07/17/java-md5-base64/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -759,7 +767,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">93</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -837,7 +845,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
