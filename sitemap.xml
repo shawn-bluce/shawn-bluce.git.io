@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.just666.com/links/index.html</loc>
+    <loc>https://blog.just666.com/2020/04/19/terminal/</loc>
     
-    <lastmod>2020-04-17T10:32:24.191Z</lastmod>
+    <lastmod>2020-04-18T17:24:50.419Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2020/04/14/mysql-join/</loc>
+    <loc>https://blog.just666.com/links/index.html</loc>
     
-    <lastmod>2020-04-14T14:29:54.749Z</lastmod>
+    <lastmod>2020-04-17T10:32:24.191Z</lastmod>
     
   </url>
   
@@ -429,14 +429,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/11/21/java-class-interface/</loc>
+    <loc>https://blog.just666.com/2017/02/13/java-str/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/02/13/java-str/</loc>
+    <loc>https://blog.just666.com/2015/11/21/java-class-interface/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -464,21 +464,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2016/05/11/linux-ln/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/12/15/linux-mysql-chinese/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -492,7 +478,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/11/20/linux-mysql-dump/</loc>
+    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/12/15/linux-mysql-chinese/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -500,6 +493,13 @@
   
   <url>
     <loc>https://blog.just666.com/2016/06/12/linux-nfs/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/11/20/linux-mysql-dump/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -548,14 +548,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
+    <loc>https://blog.just666.com/2016/10/27/python-execption/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/10/27/python-execption/</loc>
+    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -569,14 +569,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/09/07/python-list-tumple/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2017/01/15/python-magic-1/</loc>
+    <loc>https://blog.just666.com/2017/01/21/python-magic-3/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -590,13 +583,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/01/21/python-magic-3/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2017/01/24/python-magic-4/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -604,7 +590,21 @@
   </url>
   
   <url>
+    <loc>https://blog.just666.com/2016/09/07/python-list-tumple/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.just666.com/2017/01/31/python-magic-5/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2017/01/15/python-magic-1/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -639,13 +639,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/09/14/python-oop/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2016/09/05/python-str/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -653,7 +646,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/12/12/python-threading/</loc>
+    <loc>https://blog.just666.com/2016/09/14/python-oop/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -661,6 +654,13 @@
   
   <url>
     <loc>https://blog.just666.com/2016/07/23/shadowsocks-build/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/12/12/python-threading/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
