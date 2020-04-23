@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.just666.com/2020/04/23/linux-permission/</loc>
+    
+    <lastmod>2020-04-23T15:26:44.642Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.just666.com/2020/04/19/terminal/</loc>
     
-    <lastmod>2020-04-18T17:24:50.419Z</lastmod>
+    <lastmod>2020-04-23T15:24:38.342Z</lastmod>
     
   </url>
   
@@ -380,14 +387,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/03/17/c-language-bool-type/</loc>
+    <loc>https://blog.just666.com/2015/10/19/c-push-box/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/10/19/c-push-box/</loc>
+    <loc>https://blog.just666.com/2015/03/17/c-language-bool-type/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -429,14 +436,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/02/13/java-str/</loc>
+    <loc>https://blog.just666.com/2015/11/21/java-class-interface/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/11/21/java-class-interface/</loc>
+    <loc>https://blog.just666.com/2017/02/13/java-str/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -471,14 +478,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/06/09/linux-dirtree/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
+    <loc>https://blog.just666.com/2016/11/20/linux-mysql-dump/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -499,7 +499,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/11/20/linux-mysql-dump/</loc>
+    <loc>https://blog.just666.com/2015/06/09/linux-dirtree/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -507,6 +507,13 @@
   
   <url>
     <loc>https://blog.just666.com/2016/10/28/linux-nmcli-ip/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -548,14 +555,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/10/27/python-execption/</loc>
+    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
+    <loc>https://blog.just666.com/2016/10/27/python-execption/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -569,7 +576,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/01/21/python-magic-3/</loc>
+    <loc>https://blog.just666.com/2016/09/07/python-list-tumple/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2017/01/15/python-magic-1/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -583,6 +597,13 @@
   </url>
   
   <url>
+    <loc>https://blog.just666.com/2017/01/21/python-magic-3/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.just666.com/2017/01/24/python-magic-4/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -590,21 +611,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/09/07/python-list-tumple/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2017/01/31/python-magic-5/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2017/01/15/python-magic-1/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -653,13 +660,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/07/23/shadowsocks-build/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2016/12/12/python-threading/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -667,7 +667,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/10/02/shell-programming/</loc>
+    <loc>https://blog.just666.com/2016/07/23/shadowsocks-build/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -675,6 +675,13 @@
   
   <url>
     <loc>https://blog.just666.com/2017/09/29/use-linux-better/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/10/02/shell-programming/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     

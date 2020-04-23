@@ -240,7 +240,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">94</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">95</span></a>
 
   </li>
       
@@ -314,6 +314,93 @@
           <div id="content" class="content">
             
   <div id="posts" class="posts-expand">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2019/11/02/better-linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/11/02/better-linux/" class="post-title-link" itemprop="url">在Linux桌面下活得舒服</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-02 22:13:25" itemprop="dateCreated datePublished" datetime="2019-11-02T22:13:25+08:00">2019-11-02</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>这篇博客的目标读者：正在使用Linux桌面，打算长期继续使用下去的同学（这也就意味着熟悉Linux下的基础操作，理解Linux下的常见概念）。</p>
+<p>这里有一个我之前写的“<a href="https://blog.just666.com/2019/10/29/use-linux/">在Linux桌面下存活</a>”可以参考一下。</p>
+<h1 id="0X01-颜值就是战斗力"><a href="#0X01-颜值就是战斗力" class="headerlink" title="0X01 颜值就是战斗力"></a>0X01 颜值就是战斗力</h1><p><strong>Linux也不都是黑色背景白色字的命令行。</strong></p>
+<p>首先要换的就是一套主题和图标，不论是KDE、Gnome还是Xfce都可以在对应的网站找到大量的主题，简单换过图标和主题之后再配合一张好看的壁纸，整个观感立马就好了不少。</p>
+<blockquote>
+<p>KDE: <span class="exturl" data-url="aHR0cHM6Ly9zdG9yZS5rZGUub3JnLw==" title="https://store.kde.org/">https://store.kde.org/<i class="fa fa-external-link"></i></span><br>Gnome: <span class="exturl" data-url="aHR0cHM6Ly93d3cuZ25vbWUtbG9vay5vcmcv" title="https://www.gnome-look.org/">https://www.gnome-look.org/<i class="fa fa-external-link"></i></span><br>Xfce: <span class="exturl" data-url="aHR0cHM6Ly93d3cueGZjZS1sb29rLm9yZy8=" title="https://www.xfce-look.org/">https://www.xfce-look.org/<i class="fa fa-external-link"></i></span></p>
+</blockquote>
+<p>然后要换的就是字体了，<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3poLWhhbnMvJUU3JUFEJTg5JUU1JUFFJUJEJUU1JUFEJTk3JUU0JUJEJTkz" title="https://zh.wikipedia.org/zh-hans/%E7%AD%89%E5%AE%BD%E5%AD%97%E4%BD%93">等宽字体<i class="fa fa-external-link"></i></span>我推荐这几个<span class="exturl" data-url="aHR0cHM6Ly9zb3VyY2Vmb3VuZHJ5Lm9yZy9oYWNrLw==" title="https://sourcefoundry.org/hack/">Hack<i class="fa fa-external-link"></i></span>、<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2Fkb2JlLWZvbnRzL3NvdXJjZS1jb2RlLXBybw==" title="https://github.com/adobe-fonts/source-code-pro">Source Code Pro<i class="fa fa-external-link"></i></span>、<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21pY3Jvc29mdC9jYXNjYWRpYS1jb2Rl" title="https://github.com/microsoft/cascadia-code">Cascadia Code<i class="fa fa-external-link"></i></span>都很好看，适合在终端、IDE和编辑器里使用。</p>
+<p>最后就是zsh主题，如果使用的是zsh的话推荐使用<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvbWthdHYvcG93ZXJsZXZlbDEwaw==" title="https://github.com/romkatv/powerlevel10k">powerlevel10k<i class="fa fa-external-link"></i></span>这个主题，是由<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1Bvd2VybGV2ZWw5ay9wb3dlcmxldmVsOWs=" title="https://github.com/Powerlevel9k/powerlevel9k">powerlevel9k<i class="fa fa-external-link"></i></span>发展而来的，但是速度比<code>powerlevel9k</code>快好多。</p>
+<h1 id="0X02-善用alias和bash函数"><a href="#0X02-善用alias和bash函数" class="headerlink" title="0X02 善用alias和bash函数"></a>0X02 善用alias和bash函数</h1><p>相信大家在初学Linux的时候都学过<code>alias</code>指令，没学过的话我简单介绍一句：“alias是给命令取别名的工具，例如执行<code>alias new_ls=&quot;ls -l&quot;</code>过后再使用<code>new_ls</code>命令就和使用<code>ls -l</code>一样了”。</p>
+<p>首先我们知道将<code>alias</code>命令直接写在shell里，在关闭重开shell之后就失效了（起码现在知道了）。所以我们要把<code>alias</code>写在<code>.bashrc</code>或者<code>.zshrc</code>中（依你使用的shell而定）。现在我的<code>.zshrc</code>中就有很多已经写好了的，下面给大家分项几个对大家都有用的</p>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/2019/11/02/better-linux/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
         <article itemscope itemtype="http://schema.org/Article">
   
   
@@ -645,86 +732,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2019/09/15/database-index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/09/15/database-index/" class="post-title-link" itemprop="url">关系型数据库索引初步使用（搞不好性能提升百倍呦）</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-15 17:00:18" itemprop="dateCreated datePublished" datetime="2019-09-15T17:00:18+08:00">2019-09-15</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>不论多初级的后端程序员，只要认可自己是“后端程序员”那最起码也是听过“数据库索引”这个东西的，应该也直到这东西能让数据库变快。但是具体“数据库索引”是个什么东西，怎么用，为什么能让数据库变快可能就不一定清楚了。</p>
-<p>这篇博客仅仅是简述了“数据库索引”的最基础内容，不涉及内部原理（其实我也还没搞懂）。阅读了本篇博客可以（也许）搞清楚怎么给一张表添加索引，索引加在哪儿，以及为什么不能给所有字段加索引。</p>
-<h1 id="0X01-一个业务场景"><a href="#0X01-一个业务场景" class="headerlink" title="0X01 一个业务场景"></a>0X01 一个业务场景</h1><p>假设我们搞了一个电商平台“并夕夕”，现在有超多用户大概几百万，很多人都在我们系统里买了东西，大概下了1000W单。那么我们用来存储订单的表就有大概1000W条数据了，那么我们这个没有进行过任何优化的数据库就已经顶不住了，我们每次在后台查看订单列表的时候一个查询就要快20s，显然是一个接受不了的速度了。</p>
-<p>那么我们来看一下这个列表都干了什么：“根据 订单状态（下单待支付/已支付/配送中/已收货/退货中/已完成），订单类型（直接购买/拼单购买/分享白拿）等状态筛选，并取出前20条展示出来”。后台SQL是这个样子的<code>SELECT * FROM bxx_order WHERE order_status = xxx AND order_type = xxx ORDER BY -id LIMIT 20</code>，我们可以看到真正会影响性能的主要就在<code>WHERE</code>子句里的查询条件。接下来我们给这两个字段分别加上索引，查询效率就会高非常非常多。</p>
-          <!--noindex-->
-          
-            <div class="post-button">
-              <a class="btn" href="/2019/09/15/database-index/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -778,7 +785,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-count">95</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

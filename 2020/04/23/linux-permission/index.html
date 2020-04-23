@@ -57,21 +57,28 @@
   };
 </script>
 
-  <meta name="description" content="0X00 HDFS的设计HDFS作为GFS的开源实现，和GFS是高度一致的。在HDFS中有着下面的优点  对超大文件支持良好，由于其分布式实现，可以存储超大文件，甚至单个文件大小可以超过集群中任意一台机器的磁盘大小 采用流式数据访问，一次写入、多次读取是最高效的访问模式。因为Hadoop作为一个大数据处理平台，并没有频繁的写入操作，只是在需要的时候一次将大量的数据写入然后在对这些数据进行读操作 H">
-<meta name="keywords" content="File System,HDFS,Big Data,Hadoop">
+  <meta name="description" content="0X00 前言 Linux诡异的权限是怎么回事呢？Linux相信大家都很熟悉， 但是诡异的权限是怎么回事呢？下面就让小编带大家一起了解吧。 Linux诡异的权限，其实就是诡异的权限了。那么Linux为什么会诡异的权限，相信大家都很好奇是怎么回事。大家可能会感到很惊讶，Linux怎么会诡异的权限呢？但事实就是这样，小编也感到非常惊讶。 那么这就是关于Linux诡异的权限的事情了，大家有没有觉得很神奇">
+<meta name="keywords" content="Linux,ACL,Permission">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅析HDFS">
-<meta property="og:url" content="https://blog.just666.com/2017/03/06/hdfs-simple/index.html">
+<meta property="og:title" content="Linux中诡异的权限（奇怪的权限增加了）">
+<meta property="og:url" content="https://blog.just666.com/2020/04/23/linux-permission/index.html">
 <meta property="og:site_name" content="Shawn&#39;s Blog">
-<meta property="og:description" content="0X00 HDFS的设计HDFS作为GFS的开源实现，和GFS是高度一致的。在HDFS中有着下面的优点  对超大文件支持良好，由于其分布式实现，可以存储超大文件，甚至单个文件大小可以超过集群中任意一台机器的磁盘大小 采用流式数据访问，一次写入、多次读取是最高效的访问模式。因为Hadoop作为一个大数据处理平台，并没有频繁的写入操作，只是在需要的时候一次将大量的数据写入然后在对这些数据进行读操作 H">
+<meta property="og:description" content="0X00 前言 Linux诡异的权限是怎么回事呢？Linux相信大家都很熟悉， 但是诡异的权限是怎么回事呢？下面就让小编带大家一起了解吧。 Linux诡异的权限，其实就是诡异的权限了。那么Linux为什么会诡异的权限，相信大家都很好奇是怎么回事。大家可能会感到很惊讶，Linux怎么会诡异的权限呢？但事实就是这样，小编也感到非常惊讶。 那么这就是关于Linux诡异的权限的事情了，大家有没有觉得很神奇">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://blog.just666.cn/usr/uploads/hdfs_arch.png">
-<meta property="og:updated_time" content="2018-08-21T07:34:22.000Z">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43ddofakj315g0iu16s.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43jtgw7xj30py06yq73.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43gladatj30v605agt8.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43o1s5o6j30za08c7fp.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43oxve6sj30yq0cy4ai.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43pp3dfuj310i0pm1kx.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43qbpmjij30zw08cn6h.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43t8b5fvj32hc0quu0x.jpg">
+<meta property="og:updated_time" content="2020-04-23T15:26:44.642Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="浅析HDFS">
-<meta name="twitter:description" content="0X00 HDFS的设计HDFS作为GFS的开源实现，和GFS是高度一致的。在HDFS中有着下面的优点  对超大文件支持良好，由于其分布式实现，可以存储超大文件，甚至单个文件大小可以超过集群中任意一台机器的磁盘大小 采用流式数据访问，一次写入、多次读取是最高效的访问模式。因为Hadoop作为一个大数据处理平台，并没有频繁的写入操作，只是在需要的时候一次将大量的数据写入然后在对这些数据进行读操作 H">
-<meta name="twitter:image" content="https://blog.just666.cn/usr/uploads/hdfs_arch.png">
-  <link rel="canonical" href="https://blog.just666.com/2017/03/06/hdfs-simple/">
+<meta name="twitter:title" content="Linux中诡异的权限（奇怪的权限增加了）">
+<meta name="twitter:description" content="0X00 前言 Linux诡异的权限是怎么回事呢？Linux相信大家都很熟悉， 但是诡异的权限是怎么回事呢？下面就让小编带大家一起了解吧。 Linux诡异的权限，其实就是诡异的权限了。那么Linux为什么会诡异的权限，相信大家都很好奇是怎么回事。大家可能会感到很惊讶，Linux怎么会诡异的权限呢？但事实就是这样，小编也感到非常惊讶。 那么这就是关于Linux诡异的权限的事情了，大家有没有觉得很神奇">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43ddofakj315g0iu16s.jpg">
+  <link rel="canonical" href="https://blog.just666.com/2020/04/23/linux-permission/">
 
 
 <script id="page-configurations">
@@ -85,7 +92,7 @@
   };
 </script>
 
-  <title>浅析HDFS | Shawn's Blog</title>
+  <title>Linux中诡异的权限（奇怪的权限增加了） | Shawn's Blog</title>
   
   <script async src="https://www.googletagmanager.com/gtag/js?id=16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w"></script>
   <script pjax>
@@ -324,7 +331,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2017/03/06/hdfs-simple/">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/04/23/linux-permission/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Shawn">
@@ -336,7 +343,7 @@
       <meta itemprop="name" content="Shawn's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">浅析HDFS
+        <h2 class="post-title" itemprop="name headline">Linux中诡异的权限（奇怪的权限增加了）
 
           
         </h2>
@@ -352,7 +359,7 @@
                 
               
 
-              <time title="创建时间：2017-03-06 20:18:00" itemprop="dateCreated datePublished" datetime="2017-03-06T20:18:00+08:00">2017-03-06</time>
+              <time title="创建时间：2020-04-23 23:26:05" itemprop="dateCreated datePublished" datetime="2020-04-23T23:26:05+08:00">2020-04-23</time>
             </span>
           
 
@@ -367,33 +374,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="0X00-HDFS的设计"><a href="#0X00-HDFS的设计" class="headerlink" title="0X00 HDFS的设计"></a>0X00 HDFS的设计</h1><p>HDFS作为GFS的开源实现，和GFS是高度一致的。在HDFS中有着下面的优点</p>
-<ol>
-<li>对超大文件支持良好，由于其分布式实现，可以存储超大文件，甚至单个文件大小可以超过集群中任意一台机器的磁盘大小</li>
-<li>采用流式数据访问，一次写入、多次读取是最高效的访问模式。因为Hadoop作为一个大数据处理平台，并没有频繁的写入操作，只是在需要的时候一次将大量的数据写入然后在对这些数据进行读操作</li>
-<li>Hadoop并不需要运行在昂贵且高可靠的硬件之上，单个节点可能性能可靠性都参差不齐，但是由于其高可靠性的设计，使之能在遇到节点故障时继续运行且不让用户察觉到明显的终端</li>
-</ol>
-<p>但是HDFS也不是适用于各种场景，一下的几种场景就不适</p>
-<ol>
-<li>低时间延迟的数据访问，因为HDFS是以时间延迟为代价针对高数据吞吐量优化的，所以HDFS不适用与低延迟的数据访问</li>
-<li>大量的小文件，因为Namenode的设计是将文件系统的元数据存储在内存中的，所以理论上HDFS中的文件最大数量受限于Namenode的内存容量，因此大量的小文件会占用Namenode大量的内存</li>
-<li>HDFS目前不支持有多个写入者的操作，也不支持修改文件系统中的文件</li>
-</ol>
+        <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><blockquote>
+<p>Linux诡异的权限是怎么回事呢？Linux相信大家都很熟悉， 但是诡异的权限是怎么回事呢？下面就让小编带大家一起了解吧。</p>
+<p>Linux诡异的权限，其实就是诡异的权限了。那么Linux为什么会诡异的权限，相信大家都很好奇是怎么回事。大家可能会感到很惊讶，Linux怎么会诡异的权限呢？但事实就是这样，小编也感到非常惊讶。 那么这就是关于Linux诡异的权限的事情了，大家有没有觉得很神奇呢？</p>
+<p>看了今天的内容，大家有什么想法呢？欢迎在评论区告诉小编一起讨论哦。</p>
+</blockquote>
+<p>说正事说正事儿。说起Linux权限大家肯定：”这我知道啊，不就是rwx吗，r是读、w是写、x是执行。就这？”当然不只是这个，不过我们还是要从最基础的开始说起来。</p>
 <a id="more"></a>
-<h1 id="0X01-数据块的设计"><a href="#0X01-数据块的设计" class="headerlink" title="0X01 数据块的设计"></a>0X01 数据块的设计</h1><p>我们知道在传统的文件系统中就是分块的，寻址开销与分块的大小成负相关，磁盘利用率与分块大小成负相关。且HDFS的设计就是用来处理大文件的，所以将块设计的很大，默认为64MB且好多时候采用的是128MB的设置。</p>
-<p>在HDFS中的块设计和传统文件系统有些不同，在传统文件系统中假设一个块为4kb，如果一个文件只有1kb则仍然会占用4kb的空间，但是在HDFS中一个小于块大小的文件并不会占据整个块的空间。</p>
-<p><img src="https://blog.just666.cn/usr/uploads/hdfs_arch.png" alt="HDFS架构"></p>
-<h1 id="0X02-Namenode和Datanode"><a href="#0X02-Namenode和Datanode" class="headerlink" title="0X02 Namenode和Datanode"></a>0X02 Namenode和Datanode</h1><p>HDFS中有两种节点，Namenode和Datanode。</p>
-<p>其中Namenode管理文件系统的命名空间，他维护着文件系统树和整棵树内所有的文件和目录。</p>
-<p>其中的Datanode负责存储并检索数据块，且定期向Namenode发送存储的块的列表。</p>
-<h1 id="0X03-Namenode容错机制"><a href="#0X03-Namenode容错机制" class="headerlink" title="0X03 Namenode容错机制"></a>0X03 Namenode容错机制</h1><p>Namenode有两种常用的容错机制，第一种是实时将自己的操作和文件同步到NFS上，且是原子操作所以NFS上会有和Namenode完全相同的文件。另一种方式是运行一个辅助的Namenode，定期通过编辑日志合并命名空间镜像。</p>
-<h1 id="0X04-联邦HDFS"><a href="#0X04-联邦HDFS" class="headerlink" title="0X04 联邦HDFS"></a>0X04 联邦HDFS</h1><p>毕竟HDFS是为处理海量数据诞生的，所以避免不了海量的集群来搭建HDFS，但是前面也说过因为设计的问题导致一个拥有大量文件的集群会对Namenode的内存造成严峻的考验，这时候可以使用联邦HDFS来解决。在联邦环境下可以配置多个Namenode，每个Namenode负责维护一个命名空间卷。也就相当于每个Namenode负责一个目录树中的子目录，这样就可以保证在HDFS中有大量文件的时候也不会对Namenode造成太大的威胁。</p>
-<h1 id="0X05-高可用性"><a href="#0X05-高可用性" class="headerlink" title="0X05 高可用性"></a>0X05 高可用性</h1><p>虽然Namenode有了备份但是还是存在Namenode的单点问题，也就是说当Namenode出现故障之后依旧会对HDFS整个文件系统造成影响，虽然有备份但是还是要等到有下一台Namenode节点上线之后才会运行，所以当时运行的MapReduce等程序依然会终止。针对这种问题Hadoop在2.x中做出了适当的处理。可以配置一对活动-备用的Namenode用于做热备份。</p>
+<h1 id="0X01-基础权限部分"><a href="#0X01-基础权限部分" class="headerlink" title="0X01 基础权限部分"></a>0X01 基础权限部分</h1><p>首先最基础的权限就是 <code>rwx</code> 这种，三组权限针对:所 属用户、所属用户的组、其他用户，每组3位(对应 二进制位)。正因为对应二进制位所以<code>rwx</code>就是三个 二进制位均为1的7;<code>r-x</code>就是对应的101也就是5;<code>r-</code> 就是100也就是4</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43ddofakj315g0iu16s.jpg" alt="Linux基础权限"></p>
+<p>最基础的rwx权限就不多说了，说一个不是所有人都 知道的，看下面这张截图:这个叫做linux.pdf的文 件，这个文件的权限是777，但是当我们试图删除它的时候，发现完全不能行，那是为什么呢？我们很自然的认为对一个文件有rwx的权限就是有所有权限了，其实这么理解问题不大。但是考虑一个问题，删除一个 目录里的文件，实际上是不是在对这个目录进行w操 作呢?<br><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43jtgw7xj30py06yq73.jpg" alt></p>
+<p>返回来再看这个目录的权限就明白了。是的，基于Linux中”万物皆文件”的思路，可以知道目录其实也是文件，所以删除目录里的文件就是在修改这个目录，进而得到结论：删除文件是需要拥有对文件所在目录的w权限才行的。<br><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43gladatj30v605agt8.jpg" alt></p>
+<h1 id="0X02-ACL"><a href="#0X02-ACL" class="headerlink" title="0X02 ACL"></a>0X02 ACL</h1><p>现在再来看另一个问题:我们看这个叫<code>macOS.txt</code>的文件，又是一个777权限的文件。按照上面提到的内容，我们就算不能删了它起码也能给它写成空文件是吧，因为毕竟有w权限。但是你真的有这个文件的w权 限吗?当你尝试给这个文件写入内容的时候直接就报错了，完全没有权限。是的，也许机智的你注意到了，问题就出现在 <code>-rwxrwxrwx+</code> 中最后的<code>+</code>那里。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43o1s5o6j30za08c7fp.jpg" alt></p>
+<p>实际上是因为Linux上还有一个叫做ACL的机制。系统用户肯定不能单纯通过用户和组来完成的，正是通过 ACL的这个机制可以在传统的rwx权限的基础上进行扩 展。可以使用ACL在rwx之外给单独一个/多个用户/组 指定权限。比如下面这种用法:<code>setfacl -m u:shawn:--- macOS.txt</code>拆分开看这个命令，第一个参数 -m指 的是(modify)，后面的<code>u:shawn:---</code>就是说 <code>用户: shawn:三无权限</code> 。再使用getfacl看一下文件具体权限，可以看到，所属人和组都是root，用户、组和其 他人的权限都是777，但是只有一个<code>user:shawn:---</code>，这个就意味着只有这个用户是没有权限的。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43oxve6sj30yq0cy4ai.jpg" alt></p>
+<h1 id="0X03-隐藏属性"><a href="#0X03-隐藏属性" class="headerlink" title="0X03 隐藏属性"></a>0X03 隐藏属性</h1><p>我们来看一下这个DELETE_ME的文件，我们仍然还是有777的权限，也没有通过ACL限制单个用户的权限，而且当前目录我也有w权限。那我们来尝试删除或者重写一下内容好了，发现还是还是还是还是没有权限。。。。那这回又是为什么呢？</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43pp3dfuj310i0pm1kx.jpg" alt></p>
+<p>是的，又是一个奇怪的东⻄:<code>attr</code>我们可以使用<code>lsattr filename</code>来查看当前文件的隐藏属性，有很多，这里可以看到的是i和e。其中e是系统底层的自带的， 有兴趣的话可以自己查阅一下资料。刚刚文件删不掉 改不了是因为这个i。这个i的功能就是: <strong>immutable 不可改变的</strong> 。所以我们不能删除，也不能修改内容。 使用<code>chattr -I filename</code>就可以将这个标记删除了，然 后这个文件也就可以改动了。如果需要增加这个标记 的话是<code>chattr +I filename</code>也就是说用加减号来控制隐 藏的标记。也可以使用等号<code>chattr =I filename</code>的方式来直接重写所有的标记。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43qbpmjij30zw08cn6h.jpg" alt></p>
+<p>关于这个attr的所有参数内容<span class="exturl" data-url="aHR0cHM6Ly9saW51eC5kaWUubmV0L21hbi8xL2NoYXR0cg==" title="https://linux.die.net/man/1/chattr">都在这里<i class="fa fa-external-link"></i></span></p>
+<h1 id="0X04-奇怪的权限知识增加了"><a href="#0X04-奇怪的权限知识增加了" class="headerlink" title="0X04 奇怪的权限知识增加了"></a>0X04 奇怪的权限知识增加了</h1><p>到此为止这些隐藏在最基础的rwx权限之外的奇怪的权限（并不全，其实还有其他的）就说完了，希望大家能有所收获～</p>
+<p>备注1:有些Linux发行版本没有默认附带这个，我展 示是用的Fedora所以要通过dnf装一下这个功能。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ge43t8b5fvj32hc0quu0x.jpg" alt></p>
+<p>备注2:除了rwx的基础权限部分以外，ACL和attr两 部分内容是仅适用于Linux发行版本的，macOS并不 适用，如果需要学习或者测试的话要搞一台Linux才 行。</p>
+<p>备注3:ACL和attr的相关资料:</p>
 <ol>
-<li>Namenode之间可以共享编辑日志，且使用高可用的方式实现共享存储</li>
-<li>Datanode需要同时向两个Namenode发送数据块处理报告，因为要保持两个Namenode完全相同</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9tYW4ubGludXhkZS5uZXQvc2V0ZmFjbA==" title="https://man.linuxde.net/setfacl">https://man.linuxde.net/setfacl<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9tYW4ubGludXhkZS5uZXQvbHNhdHRy" title="https://man.linuxde.net/lsattr">https://man.linuxde.net/lsattr<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9tYW4ubGludXhkZS5uZXQvY2hhdHRy" title="https://man.linuxde.net/chattr">https://man.linuxde.net/chattr<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9saW51eC5kaWUubmV0L21hbi8xL2NoYXR0cg==" title="https://linux.die.net/man/1/chattr">https://linux.die.net/man/1/chattr<i class="fa fa-external-link"></i></span></li>
 </ol>
-<p>在这样的配置之下当活动的Namenode故障以后备用的Namenode可以在几十秒内实现任务接管。且在备用的Namenode也失效的情况下还可以通过配置来指定另一台备用Namenode用于做冷启动。</p>
 
     </div>
 
@@ -433,7 +444,7 @@
     <strong>本文作者： </strong>Shawn</li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.just666.com/2017/03/06/hdfs-simple/" title="浅析HDFS">https://blog.just666.com/2017/03/06/hdfs-simple/</a>
+    <a href="https://blog.just666.com/2020/04/23/linux-permission/" title="Linux中诡异的权限（奇怪的权限增加了）">https://blog.just666.com/2020/04/23/linux-permission/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li>
@@ -448,13 +459,11 @@
           
           <div class="post-tags">
             
-              <a href="/tags/File-System/" rel="tag"><i class="fa fa-tag"></i> File System</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
             
-              <a href="/tags/HDFS/" rel="tag"><i class="fa fa-tag"></i> HDFS</a>
+              <a href="/tags/ACL/" rel="tag"><i class="fa fa-tag"></i> ACL</a>
             
-              <a href="/tags/Big-Data/" rel="tag"><i class="fa fa-tag"></i> Big Data</a>
-            
-              <a href="/tags/Hadoop/" rel="tag"><i class="fa fa-tag"></i> Hadoop</a>
+              <a href="/tags/Permission/" rel="tag"><i class="fa fa-tag"></i> Permission</a>
             
           </div>
         
@@ -464,8 +473,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2017/02/13/java-str/" rel="next" title="Java中的字符串">
-                  <i class="fa fa-chevron-left"></i> Java中的字符串
+                <a href="/2020/04/19/terminal/" rel="next" title="如何让自己的Linux/macOS终端更好用">
+                  <i class="fa fa-chevron-left"></i> 如何让自己的Linux/macOS终端更好用
                 </a>
               
             </div>
@@ -473,10 +482,6 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2017/04/01/python-os-lib/" rel="prev" title="Python中OS库的常用方法">
-                  Python中OS库的常用方法 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -525,7 +530,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-HDFS的设计"><span class="nav-text">0X00 HDFS的设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-数据块的设计"><span class="nav-text">0X01 数据块的设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-Namenode和Datanode"><span class="nav-text">0X02 Namenode和Datanode</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-Namenode容错机制"><span class="nav-text">0X03 Namenode容错机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-联邦HDFS"><span class="nav-text">0X04 联邦HDFS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-高可用性"><span class="nav-text">0X05 高可用性</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-前言"><span class="nav-text">0X00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-基础权限部分"><span class="nav-text">0X01 基础权限部分</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-ACL"><span class="nav-text">0X02 ACL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-隐藏属性"><span class="nav-text">0X03 隐藏属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-奇怪的权限知识增加了"><span class="nav-text">0X04 奇怪的权限知识增加了</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->

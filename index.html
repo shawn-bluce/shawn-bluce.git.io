@@ -240,7 +240,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">94</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">95</span></a>
 
   </li>
       
@@ -319,6 +319,88 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/04/23/linux-permission/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2020/04/23/linux-permission/" class="post-title-link" itemprop="url">Linux中诡异的权限（奇怪的权限增加了）</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-23 23:26:05" itemprop="dateCreated datePublished" datetime="2020-04-23T23:26:05+08:00">2020-04-23</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><blockquote>
+<p>Linux诡异的权限是怎么回事呢？Linux相信大家都很熟悉， 但是诡异的权限是怎么回事呢？下面就让小编带大家一起了解吧。</p>
+<p>Linux诡异的权限，其实就是诡异的权限了。那么Linux为什么会诡异的权限，相信大家都很好奇是怎么回事。大家可能会感到很惊讶，Linux怎么会诡异的权限呢？但事实就是这样，小编也感到非常惊讶。 那么这就是关于Linux诡异的权限的事情了，大家有没有觉得很神奇呢？</p>
+<p>看了今天的内容，大家有什么想法呢？欢迎在评论区告诉小编一起讨论哦。</p>
+</blockquote>
+<p>说正事说正事儿。说起Linux权限大家肯定：”这我知道啊，不就是rwx吗，r是读、w是写、x是执行。就这？”当然不只是这个，不过我们还是要从最基础的开始说起来。</p>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/2020/04/23/linux-permission/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/04/19/terminal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -363,8 +445,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="0X00-视频在这里-下面是配置文件"><a href="#0X00-视频在这里-下面是配置文件" class="headerlink" title="0X00 视频在这里 下面是配置文件"></a>0X00 <span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMUpBNDExYjdkcC8=" title="https://www.bilibili.com/video/BV1JA411b7dp/">视频在这里<i class="fa fa-external-link"></i></span> 下面是配置文件</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># system env</span></span><br><span class="line"><span class="built_in">export</span> ZSH=<span class="string">"/Users/shawn/.oh-my-zsh"</span></span><br><span class="line"><span class="built_in">export</span> LANGUAGE=en_US</span><br><span class="line"><span class="built_in">export</span> LANG=en_US.UTF-8</span><br><span class="line"><span class="comment"># ZSH_THEME="agnoster"</span></span><br><span class="line">ZSH_THEME=<span class="string">"powerlevel10k/powerlevel10k"</span></span><br><span class="line">EDITOR=/usr/bin/vim</span><br><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$HOME</span>/Library/Python/3.7/bin</span><br><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$HOME</span>/Library/Python/2.7/bin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HIST_STAMPS=<span class="string">"yyyy-mm-dd"</span></span><br><span class="line">HISTFILESIZE=100000</span><br><span class="line">HISTFILE=~/.zsh_history</span><br><span class="line"></span><br><span class="line"><span class="comment"># zsh plugin</span></span><br><span class="line">plugins=(</span><br><span class="line">    z</span><br><span class="line">    git</span><br><span class="line">    docker</span><br><span class="line">    fabric</span><br><span class="line">    extract</span><br><span class="line">    thefuck</span><br><span class="line">    fzf-zsh</span><br><span class="line">    git-open</span><br><span class="line">    colored-man-pages</span><br><span class="line">    zsh-autosuggestions</span><br><span class="line">    zsh-syntax-highlighting</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># alias for simple command</span></span><br><span class="line"><span class="built_in">alias</span> py2=<span class="string">'/Users/shawn/Library/Python/2.7/bin/ipython2'</span></span><br><span class="line"><span class="built_in">alias</span> py=<span class="string">'/Users/shawn/Library/Python/3.7/bin/ipython3'</span></span><br><span class="line"><span class="built_in">alias</span> cat=<span class="string">'/usr/local/bin/bat'</span></span><br><span class="line"><span class="built_in">alias</span> down=<span class="string">'aria2c -x16 -j4'</span></span><br><span class="line"><span class="built_in">alias</span> me=<span class="string">"cd <span class="variable">$HOME</span>/Workstadion/ &amp;&amp; ls"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># alias to source command</span></span><br><span class="line"><span class="built_in">alias</span> _cat=<span class="string">'/bin/cat'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ctrl + n autosuggest</span></span><br><span class="line"><span class="built_in">bindkey</span> <span class="string">'^n'</span> autosuggest-accept</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> <span class="variable">$ZSH</span>/oh-my-zsh.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># docker</span></span><br><span class="line"><span class="function"><span class="title">attach</span></span>() &#123;</span><br><span class="line">  docker <span class="built_in">exec</span> -it `docker ps | grep $* | awk -F <span class="string">' '</span> <span class="string">'&#123;print $1&#125;'</span>` bash</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">attach_django</span></span>() &#123;</span><br><span class="line">  docker <span class="built_in">exec</span> -it `docker ps | grep $* | awk -F <span class="string">' '</span> <span class="string">'&#123;print $1&#125;'</span>` python manage.py shell</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">git_set_proxy</span></span>() &#123;</span><br><span class="line">  git config --global http.proxy <span class="string">'socks5://127.0.0.1:1080'</span></span><br><span class="line">  git config --global https.proxy <span class="string">'socks5://127.0.0.1:1080'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">git_unset_proxy</span></span>() &#123;</span><br><span class="line">  git config --global --<span class="built_in">unset</span> http.proxy</span><br><span class="line">  git config --global --<span class="built_in">unset</span> https.proxy</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">json</span></span>() &#123;</span><br><span class="line">    <span class="comment"># echo `xclip -o` | jq   # Linux</span></span><br><span class="line">    <span class="built_in">echo</span> `pbpaste` | jq    <span class="comment"># macOS</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.</span></span><br><span class="line">[[ ! -f ~/.p10k.zsh ]] || <span class="built_in">source</span> ~/.p10k.zsh</span><br></pre></td></tr></table></figure>
-
+          <h1 id="0X00-视频在这里-下面是配置文件"><a href="#0X00-视频在这里-下面是配置文件" class="headerlink" title="0X00 视频在这里 下面是配置文件"></a>0X00 <span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMUpBNDExYjdkcC8=" title="https://www.bilibili.com/video/BV1JA411b7dp/">视频在这里<i class="fa fa-external-link"></i></span> 下面是配置文件</h1><p>这篇博客要配合<span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMUpBNDExYjdkcC8=" title="https://www.bilibili.com/video/BV1JA411b7dp/">发在bilibili的视频<i class="fa fa-external-link"></i></span>来看，这个文件是在<code>~/.zshrc</code>的。大家有问题直接在视频下面留言或者直接给我私信好了～</p>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/2020/04/19/terminal/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
@@ -641,86 +731,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2019/11/19/python-oop-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/11/19/python-oop-2/" class="post-title-link" itemprop="url">Python之面向对象 2</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-11-19 22:31:48" itemprop="dateCreated datePublished" datetime="2019-11-19T22:31:48+08:00">2019-11-19</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="0X00-Python3的super"><a href="#0X00-Python3的super" class="headerlink" title="0X00 Python3的super"></a>0X00 Python3的super</h1><p>Python中对象的概念都快被大家淡忘了，因为一切都是对象（话虽然这么说，但是怎么可能淡忘对象呢）。看下面一段Python2的代码，Python2中麻烦的就是这个<code>super()</code>的用法。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Human</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.name = <span class="string">'human'</span></span><br><span class="line">        <span class="keyword">print</span> <span class="string">'hello, i im'</span>, self.name</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(Human)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(Student, self).__init__()</span><br><span class="line">        self.name = <span class="string">'student'</span></span><br><span class="line">        <span class="keyword">print</span> <span class="string">'hello, i im'</span>, self.name</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = Student()</span><br></pre></td></tr></table></figure></p>
-<p>在初学Python的时候，如果是Python2很大可能会在<code>super(Student, self).__init__()</code>这段迷惑好一阵子，不过好在<span class="exturl" data-url="aHR0cHM6Ly9weXRob25jbG9jay5vcmcv" title="https://pythonclock.org/">Python2马上就要凉透了<i class="fa fa-external-link"></i></span>，在Python3中可以将代码改写成如下方式</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Human</span>:</span>    <span class="comment"># 不用强行继承自object了</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.name = <span class="string">'human'</span></span><br><span class="line">        print(<span class="string">'hello, i im'</span>, self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(Human)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__()  <span class="comment"># super的用法也更明了</span></span><br><span class="line">        self.name = <span class="string">'student'</span></span><br><span class="line">        print(<span class="string">'hello, i im'</span>, self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = Student()</span><br></pre></td></tr></table></figure>
-<p>其中<code>super</code>的用法由<code>super(Student, self).__init__()</code>改成了<code>super().__init__()</code>，看起来清晰多了，在使用Python3后不建议以任何理由使用老式Python中的<code>super</code>调用。</p>
-          <!--noindex-->
-          
-            <div class="post-button">
-              <a class="btn" href="/2019/11/19/python-oop-2/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -774,7 +784,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-count">95</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
