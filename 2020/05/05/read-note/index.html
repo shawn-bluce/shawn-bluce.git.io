@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png?v=7.4.1">
+  <link rel="mask-icon" href="/favicon.png?v=7.4.1" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: true,
+    sidebar: {"position":"left","width":300,"display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: true,
+    lazyload: false,
+    pangu: true,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":"auto","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="0X00 为什么要记读书笔记本来我也是一个从来不记读书笔记的人，总觉得张无忌师傅的那个”都忘了吗？忘了就去吧”的神奇教诲很有道理，我也是一直都是看书看多少算多少，记住的就记住了，忘了也就忘了。即使这次开始记笔记也不是因为我要把看过的内容都记住，这完全不可能。 那到底是什么原因让我开始记读书笔记了呢？”走神”。没错，就是走神。我看书的时候，尤其是自己没有那么大兴趣的书，我经常机械的读着书然后思路就飞">
+<meta name="keywords" content="Read,Note,Notebook">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读书笔记？？">
+<meta property="og:url" content="https://blog.just666.com/2020/05/05/read-note/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="0X00 为什么要记读书笔记本来我也是一个从来不记读书笔记的人，总觉得张无忌师傅的那个”都忘了吗？忘了就去吧”的神奇教诲很有道理，我也是一直都是看书看多少算多少，记住的就记住了，忘了也就忘了。即使这次开始记笔记也不是因为我要把看过的内容都记住，这完全不可能。 那到底是什么原因让我开始记读书笔记了呢？”走神”。没错，就是走神。我看书的时候，尤其是自己没有那么大兴趣的书，我经常机械的读着书然后思路就飞">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gehuhyuz0lj31400u0npd.jpg">
+<meta property="og:updated_time" content="2020-05-05T13:06:08.580Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="读书笔记？？">
+<meta name="twitter:description" content="0X00 为什么要记读书笔记本来我也是一个从来不记读书笔记的人，总觉得张无忌师傅的那个”都忘了吗？忘了就去吧”的神奇教诲很有道理，我也是一直都是看书看多少算多少，记住的就记住了，忘了也就忘了。即使这次开始记笔记也不是因为我要把看过的内容都记住，这完全不可能。 那到底是什么原因让我开始记读书笔记了呢？”走神”。没错，就是走神。我看书的时候，尤其是自己没有那么大兴趣的书，我经常机械的读着书然后思路就飞">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gehuhyuz0lj31400u0npd.jpg">
+  <link rel="canonical" href="https://blog.just666.com/2020/05/05/read-note/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>读书笔记？？ | Shawn's Blog</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w"></script>
+  <script pjax>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shawn's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+          
+        
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">128</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">96</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-链接">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>链接</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="点这里没用，不信你试试" aria-label="点这里没用，不信你试试"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/05/05/read-note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">读书笔记？？
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-05-05 21:04:21" itemprop="dateCreated datePublished" datetime="2020-05-05T21:04:21+08:00">2020-05-05</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="0X00-为什么要记读书笔记"><a href="#0X00-为什么要记读书笔记" class="headerlink" title="0X00 为什么要记读书笔记"></a>0X00 为什么要记读书笔记</h1><p>本来我也是一个从来不记读书笔记的人，总觉得张无忌师傅的那个”都忘了吗？忘了就去吧”的神奇教诲很有道理，我也是一直都是看书看多少算多少，记住的就记住了，忘了也就忘了。即使这次开始记笔记也不是因为我要把看过的内容都记住，这完全不可能。</p>
+<p>那到底是什么原因让我开始记读书笔记了呢？”走神”。没错，就是走神。我看书的时候，尤其是自己没有那么大兴趣的书，我经常机械的读着书然后思路就飞到不知道哪里去了，可能是其他相关的知识、可能是海拉鲁大陆、可能是九界湖、也可能幻想着自己去悬崖边上的麦田里抓那些快要掉到悬崖下的小孩儿了。</p>
+<p>所以为了让自己不再继续走神下去，我决定做点什么。最开始的时候是尝试把自己看到的一切内容都真正的”读”出来，读出声来，但是后来发现这种方式不太适合我，每次一本正经得把书里的内容一个字一个字念出来都觉得很奇怪，像是小学生在上语文课一样。放弃读出声来的操作之后就想到了记笔记，目前看起来这种方案还是不错的。</p>
+<h1 id="0X01-我平时怎么记"><a href="#0X01-我平时怎么记" class="headerlink" title="0X01 我平时怎么记"></a>0X01 我平时怎么记</h1><p>我这里给出的方案只适用于跟我类似的朋友，如果你是认认真真读书然后想要整理大纲呀整理知识点呀之类的，那我的方案应该是帮不到你（不过也可以看看，万一呢）。我介绍的方案是我自己用过的，也就两种，很简单的。</p>
+<p>首先是实体笔记，也就是像在学校里那样，左右各一本，一边看一边记；目前我是用iPad来统筹了看书和记笔记，也就放下了纸质笔记本和用了好几年的kindle（现在他可以去做他的专职工作：泡面 了）。我自己用电脑的时候不管显示器多大我都很少分屏，但是到了iPad上开个分屏一边是Kindle app一边是godnotes，效率还是挺高的（这里庆幸一下之前纠结过后还是买了iPad Air，要是当时选择了iPad mini的话分屏记笔记怕不是记笔记得累死个人）。这张图就是我平时记笔记的时候（不要在意好不好看。什么？你说看不懂？我的笔记是给自己看的，你看不看得懂问题不大🤣）</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gehuhyuz0lj31400u0npd.jpg" alt></p>
+<p>当你准备好所有设备了，记得要做几件事儿：</p>
+<ol>
+<li>拿出手机，打开”禅定模式”或者”冥想模式”或者什么鬼的，反正就是那种类似直接锁定你手机，让你什么都干不了的模式；</li>
+<li>如果是用iPad看书，打开你的”勿扰模式”；</li>
+<li>去一个安静的地方，桌子上的东西尽可能的少，最好只有书、笔记本和一支笔；</li>
+<li>让你的小爱同学或者Siri或者谁在一个小时后叫你；</li>
+</ol>
+<p>我平时记笔记怎么说呢。。。叫”意识流”吧。凡事都可以类比成软件开发，我最了解自己的需求，所以我知道怎么做才对。正因为我最清楚自己的需求”通过摘抄书上的重要内容和记录自己的想法来强制自己不走神”，所以我从来不在乎自己的笔记是不是知识点完整，是不是排版方便二次阅读，是不是便于后期查找。</p>
+<p>所以说我记笔记的原则很简单：</p>
+<ol>
+<li>遇到书上写的”非常有道理，非常值得摘抄”的内容，抄下来，适当再加符号加重一下；</li>
+<li>遇到书上提出的问题，比如”仔细想想你身边的专家是如何解决工作中他人的打断的”，我就会把我想到的答案写上去。因为一旦我不需要输出内容的时候，就有可能偷懒不去思考了；</li>
+<li>遇到逻辑关系复杂的内容，画个图整理；</li>
+<li>看到不认同的观点，将书上的观点和我自己的观点都写上去，并且标个问号；</li>
+</ol>
+<p>大概就是这样，整体来说非常简单，并不是什么”正经”的读书笔记记录法，不过这种方式对我来说非常奏效。</p>
+<h1 id="0X03-资源和工具"><a href="#0X03-资源和工具" class="headerlink" title="0X03 资源和工具"></a>0X03 资源和工具</h1><p>先从资源说起吧，目前我的书主要分两种：京东和淘宝买的纸质书、亚马逊买的电子书。以前用Kindle的时候只买与专业技术无关或者关系甚小的书，因为Kindle确实太小了而且前后翻页也很不方便。现在用iPad Air替换Kindle之后明显买电子书的意愿比原来更大了，现在出了特别硬核的极其特殊的书，我都买电子版了。（经历了搬家和大刀阔斧整理房间之后，才发现纸质书真的太重太占地方了）</p>
+<p>工具方面我在iPad上几乎只用这两个：Kindle app和Goodnotes。其中Kindle是因为电子书市场的书比较多，虽然现在好多电子书平台，不过他们市场里的书都比较少，主要还是以畅销书为主。Goodnotes是用来看PDF和记笔记用的，Notability也买了，不过不太用的惯。另外的工具其实也有，比如用来画思维导图的MindNode，在电脑上画好直接传到iPad上粘贴到Goodnotes，体验很棒。目前用着不舒服的一点就是Kindle app好像并不能把图片拖出来，在iPad上左右分屏的时候可以轻松将Safari里的图长按拖动到Goodnotes里，其他好多程序也都支持，但是Kindle是不可以的。不知道是不是版权的问题有限制，搞得我每次都是切过去截图然后把截图剪出来粘贴上去，幸亏这种需求不算频繁。</p>
+<p>硬件工具除了iPad以外就是Apple Pencil和一张膜了。Apple Pencil跟iPad一起记笔记真的还挺舒服的，但是最好给iPad贴一张”类纸膜”，要不然iPad的屏幕太光滑了，写字总是不太舒服。</p>
+<h1 id="0X02-真的有用吗"><a href="#0X02-真的有用吗" class="headerlink" title="0X02 真的有用吗"></a>0X02 真的有用吗</h1><p>有没有用还真不好说，反正我自己的综合体验来说有这么几点</p>
+<ol>
+<li>看书的效率明显下降，因为要专心，还要做笔记。估计是之前的一半左右；</li>
+<li>即使是自己看过了不太记得的地方，回头乱翻翻自己乱记的笔记也能回忆起来不少东西；</li>
+<li>以前看了实体书，厚厚一本就会有成就感，后面看了电子书就没有那么大成就感了。现在开始记笔记之后，看看自己的笔记（即使是电子笔记）成就感又回来了</li>
+</ol>
+<p>如果各位也有跟我类似的困扰，那也可以试试我的方法。不管用不收钱，管用也不收钱🤩</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>觉得写的还凑合可以请我喝杯肥宅快乐水喔</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/Wechatpay.png" alt="Shawn 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/Alipay.png" alt="Shawn 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Shawn</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.just666.com/2020/05/05/read-note/" title="读书笔记？？">https://blog.just666.com/2020/05/05/read-note/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/Read/" rel="tag"><i class="fa fa-tag"></i> Read</a>
+            
+              <a href="/tags/Note/" rel="tag"><i class="fa fa-tag"></i> Note</a>
+            
+              <a href="/tags/Notebook/" rel="tag"><i class="fa fa-tag"></i> Notebook</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/04/23/linux-permission/" rel="next" title="Linux中诡异的权限（奇怪的权限增加了）">
+                  <i class="fa fa-chevron-left"></i> Linux中诡异的权限（奇怪的权限增加了）
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-为什么要记读书笔记"><span class="nav-text">0X00 为什么要记读书笔记</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-我平时怎么记"><span class="nav-text">0X01 我平时怎么记</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-资源和工具"><span class="nav-text">0X03 资源和工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-真的有用吗"><span class="nav-text">0X02 真的有用吗</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/naruto.png"
+      alt="Shawn">
+  <p class="site-author-name" itemprop="name">Shawn</p>
+  <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">96</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">128</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="GitHub &rarr; https://github.com/shawn-bluce"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="bWFpbHRvOnNoYXduYmx1Y2VAZ21haWwuY29t" title="E-Mail &rarr; mailto:shawnbluce@gmail.com"><i class="fa fa-fw fa-inbox"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zcGFjZS5iaWxpYmlsaS5jb20vMTUzODc5MTc=" title="Bilibili &rarr; https://space.bilibili.com/15387917"><i class="fa fa-fw fa-video-camera"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy84OTY5ODc1L3NoYXdu" title="StackOverflow &rarr; https://stackoverflow.com/users/8969875/shawn"><i class="fa fa-fw fa-stack-overflow"></i></span>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn </br> 月亮很圆，圆也没用，没用也圆</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Pisces</span> v7.4.1</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.staticfile.org/animejs/2.2.0/anime.min.js"></script>
+  <script src="//cdn.staticfile.org/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var id = element.id || '';
+    var src = element.src || '';
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (id !=='') {
+      script.id = element.id;
+    }
+    if (src !== '') {
+      script.src = src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+    </div>
+</body>
+</html>

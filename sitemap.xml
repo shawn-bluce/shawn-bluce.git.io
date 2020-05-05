@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.just666.com/2020/05/05/read-note/</loc>
+    
+    <lastmod>2020-05-05T13:06:08.580Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.just666.com/2020/04/23/linux-permission/</loc>
     
     <lastmod>2020-04-23T15:26:44.642Z</lastmod>
@@ -387,14 +394,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/10/19/c-push-box/</loc>
+    <loc>https://blog.just666.com/2015/03/17/c-language-bool-type/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/03/17/c-language-bool-type/</loc>
+    <loc>https://blog.just666.com/2015/10/19/c-push-box/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -478,13 +485,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/11/20/linux-mysql-dump/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2016/12/15/linux-mysql-chinese/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -499,7 +499,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/06/09/linux-dirtree/</loc>
+    <loc>https://blog.just666.com/2016/11/20/linux-mysql-dump/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -507,6 +507,13 @@
   
   <url>
     <loc>https://blog.just666.com/2016/10/28/linux-nmcli-ip/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2015/06/09/linux-dirtree/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -583,14 +590,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/01/15/python-magic-1/</loc>
+    <loc>https://blog.just666.com/2017/01/19/python-magic-2/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/01/19/python-magic-2/</loc>
+    <loc>https://blog.just666.com/2017/01/15/python-magic-1/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -674,14 +681,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/09/29/use-linux-better/</loc>
+    <loc>https://blog.just666.com/2016/10/02/shell-programming/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/10/02/shell-programming/</loc>
+    <loc>https://blog.just666.com/2017/09/29/use-linux-better/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
