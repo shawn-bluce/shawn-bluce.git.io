@@ -57,19 +57,23 @@
   };
 </script>
 
-  <meta name="description" content="如果我们只有一台服务器，应该怎么实现让这台服务器同时处理PHP和JSP的请求？这里的解决方案是通过Apache的虚拟主机（vhost）来进行端口转发。Apache会通过访问服务器的域名将请求转发至不同的端口或者不同的服务器。">
-<meta name="keywords" content="Apache,Web Server,VPS,PHP">
+  <meta name="description" content="0X00 前言   啊，这个破系统怎么这么慢。  –你写的程序的用户  是的，我用Django写的程序经常会出现性能问题，有时候是逻辑问题、有时候是数据库问题、有时候又是机器问题。我就现在这儿总结一波我自己的经验好了（这里都是基于我自己的经验来的，可能会相对比较简单，没有太骚太复杂太高级的东西）。这儿默认大家都是用的Django + Django REST framework了，因为我自己是用的这">
+<meta name="keywords" content="Linux,Python,Django,MySQL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Apache配置虚拟主机 VirtualHost 多站点">
-<meta property="og:url" content="https://blog.just666.com/2016/05/08/apache-vhost/index.html">
+<meta property="og:title" content="如何让Django API再快一点">
+<meta property="og:url" content="https://blog.just666.com/2020/05/14/django-fast/index.html">
 <meta property="og:site_name" content="Shawn&#39;s Blog">
-<meta property="og:description" content="如果我们只有一台服务器，应该怎么实现让这台服务器同时处理PHP和JSP的请求？这里的解决方案是通过Apache的虚拟主机（vhost）来进行端口转发。Apache会通过访问服务器的域名将请求转发至不同的端口或者不同的服务器。">
+<meta property="og:description" content="0X00 前言   啊，这个破系统怎么这么慢。  –你写的程序的用户  是的，我用Django写的程序经常会出现性能问题，有时候是逻辑问题、有时候是数据库问题、有时候又是机器问题。我就现在这儿总结一波我自己的经验好了（这里都是基于我自己的经验来的，可能会相对比较简单，没有太骚太复杂太高级的东西）。这儿默认大家都是用的Django + Django REST framework了，因为我自己是用的这">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-08-21T07:34:22.000Z">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ger78bhmijj32qg07s7b9.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ger9ndnd8gj31gy0u0u0x.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ger9v07ilqj31gy0u0twy.jpg">
+<meta property="og:updated_time" content="2020-05-13T16:17:10.324Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Apache配置虚拟主机 VirtualHost 多站点">
-<meta name="twitter:description" content="如果我们只有一台服务器，应该怎么实现让这台服务器同时处理PHP和JSP的请求？这里的解决方案是通过Apache的虚拟主机（vhost）来进行端口转发。Apache会通过访问服务器的域名将请求转发至不同的端口或者不同的服务器。">
-  <link rel="canonical" href="https://blog.just666.com/2016/05/08/apache-vhost/">
+<meta name="twitter:title" content="如何让Django API再快一点">
+<meta name="twitter:description" content="0X00 前言   啊，这个破系统怎么这么慢。  –你写的程序的用户  是的，我用Django写的程序经常会出现性能问题，有时候是逻辑问题、有时候是数据库问题、有时候又是机器问题。我就现在这儿总结一波我自己的经验好了（这里都是基于我自己的经验来的，可能会相对比较简单，没有太骚太复杂太高级的东西）。这儿默认大家都是用的Django + Django REST framework了，因为我自己是用的这">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ger78bhmijj32qg07s7b9.jpg">
+  <link rel="canonical" href="https://blog.just666.com/2020/05/14/django-fast/">
 
 
 <script id="page-configurations">
@@ -83,7 +87,7 @@
   };
 </script>
 
-  <title>Apache配置虚拟主机 VirtualHost 多站点 | Shawn's Blog</title>
+  <title>如何让Django API再快一点 | Shawn's Blog</title>
   
   <script async src="https://www.googletagmanager.com/gtag/js?id=16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w"></script>
   <script pjax>
@@ -322,7 +326,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2016/05/08/apache-vhost/">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/05/14/django-fast/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Shawn">
@@ -334,7 +338,7 @@
       <meta itemprop="name" content="Shawn's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">Apache配置虚拟主机 VirtualHost 多站点
+        <h2 class="post-title" itemprop="name headline">如何让Django API再快一点
 
           
         </h2>
@@ -350,7 +354,7 @@
                 
               
 
-              <time title="创建时间：2016-05-08 15:30:00" itemprop="dateCreated datePublished" datetime="2016-05-08T15:30:00+08:00">2016-05-08</time>
+              <time title="创建时间：2020-05-14 00:15:52" itemprop="dateCreated datePublished" datetime="2020-05-14T00:15:52+08:00">2020-05-14</time>
             </span>
           
 
@@ -365,17 +369,46 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>如果我们只有一台服务器，应该怎么实现让这台服务器同时处理PHP和JSP的请求？<br>这里的解决方案是通过Apache的虚拟主机（vhost）来进行端口转发。<br>Apache会通过访问服务器的域名将请求转发至不同的端口或者不同的服务器。</p>
+        <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><blockquote>
+<p>  啊，这个破系统怎么这么慢。  –你写的程序的用户</p>
+</blockquote>
+<p>是的，我用Django写的程序经常会出现性能问题，有时候是逻辑问题、有时候是数据库问题、有时候又是机器问题。我就现在这儿总结一波我自己的经验好了（这里都是基于我自己的经验来的，可能会相对比较简单，没有太骚太复杂太高级的东西）。这儿默认大家都是用的Django + Django REST framework了，因为我自己是用的这套技术栈，而且这套技术栈也算是Django生态下前后端分离的最常见的了。</p>
+<h1 id="0X01-问题出在哪儿呢"><a href="#0X01-问题出在哪儿呢" class="headerlink" title="0X01 问题出在哪儿呢"></a>0X01 问题出在哪儿呢</h1><p>众所周知”想要解决问题，首先就要找到问题在哪儿”。那怎么判断问题在哪儿呢？</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ger78bhmijj32qg07s7b9.jpg" alt="htop截图"></p>
+<ol>
+<li>首先登到服务器上看<code>htop</code>，有面有一个<code>Load average</code>就是综合负载。一般来说，如果你的服务器是n核心的，那负载在n-2以下就算是正常的，快到n了也不是不能用，但是就要考虑升级了。这里给出来了三个负载值，从左到右依次是1分钟、5分钟、10分钟的负载情况。（为什么说是一般情况呢，如果你就只有一两个核心，那这个算法肯定不生效；如果你有128核，那负载到126了就意味着马上就炸🤣。所以说一半双核心不超过1.5、4核不超过3，8核不超过6这种）</li>
+<li>如果确定了就是机器性能的问题，那就好办了，升级服务器就好（当然不是不够久升级，还是要觉得当前的数据量啊并发啊已经挺高了再考虑。要不然一慢就升级服务器，那岂不是太奢侈了，而且对自己的代码质量也没有一点好处）</li>
+<li>我们假设不需要升级服务器配置，那就从程序和数据库两个方面来说。一般是先打开MySQL的慢查询日志，然后根据慢查询日志来逐渐优化表结构，优化查询，优化程序逻辑。</li>
+</ol>
 <a id="more"></a>
-<h1 id="0X00-前提-amp-目的"><a href="#0X00-前提-amp-目的" class="headerlink" title="0X00 前提&amp;目的"></a>0X00 前提&amp;目的</h1><p>前提：<br>　　拥有一个域名，并有两个A解析，同时解析到这台服务器的IP<br>　　分别拥有一个JSP和PHP的页面（网站）<br>目的：<br>　　使用php.test.com访问的时候解析到PHP的网站上<br>　　使用jsp.test.com访问的时候解析到JSP的网站上<br>操作系统：<br>    Centos 7.x 如果是之前的版本或是其他系统可能出现不同的情况</p>
-<h1 id="0X01-安装httpd-Apache"><a href="#0X01-安装httpd-Apache" class="headerlink" title="0X01 安装httpd  (Apache)"></a>0X01 安装httpd  (Apache)</h1><p>安装并启动服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install httpd</span><br><span class="line">systemctl start httpd.service</span><br></pre></td></tr></table></figure></p>
-<h1 id="0X02-安装PHP"><a href="#0X02-安装PHP" class="headerlink" title="0X02 安装PHP"></a>0X02 安装PHP</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install php</span><br></pre></td></tr></table></figure>
-<h1 id="0X03-安装JDK用来配合JSP"><a href="#0X03-安装JDK用来配合JSP" class="headerlink" title="0X03 安装JDK用来配合JSP"></a>0X03 安装JDK用来配合JSP</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install java-1.8.0-openjdk</span><br></pre></td></tr></table></figure>
-<h1 id="0X04-安装tomcat用于解析JSP页面"><a href="#0X04-安装tomcat用于解析JSP页面" class="headerlink" title="0X04 安装tomcat用于解析JSP页面"></a>0X04 安装tomcat用于解析JSP页面</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install tomcat tomcat-webapps tomcat-admin-webapps</span><br><span class="line">systemctl start tomcat.service</span><br></pre></td></tr></table></figure>
-<h1 id="0X05-配置httpd用于同时支持PHP和JSP"><a href="#0X05-配置httpd用于同时支持PHP和JSP" class="headerlink" title="0X05 配置httpd用于同时支持PHP和JSP"></a>0X05 配置httpd用于同时支持PHP和JSP</h1><p>打开配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd/conf/httpd.conf</span><br></pre></td></tr></table></figure></p>
-<p>在配置文件的最前端添加如下内容<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">NameVirtualHost *:80</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">VirtualHost</span> *<span class="attr">:80</span>&gt;</span></span><br><span class="line">        ServerName php.test.com #指定一个域名</span><br><span class="line">        DocumentRoot /var/www/html #PHP网站的位置</span><br><span class="line">        ErrorLog logs/php.test.com-error.log #日志位置</span><br><span class="line">        CustomLog logs/php.test.com-access.log common #日志位置</span><br><span class="line"><span class="tag">&lt;/<span class="name">VirtualHost</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">VirtualHost</span> *<span class="attr">:80</span>&gt;</span></span><br><span class="line">        ServerName jsp.test.com #指定另一个域名</span><br><span class="line">        DocumentRoot /var/lib/tomcat/webapps/ROOT #JSP网站的位置</span><br><span class="line">        ErrorLog logs/jsp.test.com-error.log  #日志位置</span><br><span class="line">        CustomLog logs/jsp.test.com-access.log common #日志位置</span><br><span class="line">        ProxyPass / http://127.0.0.1:8080/ #转发位置</span><br><span class="line">        ProxyPassReverse / http://127.0.0.1:8080/ #转发位置</span><br><span class="line"><span class="tag">&lt;/<span class="name">VirtualHost</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<h1 id="0X06-最后"><a href="#0X06-最后" class="headerlink" title="0X06 最后"></a>0X06 最后</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart httpd.service</span><br><span class="line">systemctl restart tomcat.service</span><br></pre></td></tr></table></figure>
-<p>现在就可以使用php.test.com 和 jsp.test.com分别访问到PHP和JSP的页面了</p>
+<h1 id="0X02-代码质量低or逻辑问题"><a href="#0X02-代码质量低or逻辑问题" class="headerlink" title="0X02 代码质量低or逻辑问题"></a>0X02 代码质量低or逻辑问题</h1><p>代码质量低是个问题，一般来说呈现在这几个地方：多余的循环次数、查了完全没卵用的数据、进行额外的操作。我们都知道计算机里几种处理速度的差距是巨大的<code>CPU缓存&gt;&gt;内存&gt;&gt;硬盘&gt;&gt;网络</code>，这四个之间的性能差异两两之间往往可以差出至少一个数量级（其实随着网络发展，现在网络速度已经可以赶上机械硬盘了）。而其中最慢的就是I/O了，所以我们应该尽一切可能避免I/O，而且有一点要注意的是”读写数据库”当然也算I/O。下面列举两种常见的问题</p>
+<h2 id="多余的I-O"><a href="#多余的I-O" class="headerlink" title="多余的I/O"></a>多余的I/O</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> student_data <span class="keyword">in</span> studnet_list:</span><br><span class="line">    token = get_token_from_another_system_with_http_api()</span><br><span class="line">    response = requests.post(url, student_data, headers=&#123;<span class="string">'token'</span>: token&#125;)</span><br></pre></td></tr></table></figure>
+<p>比如说这部分代码，我们都知道一个token不应该是一次性的，那把这个多余的取token的方法放在循环外面就好了。其实如果<code>get_token_from_another_system_with_http_api()</code>不是从其他的web服务上取token而是<code>get_token_from_local_cache()</code>的话，虽然也还是执行了多余的操作，但是就好得多了。</p>
+<h2 id="查了完全没卵用的东西"><a href="#查了完全没卵用的东西" class="headerlink" title="查了完全没卵用的东西"></a>查了完全没卵用的东西</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">queryset = Student.objects.filter(age__gte=<span class="number">20</span>, gender=<span class="string">'F'</span>)</span><br><span class="line"><span class="keyword">for</span> student <span class="keyword">in</span> queryset:</span><br><span class="line">    send_mail(studnet.email, <span class="string">'一个标题'</span>, <span class="string">'hello,world'</span>)</span><br></pre></td></tr></table></figure>
+<p>这部分代码看起来问题不大，但是假设我们有10W的学生，并且<code>Student</code>表有大几十个字段，那到<code>for student in queryset</code>的时候，就会卡住一会儿（如果机器不太行的话可能会卡很久）。其实我们知道，默认这样的查询是<code>SELECT * FROM student WHERE xxxx</code>来的，把所有数据都取出来了。如果我们稍加改动</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">queryset = Student.objects.filter(age__gte=<span class="number">20</span>, gender=<span class="string">'F'</span>).only(<span class="string">'email'</span>)</span><br><span class="line"><span class="keyword">for</span> student <span class="keyword">in</span> queryset:</span><br><span class="line">    send_mail(studnet.email, <span class="string">'一个标题'</span>, <span class="string">'hello,world'</span>)</span><br></pre></td></tr></table></figure>
+<p>仔细看，其实就只是在<code>filter()</code>后面加了<code>only(&#39;email&#39;)</code>，这就相当于是<code>SELECT email FROM student WHERE xxxxx</code>了，效率明显高了好多。或者直接改成</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">email_list = Student.objects.filter(age__gte=<span class="number">20</span>, gender=<span class="string">'F'</span>).values_list(<span class="string">'email'</span>, flat=<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">for</span> email <span class="keyword">in</span> email_list:</span><br><span class="line">    send_mail(email, <span class="string">'一个标题'</span>, <span class="string">'hello,world'</span>)</span><br></pre></td></tr></table></figure>
+<p>这样返回来的<code>queryset</code>里的元素就是email了。</p>
+<h1 id="0X03-数据库瓶颈（MySQL）"><a href="#0X03-数据库瓶颈（MySQL）" class="headerlink" title="0X03 数据库瓶颈（MySQL）"></a>0X03 数据库瓶颈（MySQL）</h1><p><strong>数据库一定要多占内存，数据库一定要多占内存，数据库一定要多占内存。</strong>一般来说，在Linux系统下是用多少内存分配多少，但是我们MySQL通常都是独立部署的，有且只有一个MySQL，所以就直接一次性给MySQL分配够内存，这是最好的方法。记得内存就是买来用的，买内存回来结果一年到头都是30%的占用，那岂不是亏了吗哈哈哈哈哈🤓</p>
+<p><strong>数据库机器不要开swap，数据库机器不要开swap，数据库机器不要开swap</strong>。数据库的机器内存不够了，就加内存或者优化查询，万万不可使用交换分区。只要你的数据库机器一开swap分区，再结合上面的原则，就意味着<strong>瞬间爆炸</strong>。因为内存一直都是几乎占满的情况，你一打开交换分区，Linux就会疯狂开始用内存和硬盘进行交换，本来你MySQL里有很多东西放内存里就是图个快的，结果又给在swap的机制下放回磁盘了，再折腾一圈下来甚至比直接在磁盘里还要慢。</p>
+<h2 id="索引问题"><a href="#索引问题" class="headerlink" title="索引问题"></a>索引问题</h2><p>因为把优化查询改成了优化<code>ORM</code>，所以也就理所当然放到上一个段落里了，那这里就只剩下索引为题了。索引简单来说就是：”针对某些字段，牺牲内存和写入速度换取查询速度”。所以说如果有些字段你很少改，甚至写进去就不会再变了，然后又要疯狂的以它为条件查询，那就给他加个索引。不过加索引之前有几个注意的点：</p>
+<ol>
+<li>这个字段一定是读取频率远高于写入频率的；</li>
+<li>这个字段的”唯一性”要高，比如学生表的身份证号这种，每条数据都有不同的身份证号；</li>
+<li>这个字段要在SQL中的<code>WHERE</code>子句后面，而不是<code>SELECT</code>后面。也就是说：应该是条件，而非需要得到的数据；</li>
+</ol>
+<p>具体的可以看我的<a href="https://blog.just666.com/2019/09/15/database-index/">另一篇博客]</a>。</p>
+<h1 id="0X04-机器瓶颈（Linux）"><a href="#0X04-机器瓶颈（Linux）" class="headerlink" title="0X04 机器瓶颈（Linux）"></a>0X04 机器瓶颈（Linux）</h1><p>机器瓶颈，这里给几种简单的排查、结解决方法，主要还是得靠运维同事了。</p>
+<h2 id="htop"><a href="#htop" class="headerlink" title="htop"></a>htop</h2><p>htop就是我们上面说到的看CPU/内存/进程和负载的工具，便于你找到疯狂消耗CPU或者内存的程序。</p>
+<blockquote>
+<p>  这个htop排序那里是可以用鼠标点的喔</p>
+</blockquote>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ger9ndnd8gj31gy0u0u0x.jpg" alt></p>
+<h2 id="swap"><a href="#swap" class="headerlink" title="swap"></a>swap</h2><p>如果你机器内存爆炸💥了，还不能第一时间加内存上去，那就只有先用交换分区缓一下。<code>swapon</code>和<code>swapoff</code>两个命令可以帮到你，具体的可以搜索一下，是可以在不停机的情况下加入新的交换分区和关闭交换分区。</p>
+<p>一个奇技淫巧：可以使用<code>dd</code>命令搞一个块文件，然后格式化成<code>swap</code>格式，最后挂成交换分区喔。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ger9v07ilqj31gy0u0twy.jpg" alt></p>
+<h2 id="df-du"><a href="#df-du" class="headerlink" title="df/du"></a>df/du</h2><p><code>df</code>可以看到当前挂载的磁盘，哪些快要满了。<code>du</code>可以方便得看目录的大小，还有一个<code>ncdu</code>是<code>du</code>的进阶版，是一个类似图形化的界面，用起来更舒服。能确认到哪个目录占用的空间多，然后指向性得清理一些数据。有时候磁盘满了都不知道是什么东西占了空间，这时候du和ncdu就很好用了。</p>
 
     </div>
 
@@ -415,7 +448,7 @@
     <strong>本文作者： </strong>Shawn</li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.just666.com/2016/05/08/apache-vhost/" title="Apache配置虚拟主机 VirtualHost 多站点">https://blog.just666.com/2016/05/08/apache-vhost/</a>
+    <a href="https://blog.just666.com/2020/05/14/django-fast/" title="如何让Django API再快一点">https://blog.just666.com/2020/05/14/django-fast/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li>
@@ -430,13 +463,13 @@
           
           <div class="post-tags">
             
-              <a href="/tags/Apache/" rel="tag"><i class="fa fa-tag"></i> Apache</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
             
-              <a href="/tags/Web-Server/" rel="tag"><i class="fa fa-tag"></i> Web Server</a>
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
             
-              <a href="/tags/VPS/" rel="tag"><i class="fa fa-tag"></i> VPS</a>
+              <a href="/tags/Django/" rel="tag"><i class="fa fa-tag"></i> Django</a>
             
-              <a href="/tags/PHP/" rel="tag"><i class="fa fa-tag"></i> PHP</a>
+              <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
             
           </div>
         
@@ -446,8 +479,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2016/03/15/mysql-crud/" rel="next" title="Mariadb/MySQL 增删查改 数据库操作 建表 建数据库">
-                  <i class="fa fa-chevron-left"></i> Mariadb/MySQL 增删查改 数据库操作 建表 建数据库
+                <a href="/2020/05/05/read-note/" rel="next" title="读书笔记？？">
+                  <i class="fa fa-chevron-left"></i> 读书笔记？？
                 </a>
               
             </div>
@@ -455,10 +488,6 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2016/05/11/linux-ln/" rel="prev" title="Linux 软链接(符号链接)/硬链接 理解Linux链接">
-                  Linux 软链接(符号链接)/硬链接 理解Linux链接 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -507,7 +536,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-前提-amp-目的"><span class="nav-text">0X00 前提&amp;目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-安装httpd-Apache"><span class="nav-text">0X01 安装httpd  (Apache)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-安装PHP"><span class="nav-text">0X02 安装PHP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-安装JDK用来配合JSP"><span class="nav-text">0X03 安装JDK用来配合JSP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-安装tomcat用于解析JSP页面"><span class="nav-text">0X04 安装tomcat用于解析JSP页面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-配置httpd用于同时支持PHP和JSP"><span class="nav-text">0X05 配置httpd用于同时支持PHP和JSP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-最后"><span class="nav-text">0X06 最后</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-前言"><span class="nav-text">0X00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-问题出在哪儿呢"><span class="nav-text">0X01 问题出在哪儿呢</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-代码质量低or逻辑问题"><span class="nav-text">0X02 代码质量低or逻辑问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#多余的I-O"><span class="nav-text">多余的I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查了完全没卵用的东西"><span class="nav-text">查了完全没卵用的东西</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-数据库瓶颈（MySQL）"><span class="nav-text">0X03 数据库瓶颈（MySQL）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#索引问题"><span class="nav-text">索引问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-机器瓶颈（Linux）"><span class="nav-text">0X04 机器瓶颈（Linux）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#htop"><span class="nav-text">htop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#swap"><span class="nav-text">swap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#df-du"><span class="nav-text">df/du</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->

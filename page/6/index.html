@@ -240,7 +240,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">96</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">97</span></a>
 
   </li>
       
@@ -314,6 +314,88 @@
           <div id="content" class="content">
             
   <div id="posts" class="posts-expand">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2018/11/22/using-vps/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2018/11/22/using-vps/" class="post-title-link" itemprop="url">把自己的VPS/Server用起来</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-22 21:02:14" itemprop="dateCreated datePublished" datetime="2018-11-22T21:02:14+08:00">2018-11-22</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>好多人的VPS或是服务器就只跑了一个小服务或是小程序，虽然我们多数人的VPS性能比较差但是只跑一个小服务一个小程序未免还是有些浪费。大可将其充分利用起来，毕竟性能再差也是一个24小时不停机且带有一个独立公网IP的机器。这里我介绍一下我跑在VPS上的一些服务和使用中的一些经验和建议，希望可以给各位带来些许的帮助吧。</p>
+<h1 id="0X00-操作系统"><a href="#0X00-操作系统" class="headerlink" title="0X00 操作系统"></a>0X00 操作系统</h1><p>通常我们自己的VPS性能都不怎么强，很多人都是买的单核512M内存的，所以Windows Server系统通常是不用想了。那么众多的Linux发行版本又该如何选择呢？其实因为我们是个人使用，不用过分考虑发行版本的区别，哪个用着习惯就用哪个。我自己的VPS用过一段时间的Fedora和Debian，都是很不错的。如果是针对Linux新手的话我还是比较建议使用Ubuntu和CentOS，因为这两个系统的用户群体很大，出现问题时候在网络上也更容易找到相关的解决方案。</p>
+<p>还有就是图形界面，Linux作为服务器操作系统时是完全没有必要安装图形界面的。想必购买了VPS的用户应该也多少能操作一下Linux，就更没有必要浪费系统资源和时间去安装图形界面和VNC了。</p>
+<h1 id="0X01-机场建设"><a href="#0X01-机场建设" class="headerlink" title="0X01 机场建设"></a>0X01 机场建设</h1><p>大家如果购买的是国外的VPS那么多数情况下都是为了跨过长城，不过好多人在使用的都是基于命令行的Shadowsocks服务，不仅配置起来不太直观，分享给其他人用的时候也不好管理。有一个开源项目<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dvLWlnbml0ZS9pZ25pdGU=" title="https://github.com/go-ignite/ignite">ignite<i class="fa fa-external-link"></i></span>可以部署一整套的Shadowsocks管理系统。这样你的VPS就不再是飞机跑道了，而是进化成了一个国际机场 :)</p>
+<p>这是一个Go语言实现的基于Web的Shadowsocks管理工具。多个用户使用时会创建多个Docker容器，每个连接使用独立的环境与公网端口便于管理。</p>
+<p>配置好后可以在admin端创建邀请码，每个邀请码对应着使用时间与可用的流量。将邀请码分发给其他人后，其他人登录到你的client端便可以使用激活码注册自己的用户，并且启动一个新的Shadowsocks连接。作为管理员可以实时观察各位用户的剩余时间和剩余流量，并且可以进行延长时间和重置流量等操作。</p>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/2018/11/22/using-vps/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
         <article itemscope itemtype="http://schema.org/Article">
   
   
@@ -644,86 +726,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2018/09/18/practice-year/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2018/09/18/practice-year/" class="post-title-link" itemprop="url">作为实习生的一年</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-18 21:25:07" itemprop="dateCreated datePublished" datetime="2018-09-18T21:25:07+08:00">2018-09-18</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="0X00-When-and-Why"><a href="#0X00-When-and-Why" class="headerlink" title="0X00 When and Why"></a>0X00 When and Why</h1><p>我是大三下学期即将结束的时候出来实习了，故事说来比较诡异。一天下午像往常一样背着包到教室准备上小学期的课程（小学期就是为期一个月的综合实践），一个朋友跑过来悄悄跟我说“hey 大家都在找实习了，你怎么还不着手找哇”。当时一听我就慌了，很慌的那种慌，然后那天下午把之前准备的简历投了出去。毕竟学期即将结束，其实我是想要回家过一个暑假的，所以我也就没打算真的找到实习，只是说尝试着面试一下赚一些面试经验。那既然目标是赚取面试经验就只投大厂呗，小公司面试经历的用处可能没有那么大。当天下午我就只投递了“知道创宇/知乎/陌陌”三家，结果还没下午课程还没结束呢就收到了创宇的面试通知。另外两家其中一家拒绝了我，另一家一直没有回馈信息。</p>
-<p>后来面试还算比较顺利，拿到了offer后就咬牙放弃了最后一个暑假回家的机会，退掉了好不容易抢到的火车票，在2017-07-24就正式入职创宇的实习生岗了。所以说我几乎是被朋友忽悠出来实习的，再加上运气好拿到了创宇的offer，要不然我还要回家过暑假呢，哈哈</p>
-<h1 id="0X01-面试-amp-笔试"><a href="#0X01-面试-amp-笔试" class="headerlink" title="0X01 面试&amp;笔试"></a>0X01 面试&amp;笔试</h1><p>面试当天到了公司，在前台登记后给了我一份笔试题，内容是真的记不起来了，不过都比较简单。多是关于Python语言的一些问题和Linux系统操作的一些问题还有一些基础的SQL，没有问到关于我应聘岗位使用的Django框架。笔试题答好后我现在的部门总监就来开始面试了，除了问我笔试题的答题思路以外还问了些我搞不懂为什么问的问题。比如问了我“栈溢出攻击”，然而我并不懂安全而且部门也不是安全产品部门，所以我并没有答出来，后来还是面试官给我科普了一下“栈溢出攻击”是什么。我记得后面问的最具技术性的问题就是我学过什么Web框架，我说了解过一点点Flask后面试官问了我为什么选择优先学习Flask。在此之后就是“会不会用梯子？梯子是买的还是哪里的？会不会用Linux？用的什么浏览器？”这类更偏向“程序员文化”的东西了。最后面试结束的时候问了我简历上的个人博客和Github有没有在更新，我说在更新后面试就差不多结束了。</p>
-<p>因为互相加了QQ，在入职之前还给我说过感觉我Github上项目的代码比较整洁，挺合格的。其实当时我Github上就一个小项目，很小很小的那种，所以说Github在求职过程中还是非常非常有用的。</p>
-          <!--noindex-->
-          
-            <div class="post-button">
-              <a class="btn" href="/2018/09/18/practice-year/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -777,7 +779,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">96</span>
+          <span class="site-state-item-count">97</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
