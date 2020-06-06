@@ -240,7 +240,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">99</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">100</span></a>
 
   </li>
       
@@ -314,6 +314,85 @@
           <div id="content" class="content">
             
   <div id="posts" class="posts-expand">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2017/01/24/python-magic-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2017/01/24/python-magic-4/" class="post-title-link" itemprop="url">Python 奇技淫巧 (四) 文件&I/O</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2017-01-24 21:43:00" itemprop="dateCreated datePublished" datetime="2017-01-24T21:43:00+08:00">2017-01-24</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<h5 id="文章中的代码仅在Python3中测试成功，没有在Python2中测试。"><a href="#文章中的代码仅在Python3中测试成功，没有在Python2中测试。" class="headerlink" title="文章中的代码仅在Python3中测试成功，没有在Python2中测试。"></a>文章中的代码仅在Python3中测试成功，没有在Python2中测试。</h5></blockquote>
+<h1 id="0X00-指定编码"><a href="#0X00-指定编码" class="headerlink" title="0X00 指定编码"></a>0X00 指定编码</h1><p>每个文本文件都是以某一编码格式保存的，如果解码格式和文本格式不同就会出现乱码，在Python中可以简单的控制用什么编码来打开文件以读写文件。使用<code>open</code>打开文件的时候指定一个<code>encoding</code>参数就可以使用其他而非默认编码打开文件了。这里用到了一个打开文件的方式是<code>with open() as f:</code>这样，这样做的话在这个with下面的代码块中可以直接调用f这个文件对象，并且执行到with代码块之外的时候会自动关闭文件，不需要再手动关闭文件。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用utf-8编码，写模式，打开文件D:/test.txt</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'D:/test.txt'</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(<span class="string">'你好，世界'</span>)    <span class="comment"># 写一行汉子</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用utf-8编码，读模式，打开文件D:/test.txt</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'D:/test.txt'</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        print(f.read())       <span class="comment"># 因为是编码相同所以可以正常读出文字</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用latin-1编码，读模式，打开文件D:/test.txt</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'D:/test.txt'</span>, <span class="string">'r'</span>, encoding=<span class="string">'latin-1'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        print(f.read())       <span class="comment"># 因为使用的编码格式不同，所以会出现乱码</span></span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/2017/01/24/python-magic-4/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
         <article itemscope itemtype="http://schema.org/Article">
   
   
@@ -632,84 +711,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2016/12/15/linux-mysql-chinese/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2016/12/15/linux-mysql-chinese/" class="post-title-link" itemprop="url">解决Linux下MySQL/MariaDB中文变问号？问题</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2016-12-15 19:33:00" itemprop="dateCreated datePublished" datetime="2016-12-15T19:33:00+08:00">2016-12-15</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="0X00-修改配置文件"><a href="#0X00-修改配置文件" class="headerlink" title="0X00 修改配置文件"></a>0X00 修改配置文件</h1><p>MySQL/MariaDB默认并没有采用utf-8编码，所以我们要修改配置文件，以让其使用utf-8。<br><code>/etc/my.cnf</code>就是配置文件，打开之后在<code>[mysqld]</code>下面加入两行，使其变成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">character_set_server=utf8</span><br><span class="line">init_connect=&apos;SET NAMES utf8&apos;</span><br></pre></td></tr></table></figure></p>
-<p>修改好配置文件之后重启服务</p>
-          <!--noindex-->
-          
-            <div class="post-button">
-              <a class="btn" href="/2016/12/15/linux-mysql-chinese/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -763,7 +764,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-count">100</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

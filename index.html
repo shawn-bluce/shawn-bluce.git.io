@@ -240,7 +240,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">99</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">100</span></a>
 
   </li>
       
@@ -314,6 +314,87 @@
           <div id="content" class="content">
             
   <div id="posts" class="posts-expand">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/06/06/django-fast-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2020/06/06/django-fast-2/" class="post-title-link" itemprop="url">如何让 Django API 再快一点 (2)</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-06 16:56:29" itemprop="dateCreated datePublished" datetime="2020-06-06T16:56:29+08:00">2020-06-06</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><blockquote>
+<p>啊，这个破系统怎么这么慢。 -你写的程序的用户</p>
+</blockquote>
+<p>是的我写过一篇<a href="https://blog.just666.com/2020/05/14/django-fast/">类似的博客</a>，但是一篇肯定说不完，毕竟影响性能的东西太多了：数据量巨大、机器配置差、查询SQL效率低、额外的多余的查询、低质量的代码balabala的。今天这篇文章主要是从Django查询和ORM层面来分析一下API变慢的原因。</p>
+<p>其中可能性比较多，我这里先挑几个我经常遇到的情况来说：不管自己的需求直接查询所有字段、完全不在意索引、疯狂使用<code>in</code>、循环创建/更新数据、不善于使用缓存。这几个问题其实都会对我们的API响应速度造成比较大的影响，下面我们来一个个介绍一下。</p>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/2020/06/06/django-fast-2/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
         <article itemscope itemtype="http://schema.org/Article">
   
   
@@ -657,88 +738,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/04/23/linux-permission/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/04/23/linux-permission/" class="post-title-link" itemprop="url">Linux中诡异的权限（奇怪的权限增加了）</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2020-04-23 23:26:05" itemprop="dateCreated datePublished" datetime="2020-04-23T23:26:05+08:00">2020-04-23</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><blockquote>
-<p>Linux诡异的权限是怎么回事呢？Linux相信大家都很熟悉， 但是诡异的权限是怎么回事呢？下面就让小编带大家一起了解吧。</p>
-<p>Linux诡异的权限，其实就是诡异的权限了。那么Linux为什么会诡异的权限，相信大家都很好奇是怎么回事。大家可能会感到很惊讶，Linux怎么会诡异的权限呢？但事实就是这样，小编也感到非常惊讶。 那么这就是关于Linux诡异的权限的事情了，大家有没有觉得很神奇呢？</p>
-<p>看了今天的内容，大家有什么想法呢？欢迎在评论区告诉小编一起讨论哦。</p>
-</blockquote>
-<p>说正事说正事儿。说起Linux权限大家肯定：”这我知道啊，不就是rwx吗，r是读、w是写、x是执行。就这？”当然不只是这个，不过我们还是要从最基础的开始说起来。</p>
-          <!--noindex-->
-          
-            <div class="post-button">
-              <a class="btn" href="/2020/04/23/linux-permission/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -792,7 +791,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-count">100</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

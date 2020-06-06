@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png?v=7.4.1">
+  <link rel="mask-icon" href="/favicon.png?v=7.4.1" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: true,
+    sidebar: {"position":"left","width":300,"display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: true,
+    lazyload: false,
+    pangu: true,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":"auto","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="0X00 前言 啊，这个破系统怎么这么慢。 -你写的程序的用户  是的我写过一篇类似的博客，但是一篇肯定说不完，毕竟影响性能的东西太多了：数据量巨大、机器配置差、查询SQL效率低、额外的多余的查询、低质量的代码balabala的。今天这篇文章主要是从Django查询和ORM层面来分析一下API变慢的原因。 其中可能性比较多，我这里先挑几个我经常遇到的情况来说：不管自己的需求直接查询所有字段、完全不">
+<meta name="keywords" content="Python,Django,Index">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何让 Django API 再快一点 (2)">
+<meta property="og:url" content="https://blog.just666.com/2020/06/06/django-fast-2/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="0X00 前言 啊，这个破系统怎么这么慢。 -你写的程序的用户  是的我写过一篇类似的博客，但是一篇肯定说不完，毕竟影响性能的东西太多了：数据量巨大、机器配置差、查询SQL效率低、额外的多余的查询、低质量的代码balabala的。今天这篇文章主要是从Django查询和ORM层面来分析一下API变慢的原因。 其中可能性比较多，我这里先挑几个我经常遇到的情况来说：不管自己的需求直接查询所有字段、完全不">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606154947.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606163344.png">
+<meta property="og:updated_time" content="2020-06-06T08:58:09.618Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何让 Django API 再快一点 (2)">
+<meta name="twitter:description" content="0X00 前言 啊，这个破系统怎么这么慢。 -你写的程序的用户  是的我写过一篇类似的博客，但是一篇肯定说不完，毕竟影响性能的东西太多了：数据量巨大、机器配置差、查询SQL效率低、额外的多余的查询、低质量的代码balabala的。今天这篇文章主要是从Django查询和ORM层面来分析一下API变慢的原因。 其中可能性比较多，我这里先挑几个我经常遇到的情况来说：不管自己的需求直接查询所有字段、完全不">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606154947.png">
+  <link rel="canonical" href="https://blog.just666.com/2020/06/06/django-fast-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>如何让 Django API 再快一点 (2) | Shawn's Blog</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w"></script>
+  <script pjax>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shawn's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+          
+        
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">132</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">100</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-链接">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>链接</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="点这里没用，不信你试试" aria-label="点这里没用，不信你试试"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/06/06/django-fast-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">如何让 Django API 再快一点 (2)
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-06 16:56:29" itemprop="dateCreated datePublished" datetime="2020-06-06T16:56:29+08:00">2020-06-06</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><blockquote>
+<p>啊，这个破系统怎么这么慢。 -你写的程序的用户</p>
+</blockquote>
+<p>是的我写过一篇<a href="https://blog.just666.com/2020/05/14/django-fast/">类似的博客</a>，但是一篇肯定说不完，毕竟影响性能的东西太多了：数据量巨大、机器配置差、查询SQL效率低、额外的多余的查询、低质量的代码balabala的。今天这篇文章主要是从Django查询和ORM层面来分析一下API变慢的原因。</p>
+<p>其中可能性比较多，我这里先挑几个我经常遇到的情况来说：不管自己的需求直接查询所有字段、完全不在意索引、疯狂使用<code>in</code>、循环创建/更新数据、不善于使用缓存。这几个问题其实都会对我们的API响应速度造成比较大的影响，下面我们来一个个介绍一下。</p>
+<a id="more"></a>
+<h1 id="0X01-SELECT"><a href="#0X01-SELECT" class="headerlink" title="0X01 SELECT *"></a>0X01 SELECT *</h1><p>首先我们一定知道，从数据库里查询的数据越多那反应也就越慢。我这里拿一个只有500条数据的表来展示一下，这里可以看到两次的耗时虽然都很短（那可不嘛，就500条数据），但是比例上还是差了三倍还多，如果随着数据量变大和字段变多这个差距就会更加明显。但是我们可以看到在循环里只需要<code>name</code>这个字段，多余的是用不到的。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606154947.png" alt></p>
+<p>实际上这两个查询执行的是不同的两个SQL（当然了这是废话），那具体区别呢？可以看到一个是<code>SELECT *</code> 一个是单独取了两个字段。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`main_staffprofile`</span>;      <span class="comment">-- 其实并不是一个*，而是把所有字段都列在这儿了，这里方便展示就不都贴出来了</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="string">`main_staffprofile`</span>.<span class="string">`id`</span>, <span class="string">`main_staffprofile`</span>.<span class="string">`name`</span> <span class="keyword">FROM</span> <span class="string">`main_staffprofile`</span>;</span><br></pre></td></tr></table></figure>
+<p>所以说，当我们确定知道自己下面要用到什么字段的时候，就给<code>queryset</code>加上<code>only(&#39;xxx&#39;, &#39;xxx&#39;, &#39;xxx&#39;)</code>的参数，从数据库里取的时候尽可能少的取数据，这样就能加快查询了。尤其是在查得的数据很大和字段很多的时候，比如在表里取10000条数据但是只用到30列中的3列的时候就非常应该加上<code>only</code>。</p>
+<h1 id="0X02-Index-index-together"><a href="#0X02-Index-index-together" class="headerlink" title="0X02 Index/index_together"></a>0X02 Index/index_together</h1><p>好吧，说起优化速度就绕不开索引，这是必然的。我们都知道在数据库里给字段加索引可以大幅提升查询效率，具体在Django里建立普通索引也是很简单的，直接在字段定义里加一个参数<code>index=True</code>就好了。但是可能大家会忽视联合索引的建立，这里简单介绍一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">    verbose_name = <span class="string">u'随便一个什么表'</span></span><br><span class="line">    verbose_name_plural = verbose_name</span><br><span class="line">    index_together = [</span><br><span class="line">        [<span class="string">'gender'</span>, <span class="string">'age'</span>],</span><br><span class="line">        [<span class="string">'gender'</span>, <span class="string">'address'</span>],</span><br><span class="line">        [<span class="string">'city'</span>, <span class="string">'gender'</span>, <span class="string">'name'</span>],</span><br><span class="line">    ]</span><br></pre></td></tr></table></figure>
+<p>Django中的每个Model类我们都会创建一个Meta子类，子类里有一个属性叫做<code>index_together</code>顾名思义这就是定义联合索引的地方了。<code>index_together</code>是一个二维数组，第一维度下面的每个item都是一个联合索引，第二个维度下面的每个item就是一个字段，也就是构成联合索引的字段（注意联合索引是讲究顺序的喔）。具体索引和联合索引应该怎么建才会让数据查询更快可以看<a href="https://blog.just666.com/2019/09/15/database-index/">我上一片博客</a>或者搜索其他资料。</p>
+<p>注意：索引/联合索引定义好之后需要进行数据库迁移</p>
+<h1 id="0X03-IN-balabala"><a href="#0X03-IN-balabala" class="headerlink" title="0X03 IN balabala"></a>0X03 IN balabala</h1><p>我们在Django的查询中无处不见这种<code>User.objects.filter(user_type__in=(&#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4,&#39;, &#39;5&#39;))</code>的用法，这种用法在业务上确实有需求，所以我们是避免不掉的。不过还是可以通过一些其他的方法来尝试规避，比如从业务上看看这些选项组合到一起的时候是不是意味着一种特殊的数据，比如<code>User.objects.filter(city__in=(&#39;成都&#39;, &#39;绵阳&#39;, &#39;自贡&#39;........))</code>可以发现是在查询四川省，那么可以考虑换成<code>User.objects.filter(province=&#39;四川&#39;&#39;)</code>这种。或者<code>User.objects.filter(level__in=(&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;))</code>是不是意味着<code>User.objects.exclude(level=&#39;S&#39;)</code>。</p>
+<p>这种情况因为业务上的严格需求，可能并没有太好的调节方法（也可能是我没想到，如果大家有方法的话欢迎反馈给我，谢谢指教🙏），不过遇到了的话还是可以尝试上面两种方案，玩意能行的话还是可以调节一下性能的。</p>
+<h1 id="0X04-疯狂关联"><a href="#0X04-疯狂关联" class="headerlink" title="0X04 疯狂关联"></a>0X04 疯狂关联</h1><blockquote>
+<p>条条大路通罗马。</p>
+</blockquote>
+<p>疯狂关联也比较容易出现，正所谓条条大路通罗马，但是总会有一条更近一点的路。比如这种<code>User.objects.filter(father__father__name=&#39;shawn&#39;&#39;)</code>完全就可以用<code>User.objects.filter(grandfather__name=&#39;shawn&#39;&#39;)</code>这种来替代。这个其实大家都会比较清楚，对技术没什么考验，但是比较考验对程序的理解程度尤其是数据库的理解程度。有时候我们接手一个新的项目时候可能并没有对这个项目的数据库有充分的了解，所以可以尝试在写这种多层的关联查询之前取调研一下是不是有更近的通向罗马的路。</p>
+<h1 id="0X05-bulk-create"><a href="#0X05-bulk-create" class="headerlink" title="0X05 bulk_create"></a>0X05 bulk_create</h1><p>这种问题应该是最常遇到的了。我们从前端接收到了这么一波数据要写到数据库里（数据哪儿来的并不重要，也可能是csv来的或者其他什么鬼地方）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[&#123;'name': 'shawn_0'&#125;,</span><br><span class="line"> &#123;'name': 'shawn_1'&#125;,</span><br><span class="line"> &#123;'name': 'shawn_2'&#125;,</span><br><span class="line">...............................</span><br><span class="line"> &#123;'name': 'shawn_998'&#125;,</span><br><span class="line"> &#123;'name': 'shawn_999'&#125;]</span><br></pre></td></tr></table></figure>
+<p>新手同学很有可能写出如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> user <span class="keyword">in</span> user_list:</span><br><span class="line">        User.objects.create(**user)</span><br></pre></td></tr></table></figure>
+<p>但是我们来看看速度，耗时4秒，再看一下批量创建的时间，耗时0.13秒，性能提升了很多倍。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606163344.png" alt></p>
+<p>批量创建虽好，但是有一点就需要特别注意：如果你要创建的数据比较复杂并且量非常大，请不要一次性全部创建完成，否则可能会对数据库造成较大的压力，可以尝试将比如10000条数据分成10个1000或者100个100来创建。</p>
+<h1 id="0X06-cache-cached-property"><a href="#0X06-cache-cached-property" class="headerlink" title="0X06 cache/cached_property"></a>0X06 cache/cached_property</h1><p>缓存可能是提升性能最明显的方案了，同样数据量的数据从MySQL里取出来和从Redis里取出来，耗时根本不在一个数量级，所以我们应该善用缓存。</p>
+<p>比如我们有一个巨大的关键词配置放在数据库里存起来了，大概有10W条数据，平时又很少更新，但是经常会查，那就非常适合使用缓存。我们可以这样</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_keyword_config</span><span class="params">()</span>:</span></span><br><span class="line">    result = cache.get(KEYWORD_CONFIG_KEY)</span><br><span class="line">    <span class="keyword">if</span> result:</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        queryset = Keyword.objects.all()</span><br><span class="line">        result = handle_keywords(queryset)</span><br><span class="line">        cache.set(KEYWORD_CONFIG_KEY, result)</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>然后在更新关键词库的时候再同时刷新一次缓存就好了。另一种使用缓存的方式是Django中带的<code>cached_property</code>。我们知道Django中有一个<code>property</code>可以把function作为属性来用，直接通过点就能获取值，这个顾名思义就是加了缓存的<code>property</code>。也就是说每次调用<code>student_count</code>的时候都要计算一遍，但是调用<code>cached_student_count</code>的时候只有第一次会计算，后面就是缓存的值了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Teacher</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">        xxxxxx</span><br><span class="line"></span><br><span class="line"><span class="meta">        @property</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">student_count</span><span class="params">(self)</span>:</span></span><br><span class="line">                <span class="keyword">return</span> self.student_set.all().count()</span><br><span class="line"></span><br><span class="line"><span class="meta">        @cached_property</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">cached_student_count</span><span class="params">(self)</span>:</span></span><br><span class="line">                <span class="keyword">return</span>  self.student_set.all().count()</span><br></pre></td></tr></table></figure>
+<p>下面是官方文档关于<code>cached_property</code>的解释，简单明了： <strong>注意里面提到的生命周期，小心用到已经失效的数据</strong></p>
+<blockquote>
+<p>将一个类方法转换为特征属性，一次性计算该特征属性的值，然后将其缓存为实例生命周期内的普通属性。 类似于 property() 但增加了缓存功能。 对于在其他情况下实际不可变的高计算资源消耗的实例特征属性来说该函数非常有用。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DataSet</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, sequence_of_numbers)</span>:</span></span><br><span class="line">        self._data = sequence_of_numbers</span><br><span class="line"></span><br><span class="line"><span class="meta">    @cached_property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">stdev</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> statistics.stdev(self._data)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @cached_property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">variance</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> statistics.variance(self._data)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>觉得写的还凑合可以请我喝杯肥宅快乐水喔</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.08.png" alt="Shawn 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.37.png" alt="Shawn 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Shawn</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.just666.com/2020/06/06/django-fast-2/" title="如何让 Django API 再快一点 (2)">https://blog.just666.com/2020/06/06/django-fast-2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+            
+              <a href="/tags/Django/" rel="tag"><i class="fa fa-tag"></i> Django</a>
+            
+              <a href="/tags/Index/" rel="tag"><i class="fa fa-tag"></i> Index</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/05/25/python-filter-map-reduce/" rel="next" title="Python中的filter与map/reduce方法">
+                  <i class="fa fa-chevron-left"></i> Python中的filter与map/reduce方法
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-前言"><span class="nav-text">0X00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-SELECT"><span class="nav-text">0X01 SELECT *</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-Index-index-together"><span class="nav-text">0X02 Index/index_together</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-IN-balabala"><span class="nav-text">0X03 IN balabala</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-疯狂关联"><span class="nav-text">0X04 疯狂关联</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-bulk-create"><span class="nav-text">0X05 bulk_create</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-cache-cached-property"><span class="nav-text">0X06 cache/cached_property</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/naruto.png"
+      alt="Shawn">
+  <p class="site-author-name" itemprop="name">Shawn</p>
+  <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">132</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="GitHub &rarr; https://github.com/shawn-bluce"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="bWFpbHRvOnNoYXduYmx1Y2VAZ21haWwuY29t" title="E-Mail &rarr; mailto:shawnbluce@gmail.com"><i class="fa fa-fw fa-inbox"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zcGFjZS5iaWxpYmlsaS5jb20vMTUzODc5MTc=" title="Bilibili &rarr; https://space.bilibili.com/15387917"><i class="fa fa-fw fa-video-camera"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy84OTY5ODc1L3NoYXdu" title="StackOverflow &rarr; https://stackoverflow.com/users/8969875/shawn"><i class="fa fa-fw fa-stack-overflow"></i></span>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn </br> 月亮很圆，圆也没用，没用也圆</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Pisces</span> v7.4.1</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.staticfile.org/animejs/2.2.0/anime.min.js"></script>
+  <script src="//cdn.staticfile.org/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var id = element.id || '';
+    var src = element.src || '';
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (id !=='') {
+      script.id = element.id;
+    }
+    if (src !== '') {
+      script.src = src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+    </div>
+</body>
+</html>
