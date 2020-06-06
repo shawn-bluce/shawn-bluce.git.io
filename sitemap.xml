@@ -4,7 +4,7 @@
   <url>
     <loc>https://blog.just666.com/2020/06/06/django-fast-2/</loc>
     
-    <lastmod>2020-06-06T08:58:09.618Z</lastmod>
+    <lastmod>2020-06-06T09:05:39.108Z</lastmod>
     
   </url>
   
@@ -443,14 +443,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/11/17/firewall-cmd/</loc>
+    <loc>https://blog.just666.com/2016/11/16/filesystem/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/11/16/filesystem/</loc>
+    <loc>https://blog.just666.com/2016/11/17/firewall-cmd/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -492,13 +492,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/05/12/linux-dhcp-server/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2016/11/02/linux-crontab/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -506,7 +499,28 @@
   </url>
   
   <url>
+    <loc>https://blog.just666.com/2016/05/12/linux-dhcp-server/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2015/06/09/linux-dirtree/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.just666.com/2016/05/11/linux-ln/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -541,20 +555,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/06/09/linux-dirtree/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2016/05/28/linux-swap-virtualmemery/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -583,13 +583,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2016/09/13/python-dict/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -597,14 +590,21 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/01/01/python-function/</loc>
+    <loc>https://blog.just666.com/2016/10/27/python-execption/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/10/27/python-execption/</loc>
+    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2017/01/01/python-function/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -639,13 +639,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/01/31/python-magic-5/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2017/01/24/python-magic-4/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -653,7 +646,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/08/18/python-pip-virtualenv/</loc>
+    <loc>https://blog.just666.com/2017/01/31/python-magic-5/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/09/14/python-oop/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -661,6 +661,13 @@
   
   <url>
     <loc>https://blog.just666.com/2017/04/01/python-os-lib/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2017/08/18/python-pip-virtualenv/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -675,13 +682,6 @@
   
   <url>
     <loc>https://blog.just666.com/2017/06/13/python-rabbitmq/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/09/14/python-oop/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     

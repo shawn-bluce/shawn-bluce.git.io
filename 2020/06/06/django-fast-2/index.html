@@ -58,20 +58,20 @@
 </script>
 
   <meta name="description" content="0X00 前言 啊，这个破系统怎么这么慢。 -你写的程序的用户  是的我写过一篇类似的博客，但是一篇肯定说不完，毕竟影响性能的东西太多了：数据量巨大、机器配置差、查询SQL效率低、额外的多余的查询、低质量的代码balabala的。今天这篇文章主要是从Django查询和ORM层面来分析一下API变慢的原因。 其中可能性比较多，我这里先挑几个我经常遇到的情况来说：不管自己的需求直接查询所有字段、完全不">
-<meta name="keywords" content="Python,Django,Index">
+<meta name="keywords" content="Index,Python,Django">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何让 Django API 再快一点 (2)">
 <meta property="og:url" content="https://blog.just666.com/2020/06/06/django-fast-2/index.html">
 <meta property="og:site_name" content="Shawn&#39;s Blog">
 <meta property="og:description" content="0X00 前言 啊，这个破系统怎么这么慢。 -你写的程序的用户  是的我写过一篇类似的博客，但是一篇肯定说不完，毕竟影响性能的东西太多了：数据量巨大、机器配置差、查询SQL效率低、额外的多余的查询、低质量的代码balabala的。今天这篇文章主要是从Django查询和ORM层面来分析一下API变慢的原因。 其中可能性比较多，我这里先挑几个我经常遇到的情况来说：不管自己的需求直接查询所有字段、完全不">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606154947.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606163344.png">
-<meta property="og:updated_time" content="2020-06-06T08:58:09.618Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606154947_mini.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606163344_mini.png">
+<meta property="og:updated_time" content="2020-06-06T09:05:39.108Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何让 Django API 再快一点 (2)">
 <meta name="twitter:description" content="0X00 前言 啊，这个破系统怎么这么慢。 -你写的程序的用户  是的我写过一篇类似的博客，但是一篇肯定说不完，毕竟影响性能的东西太多了：数据量巨大、机器配置差、查询SQL效率低、额外的多余的查询、低质量的代码balabala的。今天这篇文章主要是从Django查询和ORM层面来分析一下API变慢的原因。 其中可能性比较多，我这里先挑几个我经常遇到的情况来说：不管自己的需求直接查询所有字段、完全不">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606154947.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606154947_mini.png">
   <link rel="canonical" href="https://blog.just666.com/2020/06/06/django-fast-2/">
 
 
@@ -375,7 +375,7 @@
 <p>其中可能性比较多，我这里先挑几个我经常遇到的情况来说：不管自己的需求直接查询所有字段、完全不在意索引、疯狂使用<code>in</code>、循环创建/更新数据、不善于使用缓存。这几个问题其实都会对我们的API响应速度造成比较大的影响，下面我们来一个个介绍一下。</p>
 <a id="more"></a>
 <h1 id="0X01-SELECT"><a href="#0X01-SELECT" class="headerlink" title="0X01 SELECT *"></a>0X01 SELECT *</h1><p>首先我们一定知道，从数据库里查询的数据越多那反应也就越慢。我这里拿一个只有500条数据的表来展示一下，这里可以看到两次的耗时虽然都很短（那可不嘛，就500条数据），但是比例上还是差了三倍还多，如果随着数据量变大和字段变多这个差距就会更加明显。但是我们可以看到在循环里只需要<code>name</code>这个字段，多余的是用不到的。</p>
-<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606154947.png" alt></p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606154947_mini.png" alt></p>
 <p>实际上这两个查询执行的是不同的两个SQL（当然了这是废话），那具体区别呢？可以看到一个是<code>SELECT *</code> 一个是单独取了两个字段。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`main_staffprofile`</span>;      <span class="comment">-- 其实并不是一个*，而是把所有字段都列在这儿了，这里方便展示就不都贴出来了</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="string">`main_staffprofile`</span>.<span class="string">`id`</span>, <span class="string">`main_staffprofile`</span>.<span class="string">`name`</span> <span class="keyword">FROM</span> <span class="string">`main_staffprofile`</span>;</span><br></pre></td></tr></table></figure>
 <p>所以说，当我们确定知道自己下面要用到什么字段的时候，就给<code>queryset</code>加上<code>only(&#39;xxx&#39;, &#39;xxx&#39;, &#39;xxx&#39;)</code>的参数，从数据库里取的时候尽可能少的取数据，这样就能加快查询了。尤其是在查得的数据很大和字段很多的时候，比如在表里取10000条数据但是只用到30列中的3列的时候就非常应该加上<code>only</code>。</p>
@@ -394,7 +394,7 @@
 <p>新手同学很有可能写出如下代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> user <span class="keyword">in</span> user_list:</span><br><span class="line">        User.objects.create(**user)</span><br></pre></td></tr></table></figure>
 <p>但是我们来看看速度，耗时4秒，再看一下批量创建的时间，耗时0.13秒，性能提升了很多倍。</p>
-<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606163344.png" alt></p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200606163344_mini.png" alt></p>
 <p>批量创建虽好，但是有一点就需要特别注意：如果你要创建的数据比较复杂并且量非常大，请不要一次性全部创建完成，否则可能会对数据库造成较大的压力，可以尝试将比如10000条数据分成10个1000或者100个100来创建。</p>
 <h1 id="0X06-cache-cached-property"><a href="#0X06-cache-cached-property" class="headerlink" title="0X06 cache/cached_property"></a>0X06 cache/cached_property</h1><p>缓存可能是提升性能最明显的方案了，同样数据量的数据从MySQL里取出来和从Redis里取出来，耗时根本不在一个数量级，所以我们应该善用缓存。</p>
 <p>比如我们有一个巨大的关键词配置放在数据库里存起来了，大概有10W条数据，平时又很少更新，但是经常会查，那就非常适合使用缓存。我们可以这样</p>
@@ -460,11 +460,11 @@
           
           <div class="post-tags">
             
+              <a href="/tags/Index/" rel="tag"><i class="fa fa-tag"></i> Index</a>
+            
               <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
             
               <a href="/tags/Django/" rel="tag"><i class="fa fa-tag"></i> Django</a>
-            
-              <a href="/tags/Index/" rel="tag"><i class="fa fa-tag"></i> Index</a>
             
           </div>
         
