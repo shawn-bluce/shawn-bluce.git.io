@@ -65,7 +65,7 @@
 <meta property="og:site_name" content="Shawn&#39;s Blog">
 <meta property="og:description" content="0X00 url的源头使用django-admin startproject test_project创建一个新的Django项目之后在settings.py中可以找到一个配置项ROOT_URLCONF，默认情况下值为项目目录下的urls，也就是test_project.urls。 默认情况下这个urls.py的内容大致是这样的12345678910111213141516171819202122">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-20T14:46:32.000Z">
+<meta property="og:updated_time" content="2020-06-28T14:42:58.849Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Django中的url">
 <meta name="twitter:description" content="0X00 url的源头使用django-admin startproject test_project创建一个新的Django项目之后在settings.py中可以找到一个配置项ROOT_URLCONF，默认情况下值为项目目录下的urls，也就是test_project.urls。 默认情况下这个urls.py的内容大致是这样的12345678910111213141516171819202122">
@@ -220,7 +220,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">132</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">134</span></a>
 
   </li>
       
@@ -242,7 +242,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">100</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">101</span></a>
 
   </li>
       
@@ -367,9 +367,9 @@
       
         <h1 id="0X00-url的源头"><a href="#0X00-url的源头" class="headerlink" title="0X00 url的源头"></a>0X00 url的源头</h1><p>使用<code>django-admin startproject test_project</code>创建一个新的Django项目之后在<code>settings.py</code>中可以找到一个配置项<code>ROOT_URLCONF</code>，默认情况下值为项目目录下的<code>urls</code>，也就是<code>test_project.urls</code>。</p>
 <p>默认情况下这个<code>urls.py</code>的内容大致是这样的<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""learn_django URL Configuration</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">The `urlpatterns` list routes URLs to views. For more information please see:</span></span><br><span class="line"><span class="string">    https://docs.djangoproject.com/en/2.2/topics/http/urls/</span></span><br><span class="line"><span class="string">Examples:</span></span><br><span class="line"><span class="string">Function views</span></span><br><span class="line"><span class="string">    1. Add an import:  from my_app import views</span></span><br><span class="line"><span class="string">    2. Add a URL to urlpatterns:  path('', views.home, name='home')</span></span><br><span class="line"><span class="string">Class-based views</span></span><br><span class="line"><span class="string">    1. Add an import:  from other_app.views import Home</span></span><br><span class="line"><span class="string">    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')</span></span><br><span class="line"><span class="string">Including another URLconf</span></span><br><span class="line"><span class="string">    1. Import the include() function: from django.urls import include, path</span></span><br><span class="line"><span class="string">    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'admin/'</span>, admin.site.urls),</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
-<p>这里就是根目录了，新项目使用<code>python manage.py runserver</code>启动之后访问<code>http://127.0.0.1:8000/</code>就是访问到这个url的根路由了，默认情况下有一个<code>admin/</code>可选，也就是Django自己的后台管理页面。<strong>Django所有的url都是从这个文件发散出去的</strong>，<code>urlpatterns</code>里除了将url路由至<code>view</code>就是其他的子url配置。换句话说，通常情况下DJango中所有url最终都应该被路由到View上才对。</p>
+<p>这里就是根目录了，新项目使用<code>python manage.py runserver</code>启动之后访问<code>http://127.0.0.1:8000/</code>就是访问到这个url的根路由了，默认情况下有一个<code>admin/</code>可选，也就是Django自己的后台管理页面。<strong>Django所有的url都是从这个文件发散出去的</strong>，<code>urlpatterns</code>里除了将url路由至<code>view</code>就是其他的子url配置。换句话说，通常情况下Django中所有url最终都应该被路由到View上才对。</p>
 <a id="more"></a>
-<h1 id="0X01-路由到子url和view"><a href="#0X01-路由到子url和view" class="headerlink" title="0X01 路由到子url和view"></a>0X01 路由到子url和view</h1><p>上面提到通常情况下DJango中所有url最终都应该被路由到View上，那就来看一下究竟该怎么做。现在有一个项目，项目中有一个app叫<code>student</code>是用来管理一些学生信息的，app中有一个<code>views.py</code>，具体内容就暂时不列出了，在此处关系不大；还有一个<code>urls.py</code>，内容是这样的<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> .views <span class="keyword">import</span> StudentView, ExamView</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'^$'</span>, StudentView.as_view()),    <span class="comment"># 直接将这个子url的根目录路由到一个view</span></span><br><span class="line">    path(<span class="string">'^exam/$'</span>, ExamView.as_view()),    <span class="comment"># 直接将url路由至一个view</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<h1 id="0X01-路由到子url和view"><a href="#0X01-路由到子url和view" class="headerlink" title="0X01 路由到子url和view"></a>0X01 路由到子url和view</h1><p>上面提到通常情况下Django中所有url最终都应该被路由到View上，那就来看一下究竟该怎么做。现在有一个项目，项目中有一个app叫<code>student</code>是用来管理一些学生信息的，app中有一个<code>views.py</code>，具体内容就暂时不列出了，在此处关系不大；还有一个<code>urls.py</code>，内容是这样的<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> .views <span class="keyword">import</span> StudentView, ExamView</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'^$'</span>, StudentView.as_view()),    <span class="comment"># 直接将这个子url的根目录路由到一个view</span></span><br><span class="line">    path(<span class="string">'^exam/$'</span>, ExamView.as_view()),    <span class="comment"># 直接将url路由至一个view</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
 <p>现在要来修改根的<code>urls.py</code>了<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path, include</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'admin/'</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">'student/'</span>, include(<span class="string">'test_project.student.urls'</span>)), <span class="comment"># 其实就加了这一行，这里的include就是包含另一个urls的配置文件</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
 <p>现在就是这样的，如果访问<code>http://127.0.0.1:8000/admin</code>还是之前的DjangoAdmin默认管理页面没问题，如果访问<code>http://127.0.0.1:8000/student/</code>的话就是到<code>StudentView</code>而<code>http://127.0.0.1:8000/student/exam/</code>就是<code>ExamView</code>了。</p>
 <h1 id="0X02-参数与正则"><a href="#0X02-参数与正则" class="headerlink" title="0X02 参数与正则"></a>0X02 参数与正则</h1><p>url中常见的出现一些参数，一般来说参数分成两种：第一种是在path中作为路由的一部分，另一种是在后面以GET的查询参数方式出现例如<code>/student?name=shawn&amp;age__gt=16</code>这种。第二种方式比较简单，在传入到view后，从view的<code>request.GET</code>就能取到了。但是也经常会遇到第一种，例如这样一个path<code>/article/2019/11/20/why-linux</code>，可以猜测它指的是2019年11月20日的一篇名为’why-linux’的文章。那么这种该怎么取呢？其实很简单，在view里<code>request.path.split(&#39;/&#39;)</code>然后取下标就行了（当然这很蠢且很不靠谱，但是还不失为一种方案哈哈哈哈）。</p>
@@ -531,7 +531,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-count">101</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -544,7 +544,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">132</span>
+        <span class="site-state-item-count">134</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
