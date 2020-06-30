@@ -240,7 +240,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">101</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">102</span></a>
 
   </li>
       
@@ -314,6 +314,88 @@
           <div id="content" class="content">
             
   <div id="posts" class="posts-expand">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2018/08/22/git-skill/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2018/08/22/git-skill/" class="post-title-link" itemprop="url">提升Git新手效率的小技巧</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-22 22:26:02" itemprop="dateCreated datePublished" datetime="2018-08-22T22:26:02+08:00">2018-08-22</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>内容比较少，只是今晚翻看教程的时候发现的几个可以替换调我以前一些诡异操作的方法，将其整理贴出。</p>
+<h1 id="0X00-git-blame"><a href="#0X00-git-blame" class="headerlink" title="0X00 git blame"></a>0X00 git blame</h1><p>是谁在代码里下了毒？是谁用了一个超酷炫的方法解决了你解决不了的问题？当你想知道仓库中的某行代码是谁提交的，就可以使用这个方法。<code>git blame hello.py</code>可以看到hello.py这个文件所有行的提交人是谁，于何时提交的。而且这个命令最常用的是和<code>grep</code>合用，<code>git blame hello.py | grep prinft</code>(是谁写错了这个单词+_+)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200   1) &lt;p align=&quot;center&quot;&gt;</span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200   2)   &lt;img src=&quot;https://s3.amazonaws.com/ohmyzsh/oh-my-zsh-logo.png&quot; alt=&quot;Oh My Zsh&quot;&gt;</span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200   3) &lt;/p&gt;</span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200   4) </span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200   5) Oh My Zsh is an open source, community-driven framework for managing your [zsh](https://www.zsh.org/) configuration.</span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200   6) </span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200   7) Sounds boring. Let&apos;s try again.</span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200   8) </span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200   9) _Oh My Zsh will not make you a 10x developer...but you might feel like one.__</span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200  10) </span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200  11) Once installed, your terminal shell will become the talk of the town _or your money back!_ With each keystroke in your command prompt, you&apos;ll take advantage of the hundreds of powerful plugins and beautiful themes. Strangers will come up to you in cafés and ask you, _&quot;that is amazing! are you some sort of genius?&quot;_</span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200  12) </span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200  13) Finally, you&apos;ll begin to get the sort of attention that you have always felt you deserved. ...or maybe you&apos;ll use the time that you&apos;re saving to start flossing more often. 😬</span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200  14) </span><br><span class="line">^9544316 (Lars Schneider 2018-07-24 22:55:48 +0200  15) To learn more, visit [ohmyz.sh](https://ohmyz.sh) and follow [@ohmyzsh](https://twitter.com/ohmyzsh) on Twitter.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上面的例子是<code>oh-my-zsh</code>中README的部分输出</p>
+</blockquote>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/2018/08/22/git-skill/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
         <article itemscope itemtype="http://schema.org/Article">
   
   
@@ -632,83 +714,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2018/05/23/django-some-blank/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2018/05/23/django-some-blank/" class="post-title-link" itemprop="url">Django与Django REST Framework中的这些"空"</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2018-05-23 23:55:11" itemprop="dateCreated datePublished" datetime="2018-05-23T23:55:11+08:00">2018-05-23</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="0X00-Django-Model中的空"><a href="#0X00-Django-Model中的空" class="headerlink" title="0X00 Django Model中的空"></a>0X00 Django Model中的空</h1><p>Django的Model常见两个与空有关的参数：<code>null</code>和<code>blank</code>。其中<code>null</code>是数据库层面的是否允许为Null，而<code>blank</code>则将空处理为空值。比如一个<code>CharField</code>的<code>blank=True</code>，那么这个字段在没有赋值的情况下入库，这个字段就会是空字符串而不是Null。</p>
-          <!--noindex-->
-          
-            <div class="post-button">
-              <a class="btn" href="/2018/05/23/django-some-blank/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -762,7 +767,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">101</span>
+          <span class="site-state-item-count">102</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
