@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.just666.com/2020/07/04/cas-sso/</loc>
+    
+    <lastmod>2020-07-04T07:46:28.263Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.just666.com/2020/06/30/why-django-need-uwsgi/</loc>
     
     <lastmod>2020-06-30T15:47:38.768Z</lastmod>
@@ -436,13 +443,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/03/17/c-language-bool-type/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2015/10/19/c-push-box/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -450,14 +450,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2018/02/15/docker-load-save/</loc>
+    <loc>https://blog.just666.com/2015/03/17/c-language-bool-type/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/11/16/filesystem/</loc>
+    <loc>https://blog.just666.com/2018/02/15/docker-load-save/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -472,6 +472,13 @@
   
   <url>
     <loc>https://blog.just666.com/2017/06/03/flask-build-api/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/11/16/filesystem/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -520,13 +527,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/06/09/linux-dirtree/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2016/05/11/linux-ln/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -534,7 +534,28 @@
   </url>
   
   <url>
+    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2015/06/09/linux-dirtree/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.just666.com/2016/12/15/linux-mysql-chinese/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/06/12/linux-nfs/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -549,20 +570,6 @@
   
   <url>
     <loc>https://blog.just666.com/2016/10/28/linux-nmcli-ip/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/06/12/linux-nfs/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -597,13 +604,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2016/09/13/python-dict/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -611,7 +611,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/01/01/python-function/</loc>
+    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -619,6 +619,13 @@
   
   <url>
     <loc>https://blog.just666.com/2016/10/27/python-execption/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2017/01/01/python-function/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     

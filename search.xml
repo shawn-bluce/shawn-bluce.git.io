@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>Cas_sso</title>
+      <link href="/2020/07/04/cas-sso/"/>
+      <url>/2020/07/04/cas-sso/</url>
+      
+        <content type="html"><![CDATA[<h1 id="0X00-网站怎么登陆"><a href="#0X00-网站怎么登陆" class="headerlink" title="0X00 网站怎么登陆"></a>0X00 网站怎么登陆</h1><p>回忆一下你用过的网站们，一般都是怎么登陆的？ “就输入用户名密码登陆呗，要么就扫码登录，要么手机验证码登录，还能有啥”。确实没啥，咱们平时用到的登录方式也就都是这样的，而且这些其实从原理上来说都是 <strong>证明你是你</strong> 的手段，用户名密码是通过“密码只有你自己知道”为前提的，扫码和验证码是以“手机一定在你自己手上，并且只有你自己能解锁”为前提的。所以其实用户名密码并不是登录的唯一方法，理论上能证明你是你的一切方法都可以用来做授权认证，所以我们可以看到除了密码，出现了扫码、短信邮箱验证码、指纹、人脸、声纹、虹膜巴拉巴拉的。</p><p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/ab-blog-2fa2.webp" alt="auth"></p><p>上面这些都是稳定靠谱的登录方式，我们来想另一个问题，你们有一个网站选用了用户名密码的方式登录，你和用户开开心心登录。后来你上线了另一个网站，你觉得用户该怎么登陆这个新网站呢？“新网站就再注册一次呀！”好的，用户又注册了一次。随着你们公司业务逐渐壮大，上线了 100 个网站，那用户要注册一百次吗？万一自己常用的用户名被占用了呢，岂不是 100 个网站可能会用 100 套不同的用户名密码？那用户可能就要骂娘了呦。</p><p>聪明的你可能会想到，既然现在这么流行微服务，我们把登录做一个微服务，所有系统的登陆都用这一套不就好了？</p><h1 id="0X01-这就是-SSO"><a href="#0X01-这就是-SSO" class="headerlink" title="0X01 这就是 SSO"></a>0X01 这就是 SSO</h1><p>那有一个好消息和一个坏消息，坏消息是，你以为的这个天才想法就是<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JTk2JUFFJUU0JUI4JTgwJUU3JTk5JUJCJUU1JTg1JUE1" title="https://zh.wikipedia.org/wiki/%E5%96%AE%E4%B8%80%E7%99%BB%E5%85%A5"> SSO（Single Sign On）<i class="fa fa-external-link"></i></span>单点登录，早就被人想到而且实现了很多遍了；好消息是，轮子很多，完全不用自己造，挑一个拿来用就好。</p><blockquote><p>单点登录（英语：Single sign-on，缩写为 SSO），又译为单一签入，一种对于许多相互关连，但是又是各自独立的软件系统，提供访问控制的属性。当拥有这项属性时，当用户登录时，就可以获取所有系统的访问权限，不用对每个单一系统都逐一登录。这项功能通常是以轻型目录访问协议（LDAP）来实现，在服务器上会将用户信息存储到LDAP数据库中。相同的，单一退出（single sign-off）就是指，只需要单一的退出动作，就可以结束对于多个系统的访问权限。  –维基百科</p></blockquote><a id="more"></a><p>SSO 简单来说就是当你有一堆系统需要登录的时候，通过一个登录服务将所有系统统筹起来的方案。在不用 SSO 的时候，登录一个系统是这样的：</p><ol><li>打开网站 A </li><li>A 网站发现你没有 token 或者 cookie，要求你登录</li><li>你输入用户名密码传递给 A 网站</li><li>A 网站通过核对发现用户名密码正确，给你下发一个 token 或者 cookie</li><li>你带着 token 或者 cookie 就可以正常访问了</li></ol><p>如果你要登录一家公司的 3 个系统，那就得重复上面流程三次，如果密码输入错了或者记混了用户名密码和网站的联系可能还会登录好多次。SSO 的存在不能解决你登陆一个系统的问题，但是能解决你登录多个系统的问题。</p><p>通常来说 SSO 的工作流程是这样的</p><ol><li>打开网站 A</li><li>A 网站发现你没有 token 或者 cookie，要求你登录，给你一个 302 跳转到 SSO 站点</li><li>你把用户名密码发给 SSO</li><li>SSO 认证通过后发给你 token，并且再通过 302 给你跳回刚才的网站</li><li>后面你就可以带着 token 正常访问了</li></ol><p>乍一看好像一步都没有少，反而程序上的实现还更复杂了，但是 SSO 的优势就在于再登录新系统的时候。如果这时候你要登录这家公司的 B 系统，在没有 SSO 的情况下就得重复上面的步骤，而且你还得重新输入用户名密码。但是在有 SSO 的情况下是这样的：</p><ol><li>你打开网站 B</li><li>B 网站发现你没有 token，要求你登录，给你一个 302 跳转到 SSO 站点</li><li>SSO 站点是同一个，所以你会带着 token 访问 SSO，这时候 SSO 就知道你登陆过了，就会给你一个用于网站 B 的 token，并且 302 跳转过去</li><li>你带着 token 正常访问 B 网站</li></ol><p>从条数上看没少什么，但是你会发现真正你人工在操作的就只是“打开 B 网站”而已，后面的都是程序在跳转。这样不仅成功实现了一套用户名面走天下的方案，还成功地给用户减小了登录多个系统的麻烦。</p><h1 id="0X02-CAS-SSO-如何工作"><a href="#0X02-CAS-SSO-如何工作" class="headerlink" title="0X02 CAS-SSO 如何工作"></a>0X02 CAS-SSO 如何工作</h1><p>那么 <span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU5JTlCJTg2JUU0JUI4JUFEJUU1JUJDJThGJUU4JUFFJUE0JUU4JUFGJTgxJUU2JTlDJThEJUU1JThBJUEx" title="https://zh.wikipedia.org/wiki/%E9%9B%86%E4%B8%AD%E5%BC%8F%E8%AE%A4%E8%AF%81%E6%9C%8D%E5%8A%A1">CAS<i class="fa fa-external-link"></i></span> 又是什么呢？</p><blockquote><p>集中式认证服务（英语：Central Authentication Service，缩写CAS）是一种针对万维网的单点登录协议。它的目的是允许一个用户访问多个应用程序，而只需向认证服务器提供一次凭证（如用户名和密码）。这样用户不仅不需在登陆web应用程序时重复认证，而且这些应用程序也无法获得密码等敏感信息。“CAS”也指实现了该协议的软件包。     –维基百科</p></blockquote><p>也就是说，CAS 是 SSO 的一种实现方式。它的工作流程是这样的：</p><p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200704145125.jpeg" alt="CAS"></p><ol><li>用户访问站点 A</li><li>网站 A 将请求重定向 CAS 服务器</li><li>用户在 CAS 处输入用户名密码，提交</li><li>CAS 认证通过，给用户发一个 token，并重定向回站点 A</li><li>用户将 CAS 给的 token 带到站点 A</li><li>站点 A 将 token 拿去 CAS 服务器核查（因为 站点 A 现在不知道用户是谁，自己也识别不了 token）</li><li>CAS 服务器核查通过，并将用户 A 的信息返回给站点 A（这时候站点 A 知道用户是谁了）</li><li>登录成功，可以正常使用 token 访问站点了</li></ol>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> sso </tag>
+            
+            <tag> cas </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>为什么 Django 需要uWSGI</title>
       <link href="/2020/06/30/why-django-need-uwsgi/"/>
       <url>/2020/06/30/why-django-need-uwsgi/</url>
@@ -60,11 +81,11 @@
       
         <tags>
             
-            <tag> Index </tag>
-            
             <tag> Python </tag>
             
             <tag> Django </tag>
+            
+            <tag> Index </tag>
             
         </tags>
       
@@ -567,11 +588,11 @@
       
         <tags>
             
-            <tag> Database </tag>
-            
             <tag> Python </tag>
             
             <tag> Django </tag>
+            
+            <tag> Database </tag>
             
         </tags>
       
@@ -814,11 +835,11 @@
       
         <tags>
             
-            <tag> Database </tag>
-            
             <tag> Python </tag>
             
             <tag> Django </tag>
+            
+            <tag> Database </tag>
             
         </tags>
       
@@ -984,11 +1005,11 @@
       
         <tags>
             
-            <tag> Database </tag>
-            
             <tag> Python </tag>
             
             <tag> Django </tag>
+            
+            <tag> Database </tag>
             
             <tag> Transaction </tag>
             

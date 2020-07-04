@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png?v=7.4.1">
+  <link rel="mask-icon" href="/favicon.png?v=7.4.1" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: true,
+    sidebar: {"position":"left","width":300,"display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: true,
+    lazyload: false,
+    pangu: true,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":"auto","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="0X00 网站怎么登陆回忆一下你用过的网站们，一般都是怎么登陆的？ “就输入用户名密码登陆呗，要么就扫码登录，要么手机验证码登录，还能有啥”。确实没啥，咱们平时用到的登录方式也就都是这样的，而且这些其实从原理上来说都是 证明你是你 的手段，用户名密码是通过“密码只有你自己知道”为前提的，扫码和验证码是以“手机一定在你自己手上，并且只有你自己能解锁”为前提的。所以其实用户名密码并不是登录的唯一方法，">
+<meta name="keywords" content="sso,cas">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cas_sso">
+<meta property="og:url" content="https://blog.just666.com/2020/07/04/cas-sso/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="0X00 网站怎么登陆回忆一下你用过的网站们，一般都是怎么登陆的？ “就输入用户名密码登陆呗，要么就扫码登录，要么手机验证码登录，还能有啥”。确实没啥，咱们平时用到的登录方式也就都是这样的，而且这些其实从原理上来说都是 证明你是你 的手段，用户名密码是通过“密码只有你自己知道”为前提的，扫码和验证码是以“手机一定在你自己手上，并且只有你自己能解锁”为前提的。所以其实用户名密码并不是登录的唯一方法，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/ab-blog-2fa2.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200704145125.jpeg">
+<meta property="og:updated_time" content="2020-07-04T07:46:28.263Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cas_sso">
+<meta name="twitter:description" content="0X00 网站怎么登陆回忆一下你用过的网站们，一般都是怎么登陆的？ “就输入用户名密码登陆呗，要么就扫码登录，要么手机验证码登录，还能有啥”。确实没啥，咱们平时用到的登录方式也就都是这样的，而且这些其实从原理上来说都是 证明你是你 的手段，用户名密码是通过“密码只有你自己知道”为前提的，扫码和验证码是以“手机一定在你自己手上，并且只有你自己能解锁”为前提的。所以其实用户名密码并不是登录的唯一方法，">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/ab-blog-2fa2.webp">
+  <link rel="canonical" href="https://blog.just666.com/2020/07/04/cas-sso/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Cas_sso | Shawn's Blog</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w"></script>
+  <script pjax>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shawn's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+          
+        
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">136</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">103</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-链接">
+      
+    
+      
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>链接</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="点这里没用，不信你试试" aria-label="点这里没用，不信你试试"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/07/04/cas-sso/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">Cas_sso
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-07-04 14:51:46" itemprop="dateCreated datePublished" datetime="2020-07-04T14:51:46+08:00">2020-07-04</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="0X00-网站怎么登陆"><a href="#0X00-网站怎么登陆" class="headerlink" title="0X00 网站怎么登陆"></a>0X00 网站怎么登陆</h1><p>回忆一下你用过的网站们，一般都是怎么登陆的？ “就输入用户名密码登陆呗，要么就扫码登录，要么手机验证码登录，还能有啥”。确实没啥，咱们平时用到的登录方式也就都是这样的，而且这些其实从原理上来说都是 <strong>证明你是你</strong> 的手段，用户名密码是通过“密码只有你自己知道”为前提的，扫码和验证码是以“手机一定在你自己手上，并且只有你自己能解锁”为前提的。所以其实用户名密码并不是登录的唯一方法，理论上能证明你是你的一切方法都可以用来做授权认证，所以我们可以看到除了密码，出现了扫码、短信邮箱验证码、指纹、人脸、声纹、虹膜巴拉巴拉的。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/ab-blog-2fa2.webp" alt="auth"></p>
+<p>上面这些都是稳定靠谱的登录方式，我们来想另一个问题，你们有一个网站选用了用户名密码的方式登录，你和用户开开心心登录。后来你上线了另一个网站，你觉得用户该怎么登陆这个新网站呢？“新网站就再注册一次呀！”好的，用户又注册了一次。随着你们公司业务逐渐壮大，上线了 100 个网站，那用户要注册一百次吗？万一自己常用的用户名被占用了呢，岂不是 100 个网站可能会用 100 套不同的用户名密码？那用户可能就要骂娘了呦。</p>
+<p>聪明的你可能会想到，既然现在这么流行微服务，我们把登录做一个微服务，所有系统的登陆都用这一套不就好了？</p>
+<h1 id="0X01-这就是-SSO"><a href="#0X01-这就是-SSO" class="headerlink" title="0X01 这就是 SSO"></a>0X01 这就是 SSO</h1><p>那有一个好消息和一个坏消息，坏消息是，你以为的这个天才想法就是<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JTk2JUFFJUU0JUI4JTgwJUU3JTk5JUJCJUU1JTg1JUE1" title="https://zh.wikipedia.org/wiki/%E5%96%AE%E4%B8%80%E7%99%BB%E5%85%A5"> SSO（Single Sign On）<i class="fa fa-external-link"></i></span>单点登录，早就被人想到而且实现了很多遍了；好消息是，轮子很多，完全不用自己造，挑一个拿来用就好。</p>
+<blockquote>
+<p>单点登录（英语：Single sign-on，缩写为 SSO），又译为单一签入，一种对于许多相互关连，但是又是各自独立的软件系统，提供访问控制的属性。当拥有这项属性时，当用户登录时，就可以获取所有系统的访问权限，不用对每个单一系统都逐一登录。这项功能通常是以轻型目录访问协议（LDAP）来实现，在服务器上会将用户信息存储到LDAP数据库中。相同的，单一退出（single sign-off）就是指，只需要单一的退出动作，就可以结束对于多个系统的访问权限。  –维基百科</p>
+</blockquote>
+<a id="more"></a>
+<p>SSO 简单来说就是当你有一堆系统需要登录的时候，通过一个登录服务将所有系统统筹起来的方案。在不用 SSO 的时候，登录一个系统是这样的：</p>
+<ol>
+<li>打开网站 A </li>
+<li>A 网站发现你没有 token 或者 cookie，要求你登录</li>
+<li>你输入用户名密码传递给 A 网站</li>
+<li>A 网站通过核对发现用户名密码正确，给你下发一个 token 或者 cookie</li>
+<li>你带着 token 或者 cookie 就可以正常访问了</li>
+</ol>
+<p>如果你要登录一家公司的 3 个系统，那就得重复上面流程三次，如果密码输入错了或者记混了用户名密码和网站的联系可能还会登录好多次。SSO 的存在不能解决你登陆一个系统的问题，但是能解决你登录多个系统的问题。</p>
+<p>通常来说 SSO 的工作流程是这样的</p>
+<ol>
+<li>打开网站 A</li>
+<li>A 网站发现你没有 token 或者 cookie，要求你登录，给你一个 302 跳转到 SSO 站点</li>
+<li>你把用户名密码发给 SSO</li>
+<li>SSO 认证通过后发给你 token，并且再通过 302 给你跳回刚才的网站</li>
+<li>后面你就可以带着 token 正常访问了</li>
+</ol>
+<p>乍一看好像一步都没有少，反而程序上的实现还更复杂了，但是 SSO 的优势就在于再登录新系统的时候。如果这时候你要登录这家公司的 B 系统，在没有 SSO 的情况下就得重复上面的步骤，而且你还得重新输入用户名密码。但是在有 SSO 的情况下是这样的：</p>
+<ol>
+<li>你打开网站 B</li>
+<li>B 网站发现你没有 token，要求你登录，给你一个 302 跳转到 SSO 站点</li>
+<li>SSO 站点是同一个，所以你会带着 token 访问 SSO，这时候 SSO 就知道你登陆过了，就会给你一个用于网站 B 的 token，并且 302 跳转过去</li>
+<li>你带着 token 正常访问 B 网站</li>
+</ol>
+<p>从条数上看没少什么，但是你会发现真正你人工在操作的就只是“打开 B 网站”而已，后面的都是程序在跳转。这样不仅成功实现了一套用户名面走天下的方案，还成功地给用户减小了登录多个系统的麻烦。</p>
+<h1 id="0X02-CAS-SSO-如何工作"><a href="#0X02-CAS-SSO-如何工作" class="headerlink" title="0X02 CAS-SSO 如何工作"></a>0X02 CAS-SSO 如何工作</h1><p>那么 <span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU5JTlCJTg2JUU0JUI4JUFEJUU1JUJDJThGJUU4JUFFJUE0JUU4JUFGJTgxJUU2JTlDJThEJUU1JThBJUEx" title="https://zh.wikipedia.org/wiki/%E9%9B%86%E4%B8%AD%E5%BC%8F%E8%AE%A4%E8%AF%81%E6%9C%8D%E5%8A%A1">CAS<i class="fa fa-external-link"></i></span> 又是什么呢？</p>
+<blockquote>
+<p>集中式认证服务（英语：Central Authentication Service，缩写CAS）是一种针对万维网的单点登录协议。它的目的是允许一个用户访问多个应用程序，而只需向认证服务器提供一次凭证（如用户名和密码）。这样用户不仅不需在登陆web应用程序时重复认证，而且这些应用程序也无法获得密码等敏感信息。“CAS”也指实现了该协议的软件包。     –维基百科</p>
+</blockquote>
+<p>也就是说，CAS 是 SSO 的一种实现方式。它的工作流程是这样的：</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200704145125.jpeg" alt="CAS"></p>
+<ol>
+<li>用户访问站点 A</li>
+<li>网站 A 将请求重定向 CAS 服务器</li>
+<li>用户在 CAS 处输入用户名密码，提交</li>
+<li>CAS 认证通过，给用户发一个 token，并重定向回站点 A</li>
+<li>用户将 CAS 给的 token 带到站点 A</li>
+<li>站点 A 将 token 拿去 CAS 服务器核查（因为 站点 A 现在不知道用户是谁，自己也识别不了 token）</li>
+<li>CAS 服务器核查通过，并将用户 A 的信息返回给站点 A（这时候站点 A 知道用户是谁了）</li>
+<li>登录成功，可以正常使用 token 访问站点了</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>觉得写的还凑合可以请我喝杯肥宅快乐水喔</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.08.png" alt="Shawn 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.37.png" alt="Shawn 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Shawn</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.just666.com/2020/07/04/cas-sso/" title="Cas_sso">https://blog.just666.com/2020/07/04/cas-sso/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/sso/" rel="tag"><i class="fa fa-tag"></i> sso</a>
+            
+              <a href="/tags/cas/" rel="tag"><i class="fa fa-tag"></i> cas</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/06/30/why-django-need-uwsgi/" rel="next" title="为什么 Django 需要uWSGI">
+                  <i class="fa fa-chevron-left"></i> 为什么 Django 需要uWSGI
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-网站怎么登陆"><span class="nav-text">0X00 网站怎么登陆</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-这就是-SSO"><span class="nav-text">0X01 这就是 SSO</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-CAS-SSO-如何工作"><span class="nav-text">0X02 CAS-SSO 如何工作</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/naruto.png"
+      alt="Shawn">
+  <p class="site-author-name" itemprop="name">Shawn</p>
+  <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">103</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">136</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="GitHub &rarr; https://github.com/shawn-bluce"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="bWFpbHRvOnNoYXduYmx1Y2VAZ21haWwuY29t" title="E-Mail &rarr; mailto:shawnbluce@gmail.com"><i class="fa fa-fw fa-inbox"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zcGFjZS5iaWxpYmlsaS5jb20vMTUzODc5MTc=" title="Bilibili &rarr; https://space.bilibili.com/15387917"><i class="fa fa-fw fa-video-camera"></i></span>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy84OTY5ODc1L3NoYXdu" title="StackOverflow &rarr; https://stackoverflow.com/users/8969875/shawn"><i class="fa fa-fw fa-stack-overflow"></i></span>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn </br> 月亮很圆，圆也没用，没用也圆</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Pisces</span> v7.4.1</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.staticfile.org/animejs/2.2.0/anime.min.js"></script>
+  <script src="//cdn.staticfile.org/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var id = element.id || '';
+    var src = element.src || '';
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (id !=='') {
+      script.id = element.id;
+    }
+    if (src !== '') {
+      script.src = src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+    </div>
+</body>
+</html>
