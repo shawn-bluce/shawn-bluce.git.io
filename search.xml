@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title>Cas_sso</title>
+      <title>SSO 与 CAS</title>
       <link href="/2020/07/04/cas-sso/"/>
       <url>/2020/07/04/cas-sso/</url>
       
@@ -14,9 +14,9 @@
       
         <tags>
             
-            <tag> sso </tag>
+            <tag> SSO </tag>
             
-            <tag> cas </tag>
+            <tag> CAS </tag>
             
         </tags>
       
@@ -81,11 +81,11 @@
       
         <tags>
             
-            <tag> Python </tag>
+            <tag> Index </tag>
             
             <tag> Django </tag>
             
-            <tag> Index </tag>
+            <tag> Python </tag>
             
         </tags>
       
@@ -152,9 +152,9 @@
             
             <tag> Linux </tag>
             
-            <tag> Python </tag>
-            
             <tag> Django </tag>
+            
+            <tag> Python </tag>
             
             <tag> MySQL </tag>
             
@@ -265,9 +265,9 @@
       
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> Django </tag>
+            
+            <tag> Python </tag>
             
             <tag> RabbitMQ </tag>
             
@@ -290,9 +290,9 @@
       
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> Django </tag>
+            
+            <tag> Python </tag>
             
         </tags>
       
@@ -382,9 +382,9 @@
       
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> Django </tag>
+            
+            <tag> Python </tag>
             
             <tag> Single </tag>
             
@@ -588,11 +588,11 @@
       
         <tags>
             
-            <tag> Python </tag>
+            <tag> Database </tag>
             
             <tag> Django </tag>
             
-            <tag> Database </tag>
+            <tag> Python </tag>
             
         </tags>
       
@@ -766,9 +766,9 @@
       
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> Django </tag>
+            
+            <tag> Python </tag>
             
             <tag> Django REST framework </tag>
             
@@ -835,11 +835,11 @@
       
         <tags>
             
-            <tag> Python </tag>
+            <tag> Database </tag>
             
             <tag> Django </tag>
             
-            <tag> Database </tag>
+            <tag> Python </tag>
             
         </tags>
       
@@ -881,9 +881,9 @@
       
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> Django </tag>
+            
+            <tag> Python </tag>
             
         </tags>
       
@@ -978,9 +978,9 @@
       
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> Django </tag>
+            
+            <tag> Python </tag>
             
             <tag> Docker </tag>
             
@@ -1005,11 +1005,11 @@
       
         <tags>
             
-            <tag> Python </tag>
+            <tag> Database </tag>
             
             <tag> Django </tag>
             
-            <tag> Database </tag>
+            <tag> Python </tag>
             
             <tag> Transaction </tag>
             
@@ -1030,9 +1030,9 @@
       
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> Django </tag>
+            
+            <tag> Python </tag>
             
             <tag> Django REST framework </tag>
             
@@ -1053,9 +1053,9 @@
       
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> Django </tag>
+            
+            <tag> Python </tag>
             
             <tag> Django REST framework </tag>
             
@@ -1076,9 +1076,9 @@
       
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> Django </tag>
+            
+            <tag> Python </tag>
             
         </tags>
       
@@ -1202,9 +1202,9 @@
       
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> Django </tag>
+            
+            <tag> Python </tag>
             
             <tag> uWSGI </tag>
             
