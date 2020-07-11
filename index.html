@@ -383,7 +383,8 @@
 <p>这种方式仍然比较 young 比较 simple 比较 naive，不过<strong>又不是不能用</strong>。<br><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200711151128.jpeg" alt></p>
 <p>但是这种用法显然是不好的，而且 <code>update</code> 本来也不是让我们这么用的。所以我们还是得回到<code>save</code>上，Django 其实已经提供了一个参数给 <code>save</code> 了，可以用下面这种方法</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> student <span class="keyword">in</span> queryset:</span><br><span class="line">    student.score = calculate_score(student)</span><br><span class="line">    student.save(update_fields=[<span class="string">'score'</span>])</span><br></pre></td></tr></table></figure>
-<p>也就是在 <code>save</code> 的时候带上具体需要更新哪个字段，其他的就不更新了。</p>
+<p>也就是在 <code>save</code> 的时候带上具体需要更新哪个字段，其他的就不更新了。而且通过传递的参数也可以看出，指定的是多个字段，如果有需要修改多个字段的话，就只修改这一个就好了。</p>
+<p>不过其实这里还是有一个潜在问题的，那就是说：恰好我们在更新 score 的时候，其他地方也在更新这个。不过这个更多的时候就是我们程序逻辑的问题了，因为在几乎同一时间对一个字段进行修改，然后修改的双方又互相不知道的话，总是会出问题的。</p>
 
         
       

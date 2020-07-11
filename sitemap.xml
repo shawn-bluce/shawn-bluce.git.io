@@ -4,7 +4,7 @@
   <url>
     <loc>https://blog.just666.com/2020/07/11/django-save/</loc>
     
-    <lastmod>2020-07-11T07:33:59.046Z</lastmod>
+    <lastmod>2020-07-11T16:02:17.720Z</lastmod>
     
   </url>
   
@@ -527,13 +527,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/11/02/linux-crontab/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2016/05/12/linux-dhcp-server/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -542,6 +535,27 @@
   
   <url>
     <loc>https://blog.just666.com/2015/06/09/linux-dirtree/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/11/02/linux-crontab/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/12/15/linux-mysql-chinese/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/11/20/linux-mysql-dump/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -562,27 +576,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/12/15/linux-mysql-chinese/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/06/12/linux-nfs/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/11/20/linux-mysql-dump/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2016/10/28/linux-nmcli-ip/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -591,6 +584,13 @@
   
   <url>
     <loc>https://blog.just666.com/2016/05/28/linux-swap-virtualmemery/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/06/12/linux-nfs/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -618,14 +618,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/09/13/python-dict/</loc>
+    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
+    <loc>https://blog.just666.com/2016/09/13/python-dict/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -674,14 +674,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/01/31/python-magic-5/</loc>
+    <loc>https://blog.just666.com/2017/01/24/python-magic-4/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/01/24/python-magic-4/</loc>
+    <loc>https://blog.just666.com/2017/01/31/python-magic-5/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -702,14 +702,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/12/23/python-pyc/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2017/06/13/python-rabbitmq/</loc>
+    <loc>https://blog.just666.com/2016/09/14/python-oop/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -723,7 +716,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/09/14/python-oop/</loc>
+    <loc>https://blog.just666.com/2017/06/13/python-rabbitmq/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2017/12/23/python-pyc/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -758,14 +758,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/404/index.html</loc>
+    <loc>https://blog.just666.com/archive/index.html</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/archive/index.html</loc>
+    <loc>https://blog.just666.com/404/index.html</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
