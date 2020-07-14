@@ -66,7 +66,7 @@
 <meta property="og:description" content="0X00 objects 是个啥想必所有用过 Django 的人都会用到 Django 自带的 ORM 进行数据库查询。那既然用过 Django 的 ORM 就来看一下这段代码好了， models.Stuent.objects.filter(name=&amp;#39;Shawn&amp;#39;) 这段代码是什么意思呢？很简单，就是查询到名字为”Shawn”的学生信息。具体来说， models 应该是一个放了多">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200714212410.png">
-<meta property="og:updated_time" content="2020-07-14T14:21:31.120Z">
+<meta property="og:updated_time" content="2020-07-14T14:24:02.242Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Django 中的 Objects">
 <meta name="twitter:description" content="0X00 objects 是个啥想必所有用过 Django 的人都会用到 Django 自带的 ORM 进行数据库查询。那既然用过 Django 的 ORM 就来看一下这段代码好了， models.Stuent.objects.filter(name=&amp;#39;Shawn&amp;#39;) 这段代码是什么意思呢？很简单，就是查询到名字为”Shawn”的学生信息。具体来说， models 应该是一个放了多">
@@ -374,6 +374,7 @@
 <p>A Manager is the interface through which database query operations are provided to Django models. At least one Manager exists for every model in a Django application.</p>
 </blockquote>
 <p>从 Django 文档得知“Manager 是 Django 用来进行数据库查询的一个接口，在 Django 应用中每个 model 都需要至少有一个 Manager”。</p>
+<a id="more"></a>
 <h1 id="0X01-Manager-的用法与自定义"><a href="#0X01-Manager-的用法与自定义" class="headerlink" title="0X01 Manager 的用法与自定义"></a>0X01 Manager 的用法与自定义</h1><p>我们正常来说用的 <code>filter/exclude/first/last</code> 这种查询都是用的 Manager，用法大家是都会用的，不过自定义的话就是另一回事儿了。我们假设有下面这个 model</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    name = models.CharField()</span><br><span class="line">    age = models.IntegerField()</span><br><span class="line">    gender = models.CharField()</span><br><span class="line">    birthday = models.DateField()</span><br><span class="line">    height = models.DecimalField()</span><br><span class="line">    weight = models.DecimalField()</span><br><span class="line">    remark = models.TextField()</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        verbose_name = <span class="string">'学生'</span></span><br></pre></td></tr></table></figure>
 <p>虽然我们没有手动指定 <code>objects</code>，但是其实已经从 <code>models.Model</code> 继承来了。如果我们非要手动指定的话，可以<code>objects = models.Manager()</code>。<strong>值得注意一点是，如果我们手动指定了 Manager 的话，Django 就不会再给我们一个可用的 objects 了。</strong> </p>

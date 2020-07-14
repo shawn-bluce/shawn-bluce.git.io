@@ -4,7 +4,7 @@
   <url>
     <loc>https://blog.just666.com/2020/07/14/django-manager/</loc>
     
-    <lastmod>2020-07-14T14:21:31.120Z</lastmod>
+    <lastmod>2020-07-14T14:24:02.242Z</lastmod>
     
   </url>
   
@@ -464,14 +464,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/03/17/c-language-bool-type/</loc>
+    <loc>https://blog.just666.com/2015/10/19/c-push-box/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/10/19/c-push-box/</loc>
+    <loc>https://blog.just666.com/2015/03/17/c-language-bool-type/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -548,6 +548,13 @@
   </url>
   
   <url>
+    <loc>https://blog.just666.com/2016/05/11/linux-ln/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.just666.com/2016/05/12/linux-dhcp-server/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -562,13 +569,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2016/11/20/linux-mysql-dump/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -576,7 +576,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/05/11/linux-ln/</loc>
+    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/06/12/linux-nfs/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -591,13 +598,6 @@
   
   <url>
     <loc>https://blog.just666.com/2016/05/28/linux-swap-virtualmemery/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/06/12/linux-nfs/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -625,14 +625,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/09/13/python-dict/</loc>
+    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
+    <loc>https://blog.just666.com/2016/09/13/python-dict/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -667,14 +667,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/01/19/python-magic-2/</loc>
+    <loc>https://blog.just666.com/2017/01/21/python-magic-3/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/01/21/python-magic-3/</loc>
+    <loc>https://blog.just666.com/2017/01/19/python-magic-2/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -709,14 +709,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/09/14/python-oop/</loc>
+    <loc>https://blog.just666.com/2017/12/23/python-pyc/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/12/23/python-pyc/</loc>
+    <loc>https://blog.just666.com/2016/09/14/python-oop/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
