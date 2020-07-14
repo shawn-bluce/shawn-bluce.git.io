@@ -218,7 +218,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">136</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">137</span></a>
 
   </li>
       
@@ -240,7 +240,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">105</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">106</span></a>
 
   </li>
       
@@ -314,6 +314,88 @@
           <div id="content" class="content">
             
   <div id="posts" class="posts-expand">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/06/28/django-export-csv/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2020/06/28/django-export-csv/" class="post-title-link" itemprop="url">Django 相对优雅地导出 CSV</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-28 22:40:42" itemprop="dateCreated datePublished" datetime="2020-06-28T22:40:42+08:00">2020-06-28</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><blockquote>
+<p>一见程序员，立刻想到 web 开发，立刻想到后台管理系统，立刻想到数据展示，立刻想到数据筛选筛选，立刻想到数据统计，立刻想到导出 Excel 表格。产品经理的想象惟在这一层能够如此跃进。      –鲁迅：我不是，我没有，别瞎说</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200628225253.jpg" alt="我不是，我没有，别瞎说啊"></p>
+<p>虽然上面这种说法有点夸张了，不过确实很多很多很多人在工作中遇到过不止一次的需要在一个 web 系统里添加一个”数据导出”的功能，而且通常都是导出成 csv 这种文件。自然我也遇到了很多很多很多次，也写过那种最蠢的手拼逗号的 csv 导出，还看过别人效果更好代码量更少的版本。也就在此总结一下具体这个 csv 导出该怎么搞才好。</p>
+<p>最蠢的方案可能就是我最早实习的时候写出来的那种手拼逗号的方案了，为了大家刚吃的早午晚饭着想，就不给大家看了，省得吐出来浪费粮食。真正用的比较多的是这么两种：一种是传统的拼接二维数组的方式来模拟表格，然后通过 Python 的 csv 库直接导出；另一种是使用 djcsv 来进行导出。下面来简单看一下嘞。</p>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/2020/06/28/django-export-csv/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
         <article itemscope itemtype="http://schema.org/Article">
   
   
@@ -657,92 +739,11 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/05/05/read-note/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/05/05/read-note/" class="post-title-link" itemprop="url">读书笔记？？</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2020-05-05 21:04:21" itemprop="dateCreated datePublished" datetime="2020-05-05T21:04:21+08:00">2020-05-05</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="0X00-为什么要记读书笔记"><a href="#0X00-为什么要记读书笔记" class="headerlink" title="0X00 为什么要记读书笔记"></a>0X00 为什么要记读书笔记</h1><p>本来我也是一个从来不记读书笔记的人，总觉得张无忌师傅的那个”都忘了吗？忘了就去吧”的神奇教诲很有道理，我也是一直都是看书看多少算多少，记住的就记住了，忘了也就忘了。即使这次开始记笔记也不是因为我要把看过的内容都记住，这完全不可能。</p>
-<p>那到底是什么原因让我开始记读书笔记了呢？”走神”。没错，就是走神。我看书的时候，尤其是自己没有那么大兴趣的书，我经常机械的读着书然后思路就飞到不知道哪里去了，可能是其他相关的知识、可能是海拉鲁大陆、可能是九界湖、也可能幻想着自己去悬崖边上的麦田里抓那些快要掉到悬崖下的小孩儿了。</p>
-<p>所以为了让自己不再继续走神下去，我决定做点什么。最开始的时候是尝试把自己看到的一切内容都真正的”读”出来，读出声来，但是后来发现这种方式不太适合我，每次一本正经得把书里的内容一个字一个字念出来都觉得很奇怪，像是小学生在上语文课一样。放弃读出声来的操作之后就想到了记笔记，目前看起来这种方案还是不错的。</p>
-<h1 id="0X01-我平时怎么记"><a href="#0X01-我平时怎么记" class="headerlink" title="0X01 我平时怎么记"></a>0X01 我平时怎么记</h1><p>我这里给出的方案只适用于跟我类似的朋友，如果你是认认真真读书然后想要整理大纲呀整理知识点呀之类的，那我的方案应该是帮不到你（不过也可以看看，万一呢）。我介绍的方案是我自己用过的，也就两种，很简单的。</p>
-<p>首先是实体笔记，也就是像在学校里那样，左右各一本，一边看一边记；目前我是用iPad来统筹了看书和记笔记，也就放下了纸质笔记本和用了好几年的kindle（现在他可以去做他的专职工作：泡面 了）。我自己用电脑的时候不管显示器多大我都很少分屏，但是到了iPad上开个分屏一边是Kindle app一边是godnotes，效率还是挺高的（这里庆幸一下之前纠结过后还是买了iPad Air，要是当时选择了iPad mini的话分屏记笔记怕不是记笔记得累死个人）。这张图就是我平时记笔记的时候（不要在意好不好看。什么？你说看不懂？我的笔记是给自己看的，你看不看得懂问题不大🤣）</p>
-          <!--noindex-->
-          
-            <div class="post-button">
-              <a class="btn" href="/2020/05/05/read-note/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -791,7 +792,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">105</span>
+          <span class="site-state-item-count">106</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -804,7 +805,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">136</span>
+        <span class="site-state-item-count">137</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>

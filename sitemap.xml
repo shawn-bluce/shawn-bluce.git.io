@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.just666.com/2020/07/14/django-manager/</loc>
+    
+    <lastmod>2020-07-14T14:21:31.120Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.just666.com/2020/07/11/django-save/</loc>
     
     <lastmod>2020-07-11T16:02:17.720Z</lastmod>
@@ -457,14 +464,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/10/19/c-push-box/</loc>
+    <loc>https://blog.just666.com/2015/03/17/c-language-bool-type/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2015/03/17/c-language-bool-type/</loc>
+    <loc>https://blog.just666.com/2015/10/19/c-push-box/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -527,7 +534,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/05/12/linux-dhcp-server/</loc>
+    <loc>https://blog.just666.com/2016/11/02/linux-crontab/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -541,7 +548,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/11/02/linux-crontab/</loc>
+    <loc>https://blog.just666.com/2016/05/12/linux-dhcp-server/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -549,6 +556,13 @@
   
   <url>
     <loc>https://blog.just666.com/2016/12/15/linux-mysql-chinese/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -563,13 +577,6 @@
   
   <url>
     <loc>https://blog.just666.com/2016/05/11/linux-ln/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -618,14 +625,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
+    <loc>https://blog.just666.com/2016/09/13/python-dict/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/09/13/python-dict/</loc>
+    <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -709,7 +716,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/09/05/python-str/</loc>
+    <loc>https://blog.just666.com/2017/12/23/python-pyc/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -723,7 +730,7 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/12/23/python-pyc/</loc>
+    <loc>https://blog.just666.com/2016/09/05/python-str/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -758,14 +765,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/archive/index.html</loc>
+    <loc>https://blog.just666.com/404/index.html</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/404/index.html</loc>
+    <loc>https://blog.just666.com/archive/index.html</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     

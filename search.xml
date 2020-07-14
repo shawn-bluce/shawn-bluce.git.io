@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>Django 中的 Objects</title>
+      <link href="/2020/07/14/django-manager/"/>
+      <url>/2020/07/14/django-manager/</url>
+      
+        <content type="html"><![CDATA[<h1 id="0X00-objects-是个啥"><a href="#0X00-objects-是个啥" class="headerlink" title="0X00 objects 是个啥"></a>0X00 objects 是个啥</h1><p>想必所有用过 Django 的人都会用到 Django 自带的 ORM 进行数据库查询。那既然用过 Django 的 ORM 就来看一下这段代码好了， <code>models.Stuent.objects.filter(name=&#39;Shawn&#39;)</code> 这段代码是什么意思呢？很简单，就是查询到名字为”Shawn”的学生信息。具体来说， <code>models</code> 应该是一个放了多个 model 的文件，<code>Student</code> 是一个具体的模型，<code>filter</code> 是筛选，<code>name=&#39;Shawn&#39;</code> 则是筛选条件。那么问题来了，中间那个 <code>objects</code> 是个啥呢？（你知道？知道还在这儿看啥，有这空看看其他文章，打打游戏看看电影不好吗🤣）</p><p>通过 <code>type</code> 可知，这个 <code>objects</code> 是一个 <code>django.db.models.manager.Manager</code> 的实例（或者是他子类的实例）。然后我们来看看这个<code>Manager</code>是个什么❓</p><p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200714212410.png" alt="Django ORM"></p><blockquote><p>A Manager is the interface through which database query operations are provided to Django models. At least one Manager exists for every model in a Django application.</p></blockquote><p>从 Django 文档得知“Manager 是 Django 用来进行数据库查询的一个接口，在 Django 应用中每个 model 都需要至少有一个 Manager”。</p><h1 id="0X01-Manager-的用法与自定义"><a href="#0X01-Manager-的用法与自定义" class="headerlink" title="0X01 Manager 的用法与自定义"></a>0X01 Manager 的用法与自定义</h1><p>我们正常来说用的 <code>filter/exclude/first/last</code> 这种查询都是用的 Manager，用法大家是都会用的，不过自定义的话就是另一回事儿了。我们假设有下面这个 model</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    name = models.CharField()</span><br><span class="line">    age = models.IntegerField()</span><br><span class="line">    gender = models.CharField()</span><br><span class="line">    birthday = models.DateField()</span><br><span class="line">    height = models.DecimalField()</span><br><span class="line">    weight = models.DecimalField()</span><br><span class="line">    remark = models.TextField()</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        verbose_name = <span class="string">'学生'</span></span><br></pre></td></tr></table></figure><p>虽然我们没有手动指定 <code>objects</code>，但是其实已经从 <code>models.Model</code> 继承来了。如果我们非要手动指定的话，可以<code>objects = models.Manager()</code>。<strong>值得注意一点是，如果我们手动指定了 Manager 的话，Django 就不会再给我们一个可用的 objects 了。</strong> </p><p>下面我们来说一下关于自定义 Manager 的方法，和什么时候需要自定义 Manager。通常来说，没有必须要用 Manager 才能完成的操作，但是很多时候利用自定义 Manager 会帮我们节省很多时间和代码。我们考虑这么一种情况，上面那个 model 定义了一个学生信息表，我们在系统里需要非常经常地使用“身高超过 180，且体重在 70 到 80 之间，且成年的男生；身高超过 170，且体重在 55 到 65 之间，且成年的女生；当天过生日的所有同学”这三种筛选条件。当然，最简单的方法就是每次使用的时候都去 <code>filter</code> 一遍，这也没错，不过这样就太奇怪了。稍微有点编程经验的可能会写出如下代码：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这函数名确实太长了，就不乱编了，三个函数对应上面三个查询</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_student_1</span><span class="params">()</span>:</span>   </span><br><span class="line">    <span class="keyword">return</span> Student.objects.filter(gender=<span class="string">'M'</span>, height__gt=<span class="number">180</span>, weight__range=(<span class="number">70</span>, <span class="number">80</span>), age__gte=<span class="number">18</span>)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_student_2</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> Student.object.filter(gender=<span class="string">'M'</span>, height__gt=<span class="number">170</span>, weight__range=(<span class="number">55</span>, <span class="number">65</span>), age__gte=<span class="number">18</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_student_3</span><span class="params">()</span>:</span></span><br><span class="line">    today = datetime.date.today()</span><br><span class="line">    <span class="keyword">return</span> Student.objects.filter(birthday__month=today.month, birthday__day=today.day)</span><br></pre></td></tr></table></figure><p>调用的时候每次都是 <code>studnet_1_queryset = get_student_1()</code>。尤其是如果要在这个基础上增加新的筛选条件，画风就会变成这样：<code>student_x_queryset = get_student_1().filter(xxxx).exclude(yyyyy)</code>。就…….也不是不行，不过看起来确实很奇怪，而且跟使用 Manager 的方式比起来也非常不 Pythonic。</p><p>如果使用使用 Manager 的方式编写的话就可以是下面这个样子：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpecialStudentManager</span><span class="params">(models.Manager)</span>:</span></span><br><span class="line">    <span class="comment"># 自定义一个方便获取这三种数据的 Manager</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">student_1</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.filter(gender=<span class="string">'M'</span>, height__gt=<span class="number">180</span>, weight__range=(<span class="number">70</span>, <span class="number">80</span>), age__gte=<span class="number">18</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">stuent_2</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.filter(gender=<span class="string">'M'</span>, height__gt=<span class="number">170</span>, weight__range=(<span class="number">55</span>, <span class="number">65</span>), age__gte=<span class="number">18</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">student_3</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.filter(birthday__month=today.month, birthday__day=today.day)</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    name = models.CharField()</span><br><span class="line">    age = models.IntegerField()</span><br><span class="line">    gender = models.CharField()</span><br><span class="line">    birthday = models.DateField()</span><br><span class="line">    height = models.DecimalField()</span><br><span class="line">    weight = models.DecimalField()</span><br><span class="line">    remark = models.TextField()</span><br><span class="line">    </span><br><span class="line">    objects = SpecialStudentManager()   <span class="comment"># model 这里就改了这一行</span></span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        verbose_name = <span class="string">'学生'</span></span><br></pre></td></tr></table></figure><blockquote><p>虽然改动了 Model 但是没有改动数据库表，所以不需要<code>migrations</code>。</p></blockquote><p>现在我们尝试调用一下上面定义的几个查询：<code>Student.objects.student_1()</code>这样就可以了，而且如果用<code>@property</code>装饰上面的方法的话，会更好一些。当然了，我们还可以扩展一下用法：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpecialStudentManager</span><span class="params">(models.Manager)</span>:</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">student_count</span><span class="params">(self)</span>:</span>    <span class="comment"># 所有学生人数</span></span><br><span class="line">        <span class="keyword">return</span> self.all().count()</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">student_name_list</span><span class="params">(self)</span>:</span>    <span class="comment"># 所有学生人名列表</span></span><br><span class="line">        <span class="keyword">return</span> list(self.all().values_list(<span class="string">'name'</span>, flat=<span class="literal">True</span>))</span><br></pre></td></tr></table></figure><p>不过可以看出来，正如上面所说“一切用自定义 Manager 实现的功能，都可以不用自定义 Manager 实现”，但是自定义 Manager 的做法也确实让我们的代码更清晰明了，后面改起来也更舒服（不用为了一个常用的筛选去改多处代码），可读性也更高了。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Django </tag>
+            
+            <tag> manager </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>记一次 Django Save 导致的数据异常</title>
       <link href="/2020/07/11/django-save/"/>
       <url>/2020/07/11/django-save/</url>
@@ -123,11 +144,11 @@
       
         <tags>
             
+            <tag> Index </tag>
+            
             <tag> Python </tag>
             
             <tag> Django </tag>
-            
-            <tag> Index </tag>
             
         </tags>
       
@@ -630,11 +651,11 @@
       
         <tags>
             
+            <tag> Database </tag>
+            
             <tag> Python </tag>
             
             <tag> Django </tag>
-            
-            <tag> Database </tag>
             
         </tags>
       
@@ -877,11 +898,11 @@
       
         <tags>
             
+            <tag> Database </tag>
+            
             <tag> Python </tag>
             
             <tag> Django </tag>
-            
-            <tag> Database </tag>
             
         </tags>
       
@@ -1047,11 +1068,11 @@
       
         <tags>
             
+            <tag> Database </tag>
+            
             <tag> Python </tag>
             
             <tag> Django </tag>
-            
-            <tag> Database </tag>
             
             <tag> Transaction </tag>
             
