@@ -60,7 +60,7 @@
   <meta name="description" content="0X00 使用 with as 语法我们写程序经常会操作文件，我们都知道写文件要 open/write/close ，尤其是 close ，没有的话文件就会出问题（有些内容在缓存里，没写入磁盘）。不过我们现在写文件应该没什么人这样写了，都是用with open(&amp;#39;filename&amp;#39;, &amp;#39;w&amp;#39;) as f的方式来操作文件了。如果说这样做的好处，那多数人都会说“不用手动">
 <meta name="keywords" content="Python,with,contentmanager">
 <meta property="og:type" content="article">
-<meta property="og:title" content="With Xxx as Xxx 与上下文管理器">
+<meta property="og:title" content="Python 上下文管理器">
 <meta property="og:url" content="https://blog.just666.com/2020/07/18/python-contextmanager/index.html">
 <meta property="og:site_name" content="Shawn&#39;s Blog">
 <meta property="og:description" content="0X00 使用 with as 语法我们写程序经常会操作文件，我们都知道写文件要 open/write/close ，尤其是 close ，没有的话文件就会出问题（有些内容在缓存里，没写入磁盘）。不过我们现在写文件应该没什么人这样写了，都是用with open(&amp;#39;filename&amp;#39;, &amp;#39;w&amp;#39;) as f的方式来操作文件了。如果说这样做的好处，那多数人都会说“不用手动">
@@ -68,9 +68,9 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200718142750.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200718142514.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200719105451.png">
-<meta property="og:updated_time" content="2020-07-19T03:46:08.074Z">
+<meta property="og:updated_time" content="2020-07-19T05:52:20.583Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="With Xxx as Xxx 与上下文管理器">
+<meta name="twitter:title" content="Python 上下文管理器">
 <meta name="twitter:description" content="0X00 使用 with as 语法我们写程序经常会操作文件，我们都知道写文件要 open/write/close ，尤其是 close ，没有的话文件就会出问题（有些内容在缓存里，没写入磁盘）。不过我们现在写文件应该没什么人这样写了，都是用with open(&amp;#39;filename&amp;#39;, &amp;#39;w&amp;#39;) as f的方式来操作文件了。如果说这样做的好处，那多数人都会说“不用手动">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200718142750.png">
   <link rel="canonical" href="https://blog.just666.com/2020/07/18/python-contextmanager/">
@@ -87,7 +87,7 @@
   };
 </script>
 
-  <title>With Xxx as Xxx 与上下文管理器 | Shawn's Blog</title>
+  <title>Python 上下文管理器 | Shawn's Blog</title>
   
   <script async src="https://www.googletagmanager.com/gtag/js?id=16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w"></script>
   <script pjax>
@@ -338,7 +338,7 @@
       <meta itemprop="name" content="Shawn's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">With Xxx as Xxx 与上下文管理器
+        <h2 class="post-title" itemprop="name headline">Python 上下文管理器
 
           
         </h2>
@@ -422,7 +422,7 @@
     <strong>本文作者： </strong>Shawn</li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.just666.com/2020/07/18/python-contextmanager/" title="With Xxx as Xxx 与上下文管理器">https://blog.just666.com/2020/07/18/python-contextmanager/</a>
+    <a href="https://blog.just666.com/2020/07/18/python-contextmanager/" title="Python 上下文管理器">https://blog.just666.com/2020/07/18/python-contextmanager/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li>
