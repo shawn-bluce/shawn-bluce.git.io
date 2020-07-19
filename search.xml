@@ -4,6 +4,29 @@
   
     
     <entry>
+      <title>With Xxx as Xxx 与上下文管理器</title>
+      <link href="/2020/07/18/python-contextmanager/"/>
+      <url>/2020/07/18/python-contextmanager/</url>
+      
+        <content type="html"><![CDATA[<h1 id="0X00-使用-with-as-语法"><a href="#0X00-使用-with-as-语法" class="headerlink" title="0X00 使用 with as 语法"></a>0X00 使用 with as 语法</h1><p>我们写程序经常会操作文件，我们都知道写文件要 <code>open/write/close</code> ，尤其是 <code>close</code> ，没有的话文件就会出问题（有些内容在缓存里，没写入磁盘）。不过我们现在写文件应该没什么人这样写了，都是用<code>with open(&#39;filename&#39;, &#39;w&#39;) as f</code>的方式来操作文件了。如果说这样做的好处，那多数人都会说“不用手动关闭文件了”，错肯定没错的。</p><p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200718142750.png" alt></p><p>上下比起来，上面的方式不仅多了一点点代码，而且随着中间逻辑代码变多，很可能会导致最后忘记 <code>close</code>，从而引发 bug。</p><h1 id="0X01-这就是上下文管理器"><a href="#0X01-这就是上下文管理器" class="headerlink" title="0X01 这就是上下文管理器"></a>0X01 这就是上下文管理器</h1><p>上面 <code>with xxx as xxx</code> 的调用方式就是在调用上下文管理器。简单来说上下文管理器就是：在执行你编写的代码（with xxx as xxx后面那坨）之前，<strong>操作一波</strong>；再在你编写的代码执行完后，<strong>操作一波</strong>。我们简单理解一下就是在 <code>with open(&#39;file_name&#39;, &#39;w&#39;) as f</code> 内层缩进的代码执行完成后自动帮你执行了<code>f.close()</code>（当然没这么简单，有兴趣可以去看一下 open 的源码，但是大体逻辑是这样的）。</p><a id="more"></a><h1 id="0X02-自己实现一个"><a href="#0X02-自己实现一个" class="headerlink" title="0X02 自己实现一个"></a>0X02 自己实现一个</h1><p>说了半天，咱们自己来实现一个上下文管理器好了。自己实现一个上下文管理器跟实现一个其他东西不太一样，不用继承任何东西，就像实现一个迭代器一样，只需要满足自己的协议（也就是上下文管理器协议）就可以。而且好在这个协议极其简单，实现一个类只需要满足满足两个方法就可以：<code>__enter__</code> 和 <code>__exit__</code>。我们先来写个 demo 试试看。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomProtocolConnection</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, host, port)</span>:</span></span><br><span class="line">        print(<span class="string">'假装开始连接, '</span>, host, port)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__enter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入了 __enter__'</span>)</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, exception_type, exception_value, exception_traceback)</span>:</span>   <span class="comment"># 这个定义是固定的，必然接收三个参数</span></span><br><span class="line">        print(<span class="string">'进入了 __exit__'</span>)</span><br><span class="line">        self.close()    <span class="comment"># 没有定义，只是断开连接</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push_data</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        print(<span class="string">'假装在推数据：'</span>, data)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pull_data</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'假装收到了数据：'</span>, <span class="string">'hello,world'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">with</span> CustomProtocolConnection(<span class="string">'127.0.0.1'</span>, <span class="string">'2333'</span>) <span class="keyword">as</span> conn:</span><br><span class="line">        conn.push_data(<span class="string">'hello, world'</span>)</span><br><span class="line">        conn.pull_data()</span><br></pre></td></tr></table></figure><p>然后我们来看一下执行结果<br><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200718142514.png" alt></p><p>首先进行了常规的实例化；实例化之后执行了<code>__enter__</code>；然后执行我们自己编写的代码块；退出代码块之后执行了<code>__exit__</code>。我们可以看到上面定义<code>__exit__</code>的时候带了三个参数，看名字也看出来了，第一个参数是异常类型、第二个是异常的值（也就是错误消息）、第三个是异常的错误栈。如果我们在 <code>with xxx as xxx</code> 下面的代码块中出现异常了，那么异常会被捕获并传递到<code>__exit__</code>这里来，你可以根据情况来处理。这里不再展示具体如何处理异常了，大家可以手动触发异常然后在<code>__exit__</code>里打上断点来调试一下，很容易就能知道这里是怎么用的了。</p><p>实现一个上下文管理器不一定非要是类，一个函数照样可以（废话，<code>with open() as f</code> 不就是一个函数嘛）。我们可以来编写这样一个函数</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> contextlib</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomProtocolConnection</span>:</span>     <span class="comment"># 一个本来就有的类</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, host, port)</span>:</span></span><br><span class="line">        print(<span class="string">'假装开始连接, '</span>, host, port)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push_data</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        print(<span class="string">'假装在推数据：'</span>, data)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pull_data</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'假装收到了数据：'</span>, <span class="string">'hello, world'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@contextlib.contextmanager      # 用 contextmanager 装饰器使这个方法成为上下文管理器</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">connect_2_server</span><span class="params">(host, port)</span>:</span></span><br><span class="line">    conn = CustomProtocolConnection(host, port)</span><br><span class="line">    print(<span class="string">'进入了 __enter__'</span>)  <span class="comment"># 并不是真正的 __enter__ 方法，但是有同样的效果</span></span><br><span class="line">    <span class="keyword">yield</span> conn</span><br><span class="line">    print(<span class="string">'进入了 __exit__'</span>)   <span class="comment"># 同理，并不是真正的 __exit__ 方法，但是又相同的效果</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> connect_2_server(<span class="string">'127.0.0.1'</span>, <span class="string">'2333'</span>) <span class="keyword">as</span> conn:</span><br><span class="line">    conn.push_data(<span class="string">'hello, world'</span>)</span><br><span class="line">    conn.pull_data()</span><br></pre></td></tr></table></figure><p>一个带有 <code>yield</code> 的函数是一个生成器，不过因为 <code>contentlib.contentmanager</code> 装饰器的作用，使它现在是一个上下文管理器了。以 <code>yield</code> 为界限，<code>yield</code> 之前的内容可以理解成是 <code>__enter__</code> 方法，后面的可以理解成是 <code>__exit__</code> 方法，由 <code>yield</code> 返回的那个值就是我们 <code>with connect_2_server as conn</code> 的 conn 了。我们来看一下这坨代码的运行结果，可以看到跟上面的效果是一样的。这两种方式其实是适用于不同的场景的，第一种直接编写 class 的方式适用于从零开始实现一个东西，这种就可以直接将其定义为上下文管理器，用起来比较方便；第二种通过装饰器实现一个额外的 function 的方式适用于在现有的代码块基础上实现上下文管理器，可以做到不侵入现有代码还实现所需功能的需求。<br><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200719105451.png" alt></p><h1 id="0X03-什么时候用"><a href="#0X03-什么时候用" class="headerlink" title="0X03 什么时候用"></a>0X03 什么时候用</h1><p>现在搞明白上下文管理器是什么了，也知道自己怎么才能实现一个上下文管理器了，那么什么时候才会用到这种东西呢？其实我们的操作很多时候都是可以用到的，只不过这个东西从来都不是必须的，很多情况下大家都绕开或者用了更麻烦一点的方式实现了。</p><p>首先，就像上面的自定义协议的通信一样，先要连接最后断开的情况就可以使用这种方式；比如要发起一大波 HTTP 请求，但是需要登录，就可以用这种方式实现自动登录和自动注销；再比如做数据统计或者导出，开始前要将数据整理一波，统计导出结束后再将结果邮件发送到指定邮箱，这种也是可以的。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+            <tag> with </tag>
+            
+            <tag> contentmanager </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Django 中的 Objects</title>
       <link href="/2020/07/14/django-manager/"/>
       <url>/2020/07/14/django-manager/</url>
@@ -144,11 +167,11 @@
       
         <tags>
             
+            <tag> Index </tag>
+            
             <tag> Python </tag>
             
             <tag> Django </tag>
-            
-            <tag> Index </tag>
             
         </tags>
       
@@ -651,11 +674,11 @@
       
         <tags>
             
+            <tag> Database </tag>
+            
             <tag> Python </tag>
             
             <tag> Django </tag>
-            
-            <tag> Database </tag>
             
         </tags>
       
@@ -898,11 +921,11 @@
       
         <tags>
             
+            <tag> Database </tag>
+            
             <tag> Python </tag>
             
             <tag> Django </tag>
-            
-            <tag> Database </tag>
             
         </tags>
       
@@ -1068,11 +1091,11 @@
       
         <tags>
             
+            <tag> Database </tag>
+            
             <tag> Python </tag>
             
             <tag> Django </tag>
-            
-            <tag> Database </tag>
             
             <tag> Transaction </tag>
             

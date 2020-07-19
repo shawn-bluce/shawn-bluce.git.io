@@ -218,7 +218,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">137</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">139</span></a>
 
   </li>
       
@@ -240,7 +240,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">106</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">107</span></a>
 
   </li>
       
@@ -314,6 +314,86 @@
           <div id="content" class="content">
             
   <div id="posts" class="posts-expand">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2017/02/13/java-str/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2017/02/13/java-str/" class="post-title-link" itemprop="url">Java中的字符串</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2017-02-13 14:48:00" itemprop="dateCreated datePublished" datetime="2017-02-13T14:48:00+08:00">2017-02-13</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>String类中每一个看起来会修改String值得方法，实际上都是创建了一个全新的String对象，以包含修改后的字符串内容。而最初的String对象则丝毫未动。   —《Java编程思想》第13章</p>
+</blockquote>
+<h1 id="0X00-String常量池"><a href="#0X00-String常量池" class="headerlink" title="0X00 String常量池"></a>0X00 String常量池</h1><p>如果使用常用的方式定义两个内容完全一样的字符串，那么Java使用常量的方式，也就是说第二个字符串并没有生成一个对象而是引用了之前的字符串，导致他们的本质是一样的，所以当使用<code>==</code>判断两个字符串对象是否是同一个对象的时候，会显示是同一个对象。但是如果我们每次声明一个字符串的时候使用<code>new String()</code>的方式，则会每次创建一个String对象，两者就不是同一个对象了。</p>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/2017/02/13/java-str/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
         <article itemscope itemtype="http://schema.org/Article">
   
   
@@ -632,87 +712,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2017/01/15/python-magic-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2017/01/15/python-magic-1/" class="post-title-link" itemprop="url">Python 奇技淫巧 (一) 列表、集合、字典</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2017-01-15 15:08:00" itemprop="dateCreated datePublished" datetime="2017-01-15T15:08:00+08:00">2017-01-15</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<h3 id="文章中的代码仅在Python3中测试成功，没有在Python2中测试。"><a href="#文章中的代码仅在Python3中测试成功，没有在Python2中测试。" class="headerlink" title="文章中的代码仅在Python3中测试成功，没有在Python2中测试。"></a>文章中的代码仅在Python3中测试成功，没有在Python2中测试。</h3></blockquote>
-<h1 id="0X00-表达式"><a href="#0X00-表达式" class="headerlink" title="0X00 *表达式"></a>0X00 *表达式</h1><p>从某个可迭代对象中分解出N个元素，但是这个可迭代的对象可能会超过N，会出现too many values to unpack异常。</p>
-<p>比如我这儿有N个统计信息，因为第一次和最后一次的信息不准确需要删除掉，而将中间的信息保留下来，那么就可以这么弄。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    grade = [<span class="number">23</span>, <span class="number">45</span>, <span class="number">42</span>, <span class="number">45</span>, <span class="number">78</span>, <span class="number">98</span>, <span class="number">89</span>, <span class="number">97</span>, <span class="number">69</span>, <span class="number">77</span>, <span class="number">88</span>, <span class="number">50</span>, <span class="number">65</span>, <span class="number">99</span>, <span class="number">98</span>]</span><br><span class="line">    first, *new_grade, last = grade</span><br><span class="line">    print(new_grade)</span><br></pre></td></tr></table></figure></p>
-<p>这里的赋值就是将第一个和最后一个赋给了first和last，而中间的给了new_grade</p>
-          <!--noindex-->
-          
-            <div class="post-button">
-              <a class="btn" href="/2017/01/15/python-magic-1/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -766,7 +765,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-count">107</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -779,7 +778,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">137</span>
+        <span class="site-state-item-count">139</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>

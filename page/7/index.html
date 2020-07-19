@@ -218,7 +218,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">137</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">139</span></a>
 
   </li>
       
@@ -240,7 +240,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">106</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">107</span></a>
 
   </li>
       
@@ -314,6 +314,85 @@
           <div id="content" class="content">
             
   <div id="posts" class="posts-expand">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2019/05/12/django-2-query/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/05/12/django-2-query/" class="post-title-link" itemprop="url">使用Django中的select_related和prefetch_related优化查询</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-12 21:59:57" itemprop="dateCreated datePublished" datetime="2019-05-12T21:59:57+08:00">2019-05-12</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>没有什么前言，只有一个数据库模型，下面的代码使用这个模型拿来测试。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Major</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    name = models.CharField(</span><br><span class="line">        <span class="string">'名字'</span>,</span><br><span class="line">        max_length=<span class="number">100</span>,</span><br><span class="line">        blank=<span class="literal">True</span>,</span><br><span class="line">        null=<span class="literal">True</span>,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    name = models.CharField(</span><br><span class="line">        <span class="string">'名字'</span>,</span><br><span class="line">        max_length=<span class="number">100</span>,</span><br><span class="line">        blank=<span class="literal">True</span>,</span><br><span class="line">        null=<span class="literal">True</span>,</span><br><span class="line">    )</span><br><span class="line">    select_major = models.ForeignKey(</span><br><span class="line">        Major,</span><br><span class="line">        verbose_name=<span class="string">'专业'</span>,</span><br><span class="line">        on_delete=models.SET_NULL,</span><br><span class="line">        blank=<span class="literal">True</span>,</span><br><span class="line">        null=<span class="literal">True</span>,</span><br><span class="line">        related_name=<span class="string">'main_student'</span>,</span><br><span class="line">    )</span><br><span class="line">    ext_major = models.ManyToManyField(</span><br><span class="line">        Major,</span><br><span class="line">        verbose_name=<span class="string">'附加专业'</span>,</span><br><span class="line">        related_name=<span class="string">'ext_student'</span>,</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+<p>我们先假设Major表存在10条数据，而Student表存在1万条数据。</p>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/2019/05/12/django-2-query/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
         <article itemscope itemtype="http://schema.org/Article">
   
   
@@ -650,88 +729,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2018/11/22/using-vps/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2018/11/22/using-vps/" class="post-title-link" itemprop="url">把自己的VPS/Server用起来</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2018-11-22 21:02:14" itemprop="dateCreated datePublished" datetime="2018-11-22T21:02:14+08:00">2018-11-22</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>好多人的VPS或是服务器就只跑了一个小服务或是小程序，虽然我们多数人的VPS性能比较差但是只跑一个小服务一个小程序未免还是有些浪费。大可将其充分利用起来，毕竟性能再差也是一个24小时不停机且带有一个独立公网IP的机器。这里我介绍一下我跑在VPS上的一些服务和使用中的一些经验和建议，希望可以给各位带来些许的帮助吧。</p>
-<h1 id="0X00-操作系统"><a href="#0X00-操作系统" class="headerlink" title="0X00 操作系统"></a>0X00 操作系统</h1><p>通常我们自己的VPS性能都不怎么强，很多人都是买的单核512M内存的，所以Windows Server系统通常是不用想了。那么众多的Linux发行版本又该如何选择呢？其实因为我们是个人使用，不用过分考虑发行版本的区别，哪个用着习惯就用哪个。我自己的VPS用过一段时间的Fedora和Debian，都是很不错的。如果是针对Linux新手的话我还是比较建议使用Ubuntu和CentOS，因为这两个系统的用户群体很大，出现问题时候在网络上也更容易找到相关的解决方案。</p>
-<p>还有就是图形界面，Linux作为服务器操作系统时是完全没有必要安装图形界面的。想必购买了VPS的用户应该也多少能操作一下Linux，就更没有必要浪费系统资源和时间去安装图形界面和VNC了。</p>
-<h1 id="0X01-机场建设"><a href="#0X01-机场建设" class="headerlink" title="0X01 机场建设"></a>0X01 机场建设</h1><p>大家如果购买的是国外的VPS那么多数情况下都是为了跨过长城，不过好多人在使用的都是基于命令行的Shadowsocks服务，不仅配置起来不太直观，分享给其他人用的时候也不好管理。有一个开源项目<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dvLWlnbml0ZS9pZ25pdGU=" title="https://github.com/go-ignite/ignite">ignite<i class="fa fa-external-link"></i></span>可以部署一整套的Shadowsocks管理系统。这样你的VPS就不再是飞机跑道了，而是进化成了一个国际机场 :)</p>
-<p>这是一个Go语言实现的基于Web的Shadowsocks管理工具。多个用户使用时会创建多个Docker容器，每个连接使用独立的环境与公网端口便于管理。</p>
-<p>配置好后可以在admin端创建邀请码，每个邀请码对应着使用时间与可用的流量。将邀请码分发给其他人后，其他人登录到你的client端便可以使用激活码注册自己的用户，并且启动一个新的Shadowsocks连接。作为管理员可以实时观察各位用户的剩余时间和剩余流量，并且可以进行延长时间和重置流量等操作。</p>
-          <!--noindex-->
-          
-            <div class="post-button">
-              <a class="btn" href="/2018/11/22/using-vps/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -785,7 +782,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-count">107</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -798,7 +795,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">137</span>
+        <span class="site-state-item-count">139</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
