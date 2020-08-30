@@ -218,7 +218,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">139</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">140</span></a>
 
   </li>
       
@@ -240,7 +240,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">107</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">108</span></a>
 
   </li>
       
@@ -314,6 +314,85 @@
           <div id="content" class="content">
             
   <div id="posts" class="posts-expand">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2017/09/05/python-args-kwargs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+      <meta itemprop="image" content="/uploads/naruto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2017/09/05/python-args-kwargs/" class="post-title-link" itemprop="url">Python中的*args和**kwargs</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2017-09-05 22:54:55" itemprop="dateCreated datePublished" datetime="2017-09-05T22:54:55+08:00">2017-09-05</time>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="0X00-args是什么"><a href="#0X00-args是什么" class="headerlink" title="0X00 *args是什么"></a>0X00 *args是什么</h1><p>我们知道Python3中的print从一个关键字变成了一个函数，那么调用的时候我们可以这样调用这个函数，可以随便接受几个参数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>, <span class="string">"hello"</span>, <span class="number">6.66</span>)</span><br><span class="line"><span class="number">1</span> hello <span class="number">6.66</span></span><br></pre></td></tr></table></figure></p>
+<p>那么如果我们想自己实现类似这样‘变态’的函数该怎么实现呢？这就需要用到*args了，可以将一个非键值对的可变数量的参数列表传给一个函数（换个书佛啊：可以传n个参数给函数，而且n不是固定的），举个例子就容易理解多了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">say_something</span><span class="params">(*args)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> args:</span><br><span class="line">        <span class="keyword">print</span> i</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'--------'</span></span><br><span class="line"></span><br><span class="line">say_something(<span class="number">1</span>)</span><br><span class="line">say_something(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">say_something(<span class="string">'hello'</span>)</span><br><span class="line">say_something(<span class="string">'hello'</span>, <span class="string">'world'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>运行这个例子的输出就是这样的<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">--------</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">--------</span><br><span class="line">hello</span><br><span class="line">--------</span><br><span class="line">hello</span><br><span class="line">world</span><br><span class="line">--------</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/2017/09/05/python-args-kwargs/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
         <article itemscope itemtype="http://schema.org/Article">
   
   
@@ -630,94 +709,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2017/03/06/hdfs-simple/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2017/03/06/hdfs-simple/" class="post-title-link" itemprop="url">浅析HDFS</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2017-03-06 20:18:00" itemprop="dateCreated datePublished" datetime="2017-03-06T20:18:00+08:00">2017-03-06</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="0X00-HDFS的设计"><a href="#0X00-HDFS的设计" class="headerlink" title="0X00 HDFS的设计"></a>0X00 HDFS的设计</h1><p>HDFS作为GFS的开源实现，和GFS是高度一致的。在HDFS中有着下面的优点</p>
-<ol>
-<li>对超大文件支持良好，由于其分布式实现，可以存储超大文件，甚至单个文件大小可以超过集群中任意一台机器的磁盘大小</li>
-<li>采用流式数据访问，一次写入、多次读取是最高效的访问模式。因为Hadoop作为一个大数据处理平台，并没有频繁的写入操作，只是在需要的时候一次将大量的数据写入然后在对这些数据进行读操作</li>
-<li>Hadoop并不需要运行在昂贵且高可靠的硬件之上，单个节点可能性能可靠性都参差不齐，但是由于其高可靠性的设计，使之能在遇到节点故障时继续运行且不让用户察觉到明显的终端</li>
-</ol>
-<p>但是HDFS也不是适用于各种场景，一下的几种场景就不适</p>
-<ol>
-<li>低时间延迟的数据访问，因为HDFS是以时间延迟为代价针对高数据吞吐量优化的，所以HDFS不适用与低延迟的数据访问</li>
-<li>大量的小文件，因为Namenode的设计是将文件系统的元数据存储在内存中的，所以理论上HDFS中的文件最大数量受限于Namenode的内存容量，因此大量的小文件会占用Namenode大量的内存</li>
-<li>HDFS目前不支持有多个写入者的操作，也不支持修改文件系统中的文件</li>
-</ol>
-          <!--noindex-->
-          
-            <div class="post-button">
-              <a class="btn" href="/2017/03/06/hdfs-simple/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -771,7 +762,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">108</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -784,7 +775,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">139</span>
+        <span class="site-state-item-count">140</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>

@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.just666.com/2020/08/30/mysql-isolation-level/</loc>
+    
+    <lastmod>2020-08-30T07:25:19.807Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.just666.com/2020/07/18/python-contextmanager/</loc>
     
     <lastmod>2020-07-19T05:52:20.583Z</lastmod>
@@ -562,20 +569,6 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/12/15/linux-mysql-chinese/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/11/20/linux-mysql-dump/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.just666.com/2015/06/09/linux-dirtree/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
@@ -583,7 +576,28 @@
   </url>
   
   <url>
+    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/12/15/linux-mysql-chinese/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.just666.com/2016/06/12/linux-nfs/</loc>
+    
+    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/11/20/linux-mysql-dump/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -598,13 +612,6 @@
   
   <url>
     <loc>https://blog.just666.com/2016/05/28/linux-swap-virtualmemery/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
@@ -723,14 +730,14 @@
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/06/13/python-rabbitmq/</loc>
+    <loc>https://blog.just666.com/2016/09/14/python-oop/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2016/09/14/python-oop/</loc>
+    <loc>https://blog.just666.com/2017/06/13/python-rabbitmq/</loc>
     
     <lastmod>2018-08-21T07:34:22.000Z</lastmod>
     
