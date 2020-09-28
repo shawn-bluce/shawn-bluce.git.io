@@ -2769,7 +2769,6 @@ ul.breadcrumb li:last-child {
   position: sticky;
   top: 12px;
   width: 350px;
-  visibility: hidden;
 }
 @media (max-width: 991px) {
   .sidebar {
