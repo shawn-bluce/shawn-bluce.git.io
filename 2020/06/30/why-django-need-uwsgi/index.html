@@ -1,105 +1,59 @@
 <!DOCTYPE html>
-
-
-
-
-
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png?v=7.4.1">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=7.4.1">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png?v=7.4.1">
-  <link rel="mask-icon" href="/favicon.png?v=7.4.1" color="#222">
-  <meta http-equiv="Cache-Control" content="no-transform">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/favicon.png" color="#222">
 
-<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
 
-<script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '7.4.1',
-    exturl: true,
-    sidebar: {"position":"left","width":300,"display":"post","offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: true,
-    lazyload: false,
-    pangu: true,
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":"auto","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
-    path: 'search.xml',
-    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    translation: {
-      copy_button: '复制',
-      copy_success: '复制成功',
-      copy_failure: '复制失败'
-    },
-    sidebarPadding: 40
-  };
-</script>
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.just666.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":true,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}};
+  </script>
 
   <meta name="description" content="0X00 运行一个 Django 程序运行一个 Django 程序可太简单了，从创建项目到运行起来总共也不超过 5 行代码。项目运行起来了就可以打开我们的 vim 或者 IDE 之类的一顿 coding 了。作为最最最开始写 Django 的同学来说到这里也就了解的差不多了，因为大家都是自己写好代码本地测试一下就提 Pul Request 到上游仓库了，然后什么单元测试、数据库迁移、测试环境版本发">
-<meta name="keywords" content="Django,uWSGI">
 <meta property="og:type" content="article">
 <meta property="og:title" content="为什么 Django 需要uWSGI">
 <meta property="og:url" content="https://blog.just666.com/2020/06/30/why-django-need-uwsgi/index.html">
 <meta property="og:site_name" content="Shawn&#39;s Blog">
 <meta property="og:description" content="0X00 运行一个 Django 程序运行一个 Django 程序可太简单了，从创建项目到运行起来总共也不超过 5 行代码。项目运行起来了就可以打开我们的 vim 或者 IDE 之类的一顿 coding 了。作为最最最开始写 Django 的同学来说到这里也就了解的差不多了，因为大家都是自己写好代码本地测试一下就提 Pul Request 到上游仓库了，然后什么单元测试、数据库迁移、测试环境版本发">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200630214416.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200630221308.png">
-<meta property="og:updated_time" content="2020-06-30T15:47:38.768Z">
+<meta property="article:published_time" content="2020-06-30T13:35:39.000Z">
+<meta property="article:modified_time" content="2020-06-30T15:47:38.768Z">
+<meta property="article:author" content="Shawn">
+<meta property="article:tag" content="Django">
+<meta property="article:tag" content="uWSGI">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="为什么 Django 需要uWSGI">
-<meta name="twitter:description" content="0X00 运行一个 Django 程序运行一个 Django 程序可太简单了，从创建项目到运行起来总共也不超过 5 行代码。项目运行起来了就可以打开我们的 vim 或者 IDE 之类的一顿 coding 了。作为最最最开始写 Django 的同学来说到这里也就了解的差不多了，因为大家都是自己写好代码本地测试一下就提 Pul Request 到上游仓库了，然后什么单元测试、数据库迁移、测试环境版本发">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200630214416.png">
-  <link rel="canonical" href="https://blog.just666.com/2020/06/30/why-django-need-uwsgi/">
 
 
-<script id="page-configurations">
+<link rel="canonical" href="https://blog.just666.com/2020/06/30/why-django-need-uwsgi/">
+
+
+<script data-pjax class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: false,
-    isPost: true,
-    isPage: false,
-    isArchive: false
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
 
   <title>为什么 Django 需要uWSGI | Shawn's Blog</title>
   
-  <script async src="https://www.googletagmanager.com/gtag/js?id=16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w"></script>
-  <script pjax>
-    var host = window.location.hostname;
-    if (host !== "localhost" || !true) {
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w');
-    }
-  </script>
-
-
 
 
 
@@ -108,197 +62,248 @@
 
   <noscript>
   <style>
-  .use-motion .brand,
+  body { margin-top: 2rem; }
+
   .use-motion .menu-item,
-  .sidebar-inner,
+  .use-motion .sidebar,
   .use-motion .post-block,
   .use-motion .pagination,
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  .use-motion .collection-header {
+    visibility: visible;
+  }
 
-  .use-motion .logo,
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
   .use-motion .site-title,
-  .use-motion .site-subtitle {
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
     opacity: initial;
     top: initial;
   }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
   </style>
 </noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
-
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Shawn's Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-        <h1 class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</h1>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Shawn's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
   </div>
 </div>
 
 
+
 <nav class="site-nav">
-  
-  <ul id="menu" class="menu">
-      
-      
-      
-        
+  <ul class="main-menu menu">
         <li class="menu-item menu-item-home">
-      
-    
-      
-      
-        
-      
-        
-      
-        
-      
-    
 
-    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-about">
-      
-    
-      
-      
-        
-      
-        
-      
-        
-      
-    
 
-    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-tags">
-      
-    
-      
-      
-        
-      
-        
-      
-        
-          
-        
-      
-    
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">140</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-archives">
-      
-    
-      
-      
-        
-          
-        
-      
-        
-      
-        
-      
-    
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">108</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-      
-      
-      
-        
-        <li class="menu-item menu-item-链接">
-      
-    
-      
-      
-        
-      
-        
-      
-        
-      
-    
+        <li class="menu-item menu-item-sitemap">
 
-    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>链接</a>
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
 
   </li>
       <li class="menu-item menu-item-search">
-        <a href="javascript:;" class="popup-trigger">
-        
-          <i class="fa fa-search fa-fw"></i>搜索</a>
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
       </li>
-    
   </ul>
-
 </nav>
-  <div class="site-search">
+
+
+
+  <div class="search-pop-overlay">
     <div class="popup search-popup">
-    <div class="search-header">
+        <div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
   <div class="search-input-container">
-    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
            placeholder="搜索..." spellcheck="false"
-           type="text" id="search-input">
+           type="search" class="search-input">
   </div>
   <span class="popup-btn-close">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
-<div id="search-result"></div>
-
-</div>
-<div class="search-pop-overlay"></div>
-
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
   </div>
 </div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AA-Django-%E7%A8%8B%E5%BA%8F"><span class="nav-text">0X00 运行一个 Django 程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-%E9%83%A8%E7%BD%B2%E5%88%B0%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83"><span class="nav-text">0X01 部署到生产环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-uWSGI"><span class="nav-text">0X02 为什么需要 uWSGI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-Nginx"><span class="nav-text">0X03 为什么需要 Nginx</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shawn"
+      src="/uploads/naruto.png">
+  <p class="site-author-name" itemprop="name">Shawn</p>
+  <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">140</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/shawn-bluce" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;shawn-bluce" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:shawnbluce@gmail.com" title="E-Mail → mailto:shawnbluce@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/15387917" title="B-Site → https:&#x2F;&#x2F;space.bilibili.com&#x2F;15387917" rel="noopener" target="_blank"><i class="fa fa-video fa-fw"></i>B-Site</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/8969875/shawn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;8969875&#x2F;shawn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://qqdie.com/" title="https:&#x2F;&#x2F;qqdie.com&#x2F;" rel="noopener" target="_blank">Jrotty</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/303donatello" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;303donatello" rel="noopener" target="_blank">303Donatello</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://lixianhua.com/" title="http:&#x2F;&#x2F;lixianhua.com&#x2F;" rel="noopener" target="_blank">绛木子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://duuge.com/" title="http:&#x2F;&#x2F;duuge.com&#x2F;" rel="noopener" target="_blank">杜哥</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://hubojing.github.io/" title="http:&#x2F;&#x2F;hubojing.github.io&#x2F;" rel="noopener" target="_blank">胡博靖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/Ypersistence" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;Ypersistence" rel="noopener" target="_blank">威大爷</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://wenqy.com/" title="http:&#x2F;&#x2F;wenqy.com&#x2F;" rel="noopener" target="_blank">小温之家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.rumoss.cn/" title="http:&#x2F;&#x2F;www.rumoss.cn&#x2F;" rel="noopener" target="_blank">濡沫杂记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/shouldnotappearcalm" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;shouldnotappearcalm" rel="noopener" target="_blank">不应有的淡定的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://hiwannz.com/" title="https:&#x2F;&#x2F;hiwannz.com" rel="noopener" target="_blank">见字如面</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
     </header>
 
     
@@ -306,58 +311,56 @@
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
-  <div class="reading-progress-bar"></div>
 
-  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="点这里没用，不信你试试" aria-label="点这里没用，不信你试试"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+  <a href="https://github.com/shawn-bluce" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-            
+    <div class="main-inner post posts-expand">
+      
 
-          <div id="content" class="content">
-            
+      
 
-  <div id="posts" class="posts-expand">
-      <article itemscope itemtype="http://schema.org/Article">
+    
   
   
-  
-  <div class="post-block post">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/06/30/why-django-need-uwsgi/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
       <meta itemprop="name" content="Shawn">
       <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Shawn's Blog">
     </span>
+
+    
+    
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">为什么 Django 需要uWSGI
+        <h1 class="post-title" itemprop="name headline">
+          为什么 Django 需要uWSGI
+        </h1>
 
-          
-        </h2>
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
+      <time title="创建时间：2020-06-30 21:35:39 / 修改时间：23:47:38" itemprop="dateCreated datePublished" datetime="2020-06-30T21:35:39+08:00">2020-06-30</time>
+    </span>
 
-              
-                
-              
-
-              <time title="创建时间：2020-06-30 21:35:39" itemprop="dateCreated datePublished" datetime="2020-06-30T21:35:39+08:00">2020-06-30</time>
-            </span>
-          
-
-          
+  
+</div>
 
         </div>
       </header>
@@ -366,11 +369,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
         <h1 id="0X00-运行一个-Django-程序"><a href="#0X00-运行一个-Django-程序" class="headerlink" title="0X00 运行一个 Django 程序"></a>0X00 运行一个 Django 程序</h1><p>运行一个 Django 程序可太简单了，从创建项目到运行起来总共也不超过 5 行代码。项目运行起来了就可以打开我们的 vim 或者 IDE 之类的一顿 coding 了。作为最最最开始写 Django 的同学来说到这里也就了解的差不多了，因为大家都是自己写好代码本地测试一下就提 Pul Request 到上游仓库了，然后什么单元测试、数据库迁移、测试环境版本发布甚至可能包含 docker 镜像更新就全都交给 CI 来做了。自己就这么开开心心的写了一段时间的代码，一切都在朝着好的方向发展。突然有一天部门主管或者老大告诉你有一个新项目要你来开个头，先搭好脚手架然后发布上去，后面再来人一起做功能迭代。<br><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200630214416.png" alt="运行一个 Django 程序"></p>
 <p>然后你开开心心地<code>django-admin startproject xxxx</code>、开开心心地<code>django-admin startapp xxxxx</code>，一顿 coding 之后懵逼了，没有部署过测试环境，没有部署过生产环境，只知道 CI 给做了，却完全不知道做了什么。然后你跑去看 CI 脚本，去问其他同事同学，得到了一堆 Nginx 和 uWSGI 之类的答复。你也照着做了，但是完全不知道为什么，因为你觉得<code>python manage.py runserver</code>明明就可以启动项目了，为什么还需要搞什么 Nginx 和 uWSGI 呢？</p>
 <a id="more"></a>
+
 <h1 id="0X01-部署到生产环境"><a href="#0X01-部署到生产环境" class="headerlink" title="0X01 部署到生产环境"></a>0X01 部署到生产环境</h1><p>按我现在手上的项目来说，部署阶段用到了：docker、uWSGI、supervisor、Nginx、fabric、gitlab-ci 这 5 种技术。其中 docker 是为了方便大家的生产环境、测试环境和开发环境高度一致的；uWSGI 和 Nginx 后面单独说；supervisor 是用来保活的，有时候进程挂了需要有人来重启它；fabric 是用来将常用的命令组整合的；gitlab-ci 是用来方便运行单元测试、测试环境发布和生产环境发布的。<br><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200630221308.png" alt="简单部署 Django 程序"></p>
 <p>下面就重点来解答一下这个新手群体中很容易出现的疑问：</p>
 <blockquote>
@@ -379,13 +381,16 @@
 <h1 id="0X02-为什么需要-uWSGI"><a href="#0X02-为什么需要-uWSGI" class="headerlink" title="0X02 为什么需要 uWSGI"></a>0X02 为什么需要 uWSGI</h1><p>具体为什么要用 uWSGI 其实偶遇好多个原因，下面会逐个提到。</p>
 <p>首先最常见的一种说法是：“<code>python manage.py runserver</code>是单线程的，一个请求不结束其他的请求就得阻塞，所以性能差”，这种说法彻头彻尾是错误的。而且验证起来也及其容易，随便找一个你的 Django 项目然后找个 api 用 ipdb 打个断点，通过 runserver 把它跑起来。然后先调用打了断点的 api，发现它卡在断点处了，然后再调另一个 api，实际上是可以得到 response 的，所以并不是所谓单线程导致的。与其说是因为单线程导致性能低下倒不如说是因为“单进程”，众所周知 Python 中有一个 GIL 全局解释锁，这东西的存在导致真正意义上的单进程多线程 Python 程序并不得行，所以 uWSGI 可以通过启动多个进程的方式来规避这个问题，也就是下面这个配置文件中<code>processes = 8</code>的部分。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[uwsgi]</span></span><br><span class="line"><span class="attr">chdir</span>     = /code</span><br><span class="line"><span class="attr">pp</span>        = /code</span><br><span class="line"><span class="attr">module</span>    = ratel.wsgi</span><br><span class="line"><span class="attr">master</span>    = <span class="literal">true</span></span><br><span class="line"><span class="attr">processes</span> = <span class="number">8</span></span><br><span class="line"><span class="attr">vacuum</span>    = <span class="literal">true</span></span><br><span class="line"><span class="attr">http</span>      = <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7701</span></span><br><span class="line"><span class="attr">stats</span> = /tmp/xxxxx_stats.socket</span><br><span class="line"></span><br><span class="line"><span class="attr">env</span> = LANG=en_US.utf8</span><br><span class="line"><span class="attr">env</span> = DJANGO_SETTINGS_MODULE=xxxxx.settings</span><br><span class="line"></span><br><span class="line"><span class="attr">harakiri</span>  = <span class="number">60</span></span><br><span class="line"><span class="attr">http-timeout</span>   = <span class="number">60</span></span><br><span class="line"><span class="attr">socket-timeout</span> = <span class="number">60</span></span><br><span class="line"></span><br><span class="line"><span class="attr">max-requests</span> = <span class="number">8192</span></span><br><span class="line"><span class="attr">listen</span>       = <span class="number">8192</span></span><br><span class="line">no-orphans</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>这里说到多进程，有个题外话可以说一下：“你觉得 Django 中使用全局变量有什么需要注意的吗？”。通常情况来说编程中使用全局变量是一个很常见的问题，但是在多进程的情况下就需要多多注意了。比如按上面的配置，一个项目用了 8 个进程，其中一个进程接到了一个 request 并且把<code>CURRENT_COUNT</code>从 80 改到了 100，但是其他进程在访问自己进程里的<code>CURRENT_COUNT</code>的时候还是 80，这就是因为多个进程中全局变量不够“全局”导致的问题。那么怎么解呢？其实也简单。我们还是用<code>CURRENT_COUNT</code>，但是不用它做变量名了，而是 MySQL 的配置表中的一条数据，或者 Redis 中的 key 就能解决这个问题了。</p>
 </blockquote>
 <p>性能问题当然是个大问题，不用 runserver 而是改用 uWSGI 的一大原因就是性能问题，我们用 <code>ab</code> 来测试一下 runserver 和 uWSGI 两种方式启动项目的性能差距，<code>ab -n 1000 -c 100 -p data -T application/json http://127.0.0.1:7070/remit_verify/fetch_order/</code>意思为总共 1000 次请求，并发 100，访问后面的登陆接口。首先看一下使用 runserver 方式运行的 Django 成绩：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Concurrency Level:      100</span><br><span class="line">Time taken for tests:   53.702 seconds</span><br><span class="line">Complete requests:      1000</span><br><span class="line">Failed requests:        0</span><br><span class="line">Non-2xx responses:      1000</span><br><span class="line">Total transferred:      269000 bytes</span><br><span class="line">Total body sent:        167000</span><br><span class="line">HTML transferred:       63000 bytes</span><br><span class="line">Requests per second:    18.62 [#/sec] (mean)</span><br><span class="line">Time per request:       5370.198 [ms] (mean)</span><br><span class="line">Time per request:       53.702 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          4.89 [Kbytes/sec] received</span><br><span class="line">                        3.04 kb/s sent</span><br><span class="line">                        7.93 kb/s total</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.6      0       3</span><br><span class="line">Processing:    18 1574 6329.8    113   53693</span><br><span class="line">Waiting:        6 1567 6330.6    107   53691</span><br><span class="line">Total:         18 1575 6330.2    114   53695</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    114</span><br><span class="line">  66%    133</span><br><span class="line">  75%    147</span><br><span class="line">  80%    177</span><br><span class="line">  90%   1543</span><br><span class="line">  95%   7727</span><br><span class="line">  98%  27565</span><br><span class="line">  99%  53662</span><br><span class="line"> 100%  53695 (longest request)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Concurrency Level:      100</span><br><span class="line">Time taken for tests:   53.702 seconds</span><br><span class="line">Complete requests:      1000</span><br><span class="line">Failed requests:        0</span><br><span class="line">Non-2xx responses:      1000</span><br><span class="line">Total transferred:      269000 bytes</span><br><span class="line">Total body sent:        167000</span><br><span class="line">HTML transferred:       63000 bytes</span><br><span class="line">Requests per second:    18.62 [#&#x2F;sec] (mean)</span><br><span class="line">Time per request:       5370.198 [ms] (mean)</span><br><span class="line">Time per request:       53.702 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          4.89 [Kbytes&#x2F;sec] received</span><br><span class="line">                        3.04 kb&#x2F;s sent</span><br><span class="line">                        7.93 kb&#x2F;s total</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+&#x2F;-sd] median   max</span><br><span class="line">Connect:        0    0   0.6      0       3</span><br><span class="line">Processing:    18 1574 6329.8    113   53693</span><br><span class="line">Waiting:        6 1567 6330.6    107   53691</span><br><span class="line">Total:         18 1575 6330.2    114   53695</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    114</span><br><span class="line">  66%    133</span><br><span class="line">  75%    147</span><br><span class="line">  80%    177</span><br><span class="line">  90%   1543</span><br><span class="line">  95%   7727</span><br><span class="line">  98%  27565</span><br><span class="line">  99%  53662</span><br><span class="line"> 100%  53695 (longest request)</span><br></pre></td></tr></table></figure>
+
 <p>然后再来看一下使用 uWSGI 的成绩：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Concurrency Level:      100</span><br><span class="line">Time taken for tests:   2.223 seconds</span><br><span class="line">Complete requests:      1000</span><br><span class="line">Failed requests:        0</span><br><span class="line">Non-2xx responses:      1000</span><br><span class="line">Total transferred:      231000 bytes</span><br><span class="line">Total body sent:        167000</span><br><span class="line">HTML transferred:       63000 bytes</span><br><span class="line">Requests per second:    449.93 [#/sec] (mean)</span><br><span class="line">Time per request:       222.258 [ms] (mean)</span><br><span class="line">Time per request:       2.223 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          101.50 [Kbytes/sec] received</span><br><span class="line">                        73.38 kb/s sent</span><br><span class="line">                        174.87 kb/s total</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.8      0       4</span><br><span class="line">Processing:    10  213  30.9    222     298</span><br><span class="line">Waiting:        6  213  31.0    222     297</span><br><span class="line">Total:         10  214  30.5    222     300</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    222</span><br><span class="line">  66%    225</span><br><span class="line">  75%    226</span><br><span class="line">  80%    227</span><br><span class="line">  90%    229</span><br><span class="line">  95%    231</span><br><span class="line">  98%    250</span><br><span class="line">  99%    274</span><br><span class="line"> 100%    300 (longest request)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Concurrency Level:      100</span><br><span class="line">Time taken for tests:   2.223 seconds</span><br><span class="line">Complete requests:      1000</span><br><span class="line">Failed requests:        0</span><br><span class="line">Non-2xx responses:      1000</span><br><span class="line">Total transferred:      231000 bytes</span><br><span class="line">Total body sent:        167000</span><br><span class="line">HTML transferred:       63000 bytes</span><br><span class="line">Requests per second:    449.93 [#&#x2F;sec] (mean)</span><br><span class="line">Time per request:       222.258 [ms] (mean)</span><br><span class="line">Time per request:       2.223 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          101.50 [Kbytes&#x2F;sec] received</span><br><span class="line">                        73.38 kb&#x2F;s sent</span><br><span class="line">                        174.87 kb&#x2F;s total</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+&#x2F;-sd] median   max</span><br><span class="line">Connect:        0    0   0.8      0       4</span><br><span class="line">Processing:    10  213  30.9    222     298</span><br><span class="line">Waiting:        6  213  31.0    222     297</span><br><span class="line">Total:         10  214  30.5    222     300</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    222</span><br><span class="line">  66%    225</span><br><span class="line">  75%    226</span><br><span class="line">  80%    227</span><br><span class="line">  90%    229</span><br><span class="line">  95%    231</span><br><span class="line">  98%    250</span><br><span class="line">  99%    274</span><br><span class="line"> 100%    300 (longest request)</span><br></pre></td></tr></table></figure>
+
 <p>其中使用 runserver 方式运行压力测试总共耗时 53.7 秒，uWSGI 耗时 2.2 秒。使用 uWSGI 后吞吐率是 24 倍，用户平均等待时间是 1/24，服务器处理时长也是 1/24 的样子。综合来说在我自己配置情况下得到了答曰 24 倍的性能提升，我这儿还是只有双核双进程的情况，如果我给 docker 配置允许使用所有 12 个逻辑处理器，情况会更显著。</p>
 <h1 id="0X03-为什么需要-Nginx"><a href="#0X03-为什么需要-Nginx" class="headerlink" title="0X03 为什么需要 Nginx"></a>0X03 为什么需要 Nginx</h1><p>至于为什么要用 Nginx 就更简单了，有这么几个原因：静态资源、HTTPS、端口、多服务部署。。。。。。</p>
 <p>首先是静态资源，web 服务无可避免的会用到静态资源，就算前后端分离得再彻底也不免有一些从后端服务上获取一些静态资源，尤其是用户上传下载的文件。Python 的性能咱们也抖动，如果不需要对文件进行权限限制的话，的确没必要让这些请求再走一遍 Django 了。</p>
@@ -398,313 +403,195 @@
     
     
     
-        
       
-        <div id="reward-container">
-  <div>觉得写的还凑合可以请我喝杯肥宅快乐水喔</div>
-  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
-    打赏
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2017/12/23/django-uwsgi-supervisor/" rel="bookmark">使用uwsgi和supervisor部署Django程序</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/05/12/django-2-query/" rel="bookmark">使用Django中的select_related和prefetch_related优化查询</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/06/28/django-export-csv/" rel="bookmark">Django 相对优雅地导出 CSV</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2018/08/29/django-f-object/" rel="bookmark">Django中的F()</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/06/06/django-fast-2/" rel="bookmark">如何让 Django API 再快一点 (2)</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>这篇文章对你有帮助吗？</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
   </button>
-  <div id="qr" style="display: none;">
-        
-      
-      <div style="display: inline-block">
-        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.08.png" alt="Shawn 微信支付">
-        <p>微信支付</p>
+  <div class="post-reward">
+      <div>
+        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.08.png" alt="Shawn 微信">
+        <span>微信</span>
       </div>
-        
-      
-      <div style="display: inline-block">
+      <div>
         <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.37.png" alt="Shawn 支付宝">
-        <p>支付宝</p>
+        <span>支付宝</span>
       </div>
 
   </div>
 </div>
 
-      
-        
+          
 
-<div>
-<ul class="post-copyright">
+<div class="post-copyright">
+<ul>
   <li class="post-copyright-author">
-    <strong>本文作者： </strong>Shawn</li>
+      <strong>本文作者： </strong>Shawn
+  </li>
   <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="https://blog.just666.com/2020/06/30/why-django-need-uwsgi/" title="为什么 Django 需要uWSGI">https://blog.just666.com/2020/06/30/why-django-need-uwsgi/</a>
+      <strong>本文链接：</strong>
+      <a href="https://blog.just666.com/2020/06/30/why-django-need-uwsgi/" title="为什么 Django 需要uWSGI">https://blog.just666.com/2020/06/30/why-django-need-uwsgi/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li>
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
 </ul>
 </div>
 
-      
-
-      <footer class="post-footer">
-          
-            
-          
           <div class="post-tags">
-            
-              <a href="/tags/Django/" rel="tag"><i class="fa fa-tag"></i> Django</a>
-            
-              <a href="/tags/uWSGI/" rel="tag"><i class="fa fa-tag"></i> uWSGI</a>
-            
+              <a href="/tags/Django/" rel="tag"># Django</a>
+              <a href="/tags/uWSGI/" rel="tag"># uWSGI</a>
           </div>
-        
 
         
 
           <div class="post-nav">
-            <div class="post-nav-next post-nav-item">
-              
-                <a href="/2020/06/28/django-export-csv/" rel="next" title="Django 相对优雅地导出 CSV">
+            <div class="post-nav-item">
+                <a href="/2020/06/28/django-export-csv/" rel="prev" title="Django 相对优雅地导出 CSV">
                   <i class="fa fa-chevron-left"></i> Django 相对优雅地导出 CSV
                 </a>
-              
             </div>
-
-            <span class="post-nav-divider"></span>
-
-            <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2020/07/04/cas-sso/" rel="prev" title="SSO 与 CAS">
+            <div class="post-nav-item">
+                <a href="/2020/07/04/cas-sso/" rel="next" title="SSO 与 CAS">
                   SSO 与 CAS <i class="fa fa-chevron-right"></i>
                 </a>
-              
             </div>
           </div>
-        
-      </footer>
-    
-  </div>
-  
-  
-  
+    </footer>
   </article>
-
-  </div>
-
-
-          </div>
-          
-
-        </div>
-          
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-        
-        
-        
-        
-      
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-运行一个-Django-程序"><span class="nav-text">0X00 运行一个 Django 程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-部署到生产环境"><span class="nav-text">0X01 部署到生产环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-为什么需要-uWSGI"><span class="nav-text">0X02 为什么需要 uWSGI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-为什么需要-Nginx"><span class="nav-text">0X03 为什么需要 Nginx</span></a></li></ol></div>
-        
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image"
-      src="/uploads/naruto.png"
-      alt="Shawn">
-  <p class="site-author-name" itemprop="name">Shawn</p>
-  <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">108</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-    
-      
-      
-      <div class="site-state-item site-state-tags">
-        
-          
-            <a href="/tags/">
-          
-        
-        <span class="site-state-item-count">140</span>
-        <span class="site-state-item-name">标签</span>
-        </a>
-      </div>
-    
-  </nav>
-</div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="GitHub &rarr; https://github.com/shawn-bluce"><i class="fa fa-fw fa-github"></i></span>
-      </span>
-    
-      <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <span class="exturl" data-url="bWFpbHRvOnNoYXduYmx1Y2VAZ21haWwuY29t" title="E-Mail &rarr; mailto:shawnbluce@gmail.com"><i class="fa fa-fw fa-inbox"></i></span>
-      </span>
-    
-      <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <span class="exturl" data-url="aHR0cHM6Ly9zcGFjZS5iaWxpYmlsaS5jb20vMTUzODc5MTc=" title="Bilibili &rarr; https://space.bilibili.com/15387917"><i class="fa fa-fw fa-video-camera"></i></span>
-      </span>
-    
-      <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy84OTY5ODc1L3NoYXdu" title="StackOverflow &rarr; https://stackoverflow.com/users/8969875/shawn"><i class="fa fa-fw fa-stack-overflow"></i></span>
-      </span>
-    
-  </div>
-  <div class="cc-license motion-element" itemprop="license">
-    
   
-    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
-  </div>
+  
 
 
 
-      </div>
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
 
     </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
+      
 
-      </div>
-    </main>
+      
 
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Shawn </br> 月亮很圆，圆也没用，没用也圆</span>
 </div>
-  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v3.9.0</div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Pisces</span> v7.4.1</div>
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
+    </div>
+  </footer>
+
   
-  <script src="//cdn.staticfile.org/animejs/2.2.0/anime.min.js"></script>
-  <script src="//cdn.staticfile.org/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
-<script src="/js/schemes/pisces.js?v=7.4.1"></script>
-<script src="/js/next-boot.js?v=7.4.1"></script>
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/animejs/1.0/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
   <script>
 var pjax = new Pjax({
   selectors: [
     'head title',
-    '#page-configurations',
-    '.content-wrap',
+    '.page-configurations',
+    '.main-inner',
     '.post-toc-wrap',
-    '#pjax'
+    '.languages',
+    '.pjax'
   ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
   analytics: false,
   cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
 });
 
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
   NexT.boot.refresh();
   // Define Motion Sequence & Bootstrap Motion.
   if (CONFIG.motion.enable) {
     NexT.motion.integrator
       .init()
+      .add(NexT.motion.middleWares.subMenu)
       .add(NexT.motion.middleWares.postList)
       .bootstrap();
   }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
   NexT.utils.updateSidebarPosition();
 });
 </script>
 
 
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
 
 
   
@@ -716,27 +603,30 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script src="/js/local-search.js?v=7.4.1"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div id="pjax">
-
+    <div class="pjax">
   
 
   
 
-  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '79f0f80e1019d9521c50',
+      clientSecret: '8f463866cba423bfaa63f5162824d03533327b73',
+      repo        : 'shawn-bluce.github.io',
+      owner       : 'shawn-bluce',
+      admin       : ['shawn-bluce'],
+      id          : 'ff63a9c7da782eebaddc1a57a8c6d56b',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
     </div>
 </body>

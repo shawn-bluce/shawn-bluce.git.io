@@ -2,801 +2,1778 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.just666.com/2020/08/30/mysql-isolation-level/</loc>
+    <loc>https://blog.just666.com/2020/09/27/leave-knownsec/</loc>
     
-    <lastmod>2020-08-30T07:25:19.807Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2020/07/18/python-contextmanager/</loc>
-    
-    <lastmod>2020-07-19T05:52:20.583Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2020/07/14/django-manager/</loc>
-    
-    <lastmod>2020-07-14T14:24:02.242Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2020/07/11/django-save/</loc>
-    
-    <lastmod>2020-07-11T16:02:17.720Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2020/07/05/drf-permission/</loc>
-    
-    <lastmod>2020-07-05T09:50:24.653Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2020/07/04/cas-sso/</loc>
-    
-    <lastmod>2020-07-04T07:49:46.906Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2020/06/30/why-django-need-uwsgi/</loc>
-    
-    <lastmod>2020-06-30T15:47:38.768Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2020/06/28/django-export-csv/</loc>
-    
-    <lastmod>2020-06-28T15:33:13.736Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2019/11/20/django-url/</loc>
-    
-    <lastmod>2020-06-28T14:42:58.849Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2018/05/23/django-rest-framework-tips/</loc>
-    
-    <lastmod>2020-06-28T14:42:41.375Z</lastmod>
+    <lastmod>2020-09-28</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/about/index.html</loc>
     
-    <lastmod>2020-06-25T09:51:10.648Z</lastmod>
+    <lastmod>2020-09-28</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2020/08/30/mysql-isolation-level/</loc>
+    
+    <lastmod>2020-08-30</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2020/07/18/python-contextmanager/</loc>
+    
+    <lastmod>2020-07-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2020/07/14/django-manager/</loc>
+    
+    <lastmod>2020-07-14</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2020/07/11/django-save/</loc>
+    
+    <lastmod>2020-07-11</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2020/07/05/drf-permission/</loc>
+    
+    <lastmod>2020-07-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2020/07/04/cas-sso/</loc>
+    
+    <lastmod>2020-07-04</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2020/06/30/why-django-need-uwsgi/</loc>
+    
+    <lastmod>2020-06-30</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2020/06/28/django-export-csv/</loc>
+    
+    <lastmod>2020-06-28</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2019/11/20/django-url/</loc>
+    
+    <lastmod>2020-06-28</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2018/05/23/django-rest-framework-tips/</loc>
+    
+    <lastmod>2020-06-28</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2020/06/06/django-fast-2/</loc>
     
-    <lastmod>2020-06-06T09:05:39.108Z</lastmod>
+    <lastmod>2020-06-06</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2020/05/25/python-filter-map-reduce/</loc>
     
-    <lastmod>2020-05-25T16:05:52.987Z</lastmod>
+    <lastmod>2020-05-25</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2020/05/14/self-control-and-target/</loc>
     
-    <lastmod>2020-05-19T15:35:11.851Z</lastmod>
+    <lastmod>2020-05-19</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2020/05/14/django-fast/</loc>
     
-    <lastmod>2020-05-13T16:17:10.324Z</lastmod>
+    <lastmod>2020-05-13</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2020/05/05/read-note/</loc>
     
-    <lastmod>2020-05-13T16:16:14.240Z</lastmod>
+    <lastmod>2020-05-13</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2020/04/23/linux-permission/</loc>
     
-    <lastmod>2020-04-23T15:26:44.642Z</lastmod>
+    <lastmod>2020-04-23</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2020/04/19/terminal/</loc>
     
-    <lastmod>2020-04-23T15:24:38.342Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/links/index.html</loc>
-    
-    <lastmod>2020-04-17T10:32:24.191Z</lastmod>
+    <lastmod>2020-04-23</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/12/31/2019-bye/</loc>
     
-    <lastmod>2019-12-31T16:07:09.000Z</lastmod>
+    <lastmod>2019-12-31</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/11/21/django-rabbitmq/</loc>
     
-    <lastmod>2019-11-21T15:19:29.000Z</lastmod>
+    <lastmod>2019-11-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/11/19/python-oop-2/</loc>
     
-    <lastmod>2019-11-21T06:42:04.000Z</lastmod>
+    <lastmod>2019-11-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/11/14/docker-mysql-redis/</loc>
     
-    <lastmod>2019-11-14T14:33:18.000Z</lastmod>
+    <lastmod>2019-11-14</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/11/12/python-thread-process-pool/</loc>
     
-    <lastmod>2019-11-12T15:43:39.000Z</lastmod>
+    <lastmod>2019-11-12</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/11/06/django-signals-primary/</loc>
     
-    <lastmod>2019-11-06T15:09:24.000Z</lastmod>
+    <lastmod>2019-11-06</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/11/03/mysql-slowquery/</loc>
     
-    <lastmod>2019-11-03T13:05:00.000Z</lastmod>
+    <lastmod>2019-11-03</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/11/02/better-linux/</loc>
     
-    <lastmod>2019-11-02T16:23:09.000Z</lastmod>
+    <lastmod>2019-11-02</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/10/29/use-linux/</loc>
     
-    <lastmod>2019-10-29T14:16:58.000Z</lastmod>
+    <lastmod>2019-10-29</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/08/22/python-decorator/</loc>
     
-    <lastmod>2019-10-09T14:34:56.000Z</lastmod>
+    <lastmod>2019-10-09</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/09/25/dockerfile-add-vs-copy/</loc>
     
-    <lastmod>2019-09-25T17:13:04.000Z</lastmod>
+    <lastmod>2019-09-25</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/08/31/why-nas/</loc>
     
-    <lastmod>2019-09-22T15:35:02.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/08/12/why-linux/</loc>
     
-    <lastmod>2019-09-22T15:34:56.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/04/09/why-https-security/</loc>
     
-    <lastmod>2019-09-22T15:34:48.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/01/19/vim-register/</loc>
     
-    <lastmod>2019-09-22T15:34:34.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/11/22/using-vps/</loc>
     
-    <lastmod>2019-09-22T15:34:27.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/09/20/python-virtualenvwapper/</loc>
     
-    <lastmod>2019-09-22T15:34:09.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/11/03/python-unittest/</loc>
     
-    <lastmod>2019-09-22T15:33:56.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/11/12/python-iteration-yield/</loc>
     
-    <lastmod>2019-09-22T15:33:01.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/12/10/python-fabric/</loc>
     
-    <lastmod>2019-09-22T15:32:48.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/08/27/python-default-params/</loc>
     
-    <lastmod>2019-09-22T15:32:31.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2015/07/07/python-cal/</loc>
     
-    <lastmod>2019-09-22T15:32:09.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/09/18/practice-year/</loc>
     
-    <lastmod>2019-09-22T15:31:44.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/12/15/page-swap/</loc>
     
-    <lastmod>2019-09-22T15:31:33.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/11/25/manage-our-time/</loc>
     
-    <lastmod>2019-09-22T15:31:13.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/11/19/linux-text/</loc>
     
-    <lastmod>2019-09-22T15:31:07.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/09/19/ks-course/</loc>
     
-    <lastmod>2019-09-22T15:30:34.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/07/17/java-md5-base64/</loc>
     
-    <lastmod>2019-09-22T15:30:15.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/08/20/iterator-generator/</loc>
     
-    <lastmod>2019-09-22T15:28:09.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/08/08/install-sentry-with-docker/</loc>
     
-    <lastmod>2019-09-22T15:28:04.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/03/05/git-stash/</loc>
     
-    <lastmod>2019-09-22T15:27:50.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/08/22/git-skill/</loc>
     
-    <lastmod>2019-09-22T15:27:34.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/11/12/git-experience/</loc>
     
-    <lastmod>2019-09-22T15:27:27.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/08/19/git-bare-responsitory/</loc>
     
-    <lastmod>2019-09-22T15:27:22.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/01/13/genuine-piracy/</loc>
     
-    <lastmod>2019-09-22T15:27:17.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/10/13/drf-fields/</loc>
     
-    <lastmod>2019-09-22T15:26:57.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/09/17/docker-image/</loc>
     
-    <lastmod>2019-09-22T15:26:44.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/03/14/dnf-proxy/</loc>
     
-    <lastmod>2019-09-22T15:26:36.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/12/23/django-uwsgi-supervisor/</loc>
     
-    <lastmod>2019-09-22T15:26:29.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/07/10/django-transactions/</loc>
     
-    <lastmod>2019-09-22T15:26:17.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/05/23/django-some-blank/</loc>
     
-    <lastmod>2019-09-22T15:26:09.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/09/06/django-queryset/</loc>
     
-    <lastmod>2019-09-22T15:25:52.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/05/20/django-query-q/</loc>
     
-    <lastmod>2019-09-22T15:25:47.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/08/29/django-f-object/</loc>
     
-    <lastmod>2019-09-22T15:25:41.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/05/12/django-2-query/</loc>
     
-    <lastmod>2019-09-22T15:25:30.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/09/15/database-index/</loc>
     
-    <lastmod>2019-09-22T15:25:18.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2019/09/19/ez-redis/</loc>
     
-    <lastmod>2019-09-22T15:23:29.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/open_source/index.html</loc>
-    
-    <lastmod>2019-08-19T13:37:59.000Z</lastmod>
+    <lastmod>2019-09-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/05/08/apache-vhost/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2015/10/19/c-push-box/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2015/03/17/c-language-bool-type/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2015/10/19/c-push-box/</loc>
+    
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2018/02/15/docker-load-save/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/11/17/firewall-cmd/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/11/16/filesystem/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/2017/06/03/flask-build-api/</loc>
+    <loc>https://blog.just666.com/2016/11/17/firewall-cmd/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/03/06/hdfs-simple/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2015/11/21/java-class-interface/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/02/13/java-str/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/11/02/linux-acl/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/11/02/linux-crontab/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/05/11/linux-ln/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/05/12/linux-dhcp-server/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2015/06/09/linux-dirtree/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/05/11/linux-ln/</loc>
+    
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/05/17/linux-lvm/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/12/15/linux-mysql-chinese/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/06/12/linux-nfs/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/11/20/linux-mysql-dump/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/06/12/linux-nfs/</loc>
+    
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/10/28/linux-nmcli-ip/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/05/28/linux-swap-virtualmemery/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/03/15/mysql-crud/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/10/17/openssh-pub-pri/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/09/05/python-args-kwargs/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/09/13/python-dict/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/12/24/python-enumerate/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/10/27/python-execption/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/01/01/python-function/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/09/07/python-list-tumple/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/01/15/python-magic-1/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/01/19/python-magic-2/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/01/21/python-magic-3/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/01/24/python-magic-4/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/01/31/python-magic-5/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2017/04/01/python-os-lib/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2017/08/18/python-pip-virtualenv/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2017/12/23/python-pyc/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/09/14/python-oop/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2017/04/01/python-os-lib/</loc>
+    
+    <lastmod>2018-08-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2017/08/18/python-pip-virtualenv/</loc>
+    
+    <lastmod>2018-08-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2017/12/23/python-pyc/</loc>
+    
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/06/13/python-rabbitmq/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/09/05/python-str/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/12/12/python-threading/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2016/07/23/shadowsocks-build/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/2016/10/02/shell-programming/</loc>
-    
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/2017/09/29/use-linux-better/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.just666.com/404/index.html</loc>
+    <loc>https://blog.just666.com/2017/06/03/flask-build-api/</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/2016/10/02/shell-programming/</loc>
+    
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/archive/index.html</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.just666.com/tags/index.html</loc>
     
-    <lastmod>2018-08-21T07:34:22.000Z</lastmod>
+    <lastmod>2018-08-21</lastmod>
     
   </url>
+  
+
+  <url>
+    <loc>https://blog.just666.com/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+  <url>
+    <loc>https://blog.just666.com/tags/log/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Apache/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Web-Server/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/VPS/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/PHP/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Linux/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/C-Programing-Lanuage/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Bool/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/SSO/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/CAS/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Database/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Index/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Python/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Django/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/djcsv/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/export/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/csv/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/MySQL/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/manager/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/RabbitMQ/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/MQ/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Django-REST-framework/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Single/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Transaction/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/uWSGI/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Supervisor/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Fedora/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Proxy/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Shadowsocks/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Docker/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Redis/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/File-System/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Operation-System/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Firewall/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/firewall-cmd/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/None/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/git/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Shell/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/HDFS/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Big-Data/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Hadoop/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Sentry/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Exception/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Data-Structure/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Java/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/OOP/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/MD5/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/BASE64/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Encryption/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Decryption/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Encoding/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Decoding/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/String/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/life/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/work/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/ACL/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Permission/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Crontab/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/DHCP/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Service-Configure/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Diiectory-Tree/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Soft-Link/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Hard-Link/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Link/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/LVM/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Partition/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Format/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/MariaDB/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Encodeing/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Chinese/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/User-Configure/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Data-Dump/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/NFS/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/nmcli/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Network/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/swap/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Swap-Partition/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Virtual-Memerry/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/GTD/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/TickTick/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Todo/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/isolation/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/OpenSSH/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Public-Key/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Private-Key/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Signature/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Asymmetric-Encryption/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Algorithm/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Paramenter/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Demo/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/with/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/contentmanager/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Decorator/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Dictionary/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/enumerate/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/fabric/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/filter/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/map/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/reduce/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Instance-Method/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Static-Method/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Class-Method/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Iteration/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/yield/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/List/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Tuple/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Function/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/I-O/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Script/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/pip/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Virtualenv/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/pyc/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/RabbieMQ/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Message-Queue/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Thread/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Process/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Parallel/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Mock/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/nose/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/unittest/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Virtualenvwapper/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Read/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Note/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Notebook/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Target/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/GFW/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/macOS/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Terminal/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Software/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Tools/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Server/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/blog/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/proxy/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/vim/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/tools/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/HTTP-Secure/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Synology/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/NAS/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/Flask/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.just666.com/tags/API/</loc>
+    <lastmod>2020-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+
   
 </urlset>

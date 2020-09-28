@@ -1,105 +1,63 @@
 <!DOCTYPE html>
-
-
-
-
-
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png?v=7.4.1">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=7.4.1">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png?v=7.4.1">
-  <link rel="mask-icon" href="/favicon.png?v=7.4.1" color="#222">
-  <meta http-equiv="Cache-Control" content="no-transform">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/favicon.png" color="#222">
 
-<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
 
-<script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '7.4.1',
-    exturl: true,
-    sidebar: {"position":"left","width":300,"display":"post","offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: true,
-    lazyload: false,
-    pangu: true,
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":"auto","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
-    path: 'search.xml',
-    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    translation: {
-      copy_button: '复制',
-      copy_success: '复制成功',
-      copy_failure: '复制失败'
-    },
-    sidebarPadding: 40
-  };
-</script>
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.just666.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":true,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}};
+  </script>
 
   <meta name="description" content="0X00 推荐一波Linux下的软件Linux对于普通用户可能确实没有那么友好，但是对于计算机“专业”人士来说就好多了。我从接触Linux到现在也有个三两年了，而且用Linux桌面也有一段时间了。这段时间里也发现了不少好用的软件和工具，在这里整理一下也向大家推荐一波。这些工具有些是用来提升工作效率的，有些是用来娱乐的等等。。不过每一个都是我离不开的好工具。非常重要的一点是，我推荐的这些软件除了为知">
-<meta name="keywords" content="Linux,Python,MySQL,Shadowsocks,Software,Tools">
 <meta property="og:type" content="article">
 <meta property="og:title" content="用好Linux之：软件推荐">
 <meta property="og:url" content="https://blog.just666.com/2017/09/29/use-linux-better/index.html">
 <meta property="og:site_name" content="Shawn&#39;s Blog">
 <meta property="og:description" content="0X00 推荐一波Linux下的软件Linux对于普通用户可能确实没有那么友好，但是对于计算机“专业”人士来说就好多了。我从接触Linux到现在也有个三两年了，而且用Linux桌面也有一段时间了。这段时间里也发现了不少好用的软件和工具，在这里整理一下也向大家推荐一波。这些工具有些是用来提升工作效率的，有些是用来娱乐的等等。。不过每一个都是我离不开的好工具。非常重要的一点是，我推荐的这些软件除了为知">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/shawn-bluce.github.io/enclosure/image/htop.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/shawn-bluce.github.io/enclosure/image/mycli.png">
-<meta property="og:updated_time" content="2018-08-21T07:34:22.000Z">
+<meta property="article:published_time" content="2017-09-29T14:03:38.000Z">
+<meta property="article:modified_time" content="2018-08-21T07:34:22.000Z">
+<meta property="article:author" content="Shawn">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="Shadowsocks">
+<meta property="article:tag" content="Software">
+<meta property="article:tag" content="Tools">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="用好Linux之：软件推荐">
-<meta name="twitter:description" content="0X00 推荐一波Linux下的软件Linux对于普通用户可能确实没有那么友好，但是对于计算机“专业”人士来说就好多了。我从接触Linux到现在也有个三两年了，而且用Linux桌面也有一段时间了。这段时间里也发现了不少好用的软件和工具，在这里整理一下也向大家推荐一波。这些工具有些是用来提升工作效率的，有些是用来娱乐的等等。。不过每一个都是我离不开的好工具。非常重要的一点是，我推荐的这些软件除了为知">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/shawn-bluce/shawn-bluce.github.io/enclosure/image/htop.png">
-  <link rel="canonical" href="https://blog.just666.com/2017/09/29/use-linux-better/">
 
 
-<script id="page-configurations">
+<link rel="canonical" href="https://blog.just666.com/2017/09/29/use-linux-better/">
+
+
+<script data-pjax class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: false,
-    isPost: true,
-    isPage: false,
-    isArchive: false
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
 
   <title>用好Linux之：软件推荐 | Shawn's Blog</title>
   
-  <script async src="https://www.googletagmanager.com/gtag/js?id=16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w"></script>
-  <script pjax>
-    var host = window.location.hostname;
-    if (host !== "localhost" || !true) {
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w');
-    }
-  </script>
-
-
 
 
 
@@ -108,197 +66,248 @@
 
   <noscript>
   <style>
-  .use-motion .brand,
+  body { margin-top: 2rem; }
+
   .use-motion .menu-item,
-  .sidebar-inner,
+  .use-motion .sidebar,
   .use-motion .post-block,
   .use-motion .pagination,
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  .use-motion .collection-header {
+    visibility: visible;
+  }
 
-  .use-motion .logo,
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
   .use-motion .site-title,
-  .use-motion .site-subtitle {
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
     opacity: initial;
     top: initial;
   }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
   </style>
 </noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
-
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Shawn's Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-        <h1 class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</h1>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Shawn's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
   </div>
 </div>
 
 
+
 <nav class="site-nav">
-  
-  <ul id="menu" class="menu">
-      
-      
-      
-        
+  <ul class="main-menu menu">
         <li class="menu-item menu-item-home">
-      
-    
-      
-      
-        
-      
-        
-      
-        
-      
-    
 
-    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-about">
-      
-    
-      
-      
-        
-      
-        
-      
-        
-      
-    
 
-    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-tags">
-      
-    
-      
-      
-        
-      
-        
-      
-        
-          
-        
-      
-    
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">140</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-archives">
-      
-    
-      
-      
-        
-          
-        
-      
-        
-      
-        
-      
-    
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">108</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-      
-      
-      
-        
-        <li class="menu-item menu-item-链接">
-      
-    
-      
-      
-        
-      
-        
-      
-        
-      
-    
+        <li class="menu-item menu-item-sitemap">
 
-    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>链接</a>
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
 
   </li>
       <li class="menu-item menu-item-search">
-        <a href="javascript:;" class="popup-trigger">
-        
-          <i class="fa fa-search fa-fw"></i>搜索</a>
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
       </li>
-    
   </ul>
-
 </nav>
-  <div class="site-search">
+
+
+
+  <div class="search-pop-overlay">
     <div class="popup search-popup">
-    <div class="search-header">
+        <div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
   <div class="search-input-container">
-    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
            placeholder="搜索..." spellcheck="false"
-           type="text" id="search-input">
+           type="search" class="search-input">
   </div>
   <span class="popup-btn-close">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
-<div id="search-result"></div>
-
-</div>
-<div class="search-pop-overlay"></div>
-
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
   </div>
 </div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-%E6%8E%A8%E8%8D%90%E4%B8%80%E6%B3%A2Linux%E4%B8%8B%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="nav-text">0X00 推荐一波Linux下的软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-zsh"><span class="nav-text">0X01 zsh</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-vim"><span class="nav-text">0X02 vim</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-htop"><span class="nav-text">0X03 htop</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-mycli"><span class="nav-text">0X04 mycli</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-WPS"><span class="nav-text">0X05 WPS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-Chrome-Firefox"><span class="nav-text">0X06 Chrome&#x2F;Firefox</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X07-%E4%B8%BA%E7%9F%A5%E7%AC%94%E8%AE%B0-%E8%9A%82%E8%9A%81%E7%AC%94%E8%AE%B0"><span class="nav-text">0X07 为知笔记&#x2F;蚂蚁笔记</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X08-%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90"><span class="nav-text">0X08 网易云音乐</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X09-Atom-vscode"><span class="nav-text">0X09 Atom&#x2F;vscode</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0A-Nylas"><span class="nav-text">0X0A Nylas</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0B-Guake"><span class="nav-text">0X0B Guake</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0C-Virtualbox"><span class="nav-text">0X0C Virtualbox</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0D-TeamViewer"><span class="nav-text">0X0D TeamViewer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0E-%E6%B7%B1%E5%BA%A6%E7%BB%88%E7%AB%AF"><span class="nav-text">0X0E 深度终端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0F-Shadowsocks-QT"><span class="nav-text">0X0F Shadowsocks-QT</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X10-Jetbrains"><span class="nav-text">0X10 Jetbrains</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X11-Audacious"><span class="nav-text">0X11 Audacious</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X12-Wireshark"><span class="nav-text">0X12 Wireshark</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X13-Dia"><span class="nav-text">0X13 Dia</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X14-Stellarium"><span class="nav-text">0X14 Stellarium</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X015-VLC"><span class="nav-text">0X015 VLC</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shawn"
+      src="/uploads/naruto.png">
+  <p class="site-author-name" itemprop="name">Shawn</p>
+  <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">140</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/shawn-bluce" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;shawn-bluce" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:shawnbluce@gmail.com" title="E-Mail → mailto:shawnbluce@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/15387917" title="B-Site → https:&#x2F;&#x2F;space.bilibili.com&#x2F;15387917" rel="noopener" target="_blank"><i class="fa fa-video fa-fw"></i>B-Site</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/8969875/shawn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;8969875&#x2F;shawn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://qqdie.com/" title="https:&#x2F;&#x2F;qqdie.com&#x2F;" rel="noopener" target="_blank">Jrotty</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/303donatello" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;303donatello" rel="noopener" target="_blank">303Donatello</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://lixianhua.com/" title="http:&#x2F;&#x2F;lixianhua.com&#x2F;" rel="noopener" target="_blank">绛木子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://duuge.com/" title="http:&#x2F;&#x2F;duuge.com&#x2F;" rel="noopener" target="_blank">杜哥</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://hubojing.github.io/" title="http:&#x2F;&#x2F;hubojing.github.io&#x2F;" rel="noopener" target="_blank">胡博靖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/Ypersistence" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;Ypersistence" rel="noopener" target="_blank">威大爷</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://wenqy.com/" title="http:&#x2F;&#x2F;wenqy.com&#x2F;" rel="noopener" target="_blank">小温之家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.rumoss.cn/" title="http:&#x2F;&#x2F;www.rumoss.cn&#x2F;" rel="noopener" target="_blank">濡沫杂记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/shouldnotappearcalm" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;shouldnotappearcalm" rel="noopener" target="_blank">不应有的淡定的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://hiwannz.com/" title="https:&#x2F;&#x2F;hiwannz.com" rel="noopener" target="_blank">见字如面</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
     </header>
 
     
@@ -306,58 +315,62 @@
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
-  <div class="reading-progress-bar"></div>
 
-  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="点这里没用，不信你试试" aria-label="点这里没用，不信你试试"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+  <a href="https://github.com/shawn-bluce" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-            
+    <div class="main-inner post posts-expand">
+      
 
-          <div id="content" class="content">
-            
+      
 
-  <div id="posts" class="posts-expand">
-      <article itemscope itemtype="http://schema.org/Article">
+    
   
   
-  
-  <div class="post-block post">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2017/09/29/use-linux-better/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
       <meta itemprop="name" content="Shawn">
       <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Shawn's Blog">
     </span>
+
+    
+    
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">用好Linux之：软件推荐
+        <h1 class="post-title" itemprop="name headline">
+          用好Linux之：软件推荐
+        </h1>
 
-          
-        </h2>
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
+      <time title="创建时间：2017-09-29 22:03:38" itemprop="dateCreated datePublished" datetime="2017-09-29T22:03:38+08:00">2017-09-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-08-21 15:34:22" itemprop="dateModified" datetime="2018-08-21T15:34:22+08:00">2018-08-21</time>
+      </span>
 
-              
-                
-              
-
-              <time title="创建时间：2017-09-29 22:03:38" itemprop="dateCreated datePublished" datetime="2017-09-29T22:03:38+08:00">2017-09-29</time>
-            </span>
-          
-
-          
+  
+</div>
 
         </div>
       </header>
@@ -366,19 +379,22 @@
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
         <h1 id="0X00-推荐一波Linux下的软件"><a href="#0X00-推荐一波Linux下的软件" class="headerlink" title="0X00 推荐一波Linux下的软件"></a>0X00 推荐一波Linux下的软件</h1><p>Linux对于普通用户可能确实没有那么友好，但是对于计算机“专业”人士来说就好多了。我从接触Linux到现在也有个三两年了，而且用Linux桌面也有一段时间了。这段时间里也发现了不少好用的软件和工具，在这里整理一下也向大家推荐一波。这些工具有些是用来提升工作效率的，有些是用来娱乐的等等。。不过每一个都是我离不开的好工具。<br>非常重要的一点是，我推荐的这些软件除了为知笔记以外都是 <strong>免费的</strong> ，而且还有一大半是 <strong>开源的</strong>。</p>
-<h1 id="0X01-zsh"><a href="#0X01-zsh" class="headerlink" title="0X01 zsh"></a>0X01 zsh</h1><p>Linux真正效率高的地方就在于Terminal，那我们就需要选一个好用的SHELL。目前绝大多数Linux发行版本都默认使用Bash，这是一个非常好用非常成熟的SHELL。但是有一个更好用的Shell叫做zsh，可以从官网安装也可以直接<code>apt install zsh</code>就装上了。这个shell一定要配合着<code>oh-my-zsh</code>来使用。<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvYmJ5cnVzc2VsbC9vaC1teS16c2g=" title="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh<i class="fa fa-external-link"></i></span>可以让你的SHELL发挥最大的效率。</p>
+<h1 id="0X01-zsh"><a href="#0X01-zsh" class="headerlink" title="0X01 zsh"></a>0X01 zsh</h1><p>Linux真正效率高的地方就在于Terminal，那我们就需要选一个好用的SHELL。目前绝大多数Linux发行版本都默认使用Bash，这是一个非常好用非常成熟的SHELL。但是有一个更好用的Shell叫做zsh，可以从官网安装也可以直接<code>apt install zsh</code>就装上了。这个shell一定要配合着<code>oh-my-zsh</code>来使用。<a target="_blank" rel="noopener" href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a>可以让你的SHELL发挥最大的效率。</p>
 <a id="more"></a>
-<h1 id="0X02-vim"><a href="#0X02-vim" class="headerlink" title="0X02 vim"></a>0X02 vim</h1><p>vim 的好处就不多说了。在这里推荐一套开源的配置，在自己没有配置vim的情况下直接安装就好了。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/vince67/v7_config/master/vim.sh</span><br><span class="line">bash vim.sh</span><br></pre></td></tr></table></figure></p>
+
+<h1 id="0X02-vim"><a href="#0X02-vim" class="headerlink" title="0X02 vim"></a>0X02 vim</h1><p>vim 的好处就不多说了。在这里推荐一套开源的配置，在自己没有配置vim的情况下直接安装就好了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/vince67/v7_config/master/vim.sh</span><br><span class="line">bash vim.sh</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>这个脚本官方只支持Mac和Debian系，如果是其他系需要自行修改一下这个脚本里的内容。<br>例如：如果是CentOS的话就将里面安装软件的<code>apt-get</code>修改成<code>yum</code>，安装就能顺利进行了。</p>
 </blockquote>
 <p>这个安装好了之后vim常用的插件和配置就都搞定了，默认情况下写Python就可以拥有非常好的用户体验。具体用法简单看一下<code>~/.vimrc</code>就可以了解到了。</p>
-<h1 id="0X03-htop"><a href="#0X03-htop" class="headerlink" title="0X03 htop"></a>0X03 htop</h1><p>在Linux命令行中查看系统资源比如CPU、内存、进程等要用到<code>top、free</code>等命令，现在一个<code>htop</code>就解决了问题，而且是彩色输出还支持鼠标点击排序。<br><img src="https://raw.githubusercontent.com/shawn-bluce/shawn-bluce.github.io/enclosure/image/htop.png" alt="htop截图"><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install htop</span><br><span class="line">sudo yum install htop</span><br></pre></td></tr></table></figure></p>
+<h1 id="0X03-htop"><a href="#0X03-htop" class="headerlink" title="0X03 htop"></a>0X03 htop</h1><p>在Linux命令行中查看系统资源比如CPU、内存、进程等要用到<code>top、free</code>等命令，现在一个<code>htop</code>就解决了问题，而且是彩色输出还支持鼠标点击排序。<br><img src="https://raw.githubusercontent.com/shawn-bluce/shawn-bluce.github.io/enclosure/image/htop.png" alt="htop截图"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install htop</span><br><span class="line">sudo yum install htop</span><br></pre></td></tr></table></figure>
+
+
 <h1 id="0X04-mycli"><a href="#0X04-mycli" class="headerlink" title="0X04 mycli"></a>0X04 mycli</h1><p>MySQL是我们常用的一款数据库了，有的时候需要连到数据库里查一些东西或是一些什么操作。通常我们会选用<code>mysql</code>命令来连接数据库，但是这个工具挺不好用的，所以才会出现了这么一款神器<code>mycli</code>。由于是用Python写的，还封装了pip，所以安装起来很简单，一条命令<code>pip install mycli</code>就搞定了。这个工具和<code>mysql</code>命令用法是完全一样的，他的特点就是支持自动补全和SQL高亮，而且输出默认是使用<code>less</code>展示的，可以直接用键盘上下滚动，不需要鼠标键盘乱换着用。<br><img src="https://raw.githubusercontent.com/shawn-bluce/shawn-bluce.github.io/enclosure/image/mycli.png" alt="mycli截图"></p>
-<h1 id="0X05-WPS"><a href="#0X05-WPS" class="headerlink" title="0X05 WPS"></a>0X05 WPS</h1><p><span class="exturl" data-url="aHR0cDovL2xpbnV4Lndwcy5jbi8=" title="http://linux.wps.cn/">WPS<i class="fa fa-external-link"></i></span>是在Linux下MS Office的最佳替代品了。虽然功能和易用性上不如MS Office，但是他免费，在Linux下没有广告，而且对MS Office的支持率还是很高的。通常只是写个简单的文档或者展示PPT什么的是没有问题的。不过WPS暂时还没有开源，倒是有一个开源的替代品LibreOffice，但是实在是不好用，有兴趣的同学可以加入LibreOffice的社区，帮助LibreOffice变得更好。<br>对了，WPS在Linux下的启动速度奇快，在我PCI-E Nvme的硬盘下每次都是秒开，比Office 2016要更快一筹。</p>
+<h1 id="0X05-WPS"><a href="#0X05-WPS" class="headerlink" title="0X05 WPS"></a>0X05 WPS</h1><p><a target="_blank" rel="noopener" href="http://linux.wps.cn/">WPS</a>是在Linux下MS Office的最佳替代品了。虽然功能和易用性上不如MS Office，但是他免费，在Linux下没有广告，而且对MS Office的支持率还是很高的。通常只是写个简单的文档或者展示PPT什么的是没有问题的。不过WPS暂时还没有开源，倒是有一个开源的替代品LibreOffice，但是实在是不好用，有兴趣的同学可以加入LibreOffice的社区，帮助LibreOffice变得更好。<br>对了，WPS在Linux下的启动速度奇快，在我PCI-E Nvme的硬盘下每次都是秒开，比Office 2016要更快一筹。</p>
 <h1 id="0X06-Chrome-Firefox"><a href="#0X06-Chrome-Firefox" class="headerlink" title="0X06 Chrome/Firefox"></a>0X06 Chrome/Firefox</h1><p>这俩就没的说了，我就介绍一下我正在用的几个Chrom扩展吧</p>
 <ol>
 <li>Adblock Plus 去广告神器</li>
@@ -389,11 +405,19 @@
 <li>Postman 一个用于快速模拟http请求的ChromeAPP</li>
 <li>Proxy SwitchOmega  一个用于设置浏览器代理的扩展，配合SS使用感觉良好</li>
 <li>Search by Image 以图搜图，开启后网页每张图右下角都会出现一个小Logo，点击Logo就可以用Google搜索这张图</li>
-<li>Tamepermonkey 一个JS脚本管理器，神器<br>9.1. AC-baidu  去百度广告<br>9.2. 百度广告清理 去百度广告可能需要两个才行</li>
+<li>Tamepermonkey 一个JS脚本管理器，神器</li>
+<li><ol>
+<li>AC-baidu  去百度广告</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>百度广告清理 去百度广告可能需要两个才行</li>
+</ol>
+</li>
 <li>Wappalyzer 开发者必备，可以显示出当前网页/网站所使用的技术和框架</li>
 <li>Vimium 用vim快捷键来操作浏览器，神器</li>
 </ol>
-<h1 id="0X07-为知笔记-蚂蚁笔记"><a href="#0X07-为知笔记-蚂蚁笔记" class="headerlink" title="0X07 为知笔记/蚂蚁笔记"></a>0X07 为知笔记/蚂蚁笔记</h1><p>在我所知道的范围内，Linux环境下体验还不错的笔记软件就这两款。给大家列个表对比一下 <span class="exturl" data-url="aHR0cDovL3d3dy53aXouY24v" title="http://www.wiz.cn/">为知笔记<i class="fa fa-external-link"></i></span> 和 <span class="exturl" data-url="aHR0cHM6Ly9sZWFub3RlLmNvbS8=" title="https://leanote.com/">蚂蚁笔记<i class="fa fa-external-link"></i></span></p>
+<h1 id="0X07-为知笔记-蚂蚁笔记"><a href="#0X07-为知笔记-蚂蚁笔记" class="headerlink" title="0X07 为知笔记/蚂蚁笔记"></a>0X07 为知笔记/蚂蚁笔记</h1><p>在我所知道的范围内，Linux环境下体验还不错的笔记软件就这两款。给大家列个表对比一下 <a target="_blank" rel="noopener" href="http://www.wiz.cn/">为知笔记</a> 和 <a target="_blank" rel="noopener" href="https://leanote.com/">蚂蚁笔记</a></p>
 <table>
 <thead>
 <tr>
@@ -402,8 +426,7 @@
 <th>蚂蚁笔记</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>客户端开源</td>
 <td>是</td>
 <td>是</td>
@@ -428,18 +451,17 @@
 <td>好</td>
 <td>较差</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>总的来说，为知笔记每年要花60块钱，可以获得不错的使用体验；蚂蚁笔记每年要花150块钱才能获得不错的体验。不过由于蚂蚁笔记的服务端开源，所以可以将服务端部署在自己的服务器上以免费获得最完整的功能。主要就是看大家对哪点的需求更多了。</p>
-<h1 id="0X08-网易云音乐"><a href="#0X08-网易云音乐" class="headerlink" title="0X08 网易云音乐"></a>0X08 网易云音乐</h1><p>网易云音乐就没必要过多介绍了。官方推出了deb包，几乎所有基于Debian的Linux都能一键安装。也有民间玩家制作了rpm包，没有用过不知道体验怎么样。还有民间高手在做的命令行版本的网易云音乐，功能已经相当完善了。目前有<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RhcmtuZXNzb21pL211c2ljYm94" title="https://github.com/darknessomi/musicbox">Python版本<i class="fa fa-external-link"></i></span>的和<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0JpbmFyeWlmeS9OZXRlYXNlQ2xvdWRNdXNpY0FwaQ==" title="https://github.com/Binaryify/NeteaseCloudMusicApi">NodeJS版本<i class="fa fa-external-link"></i></span>的，有兴趣的同学可以参与到开发过程中来。</p>
-<h1 id="0X09-Atom-vscode"><a href="#0X09-Atom-vscode" class="headerlink" title="0X09 Atom/vscode"></a>0X09 Atom/vscode</h1><p>这两个应该是目前为止图形界面下最好用的两款开源编辑器了。<span class="exturl" data-url="aHR0cHM6Ly9hdG9tLmlvLw==" title="https://atom.io/">Atom<i class="fa fa-external-link"></i></span>是由Github制作的，<span class="exturl" data-url="aHR0cHM6Ly9jb2RlLnZpc3VhbHN0dWRpby5jb20v" title="https://code.visualstudio.com/">vscode<i class="fa fa-external-link"></i></span>是由Microsoft制作的。一个是拥有全世界最厉害程序员的平台，一个是全世界最厉害的软件公司之一。自然软件的质量没的说了，我个人也只是轻度使用，所以主要是看外观和心里偏向而已。比如我就比较喜欢用Atom。</p>
-<h1 id="0X0A-Nylas"><a href="#0X0A-Nylas" class="headerlink" title="0X0A Nylas"></a>0X0A Nylas</h1><p>目前为止Linux下最有名的两款邮件客户端应该是雷鸟和EVO了，不过前段时间出来的这款<span class="exturl" data-url="aHR0cHM6Ly93d3cubnlsYXMuY29tL255bGFzLW1haWwv" title="https://www.nylas.com/nylas-mail/">Nylas<i class="fa fa-external-link"></i></span>特好用，我一直在用。最重要的一点是可以不用梯子就访问Gmail。不过目前遇到的唯一一个坑就是连接QQ企业邮箱的时候有问题，每次都会报错，但是又能收到信，很奇怪。给社区反馈过，也没得到答复。然而我还是强烈推荐这款软件，真的是好用。</p>
+<h1 id="0X08-网易云音乐"><a href="#0X08-网易云音乐" class="headerlink" title="0X08 网易云音乐"></a>0X08 网易云音乐</h1><p>网易云音乐就没必要过多介绍了。官方推出了deb包，几乎所有基于Debian的Linux都能一键安装。也有民间玩家制作了rpm包，没有用过不知道体验怎么样。还有民间高手在做的命令行版本的网易云音乐，功能已经相当完善了。目前有<a target="_blank" rel="noopener" href="https://github.com/darknessomi/musicbox">Python版本</a>的和<a target="_blank" rel="noopener" href="https://github.com/Binaryify/NeteaseCloudMusicApi">NodeJS版本</a>的，有兴趣的同学可以参与到开发过程中来。</p>
+<h1 id="0X09-Atom-vscode"><a href="#0X09-Atom-vscode" class="headerlink" title="0X09 Atom/vscode"></a>0X09 Atom/vscode</h1><p>这两个应该是目前为止图形界面下最好用的两款开源编辑器了。<a target="_blank" rel="noopener" href="https://atom.io/">Atom</a>是由Github制作的，<a target="_blank" rel="noopener" href="https://code.visualstudio.com/">vscode</a>是由Microsoft制作的。一个是拥有全世界最厉害程序员的平台，一个是全世界最厉害的软件公司之一。自然软件的质量没的说了，我个人也只是轻度使用，所以主要是看外观和心里偏向而已。比如我就比较喜欢用Atom。</p>
+<h1 id="0X0A-Nylas"><a href="#0X0A-Nylas" class="headerlink" title="0X0A Nylas"></a>0X0A Nylas</h1><p>目前为止Linux下最有名的两款邮件客户端应该是雷鸟和EVO了，不过前段时间出来的这款<a target="_blank" rel="noopener" href="https://www.nylas.com/nylas-mail/">Nylas</a>特好用，我一直在用。最重要的一点是可以不用梯子就访问Gmail。不过目前遇到的唯一一个坑就是连接QQ企业邮箱的时候有问题，每次都会报错，但是又能收到信，很奇怪。给社区反馈过，也没得到答复。然而我还是强烈推荐这款软件，真的是好用。</p>
 <h1 id="0X0B-Guake"><a href="#0X0B-Guake" class="headerlink" title="0X0B Guake"></a>0X0B Guake</h1><p>这个名字对于大学生来说非常不友好，也不知道怎么这么好的软件怎么就取了个”挂科”的名字呢，哈哈。我们在用Linux的时候偶尔会需要输入一两行命令，或者是需要用htop长期看着自己的性能指标。那这时候每次都打开一个终端再输命令吗？当然不用。装一个<code>Guake</code>，给他设定一个快捷键，每次需要临时调出终端的时候只需要按一下快捷键，终端就会从屏幕顶部弹下来，还能设置失去焦点自动隐藏。这样用起来就很舒服了。</p>
-<h1 id="0X0C-Virtualbox"><a href="#0X0C-Virtualbox" class="headerlink" title="0X0C Virtualbox"></a>0X0C Virtualbox</h1><p>这款软件想必也不需要介绍，是目前免费桌面虚拟机软件中最好的一款了。大量人在用破解的VMwareWorkstadion，虽然比VirtualBox好用一点，但是我们还是应该按版权来，不想花钱就用VirtualBox吧，况且也挺好用的。比如你在长期用Linux的环境下偶尔也需要用一下Windows，比如你长期用Fedora偶尔也要用一下Ubuntu，这就是<span class="exturl" data-url="aHR0cHM6Ly93d3cudmlydHVhbGJveC5vcmcvd2lraS9Eb3dubG9hZHM=" title="https://www.virtualbox.org/wiki/Downloads">VirtualBox<i class="fa fa-external-link"></i></span>出场的时候了。</p>
-<h1 id="0X0D-TeamViewer"><a href="#0X0D-TeamViewer" class="headerlink" title="0X0D TeamViewer"></a>0X0D TeamViewer</h1><p>平时在Windows下大家都用习惯了QQ的远程协助，那么到了Linux下应该怎么办呢？<span class="exturl" data-url="aHR0cHM6Ly93d3cudGVhbXZpZXdlci5jb20vemgv" title="https://www.teamviewer.com/zh/">Teamviewer<i class="fa fa-external-link"></i></span>应该就是最好的选择了。其实Teamviewer在性能上是要比QQ的远程协助更强的。注意一点：这款软件对个人免费，但是要在公司里用的话是要花钱买的。</p>
-<h1 id="0X0E-深度终端"><a href="#0X0E-深度终端" class="headerlink" title="0X0E 深度终端"></a>0X0E 深度终端</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGVlcGluLm9yZy8yMDE2LzA5LzIyL2RlZXBpbi10ZXJtaW5hbC12Mi0wLXJlbGVhc2VkLWFsbC1jYW4tYmUtZG9uZS1pbi10ZXJtaW5hbC8=" title="https://www.deepin.org/2016/09/22/deepin-terminal-v2-0-released-all-can-be-done-in-terminal/">深度终端<i class="fa fa-external-link"></i></span>是我目前在Linux里用过最好用的终端模拟器了。自带的主题很漂亮，对中文支持完美，而且还集成了SSH管理功能。</p>
-<h1 id="0X0F-Shadowsocks-QT"><a href="#0X0F-Shadowsocks-QT" class="headerlink" title="0X0F Shadowsocks-QT"></a>0X0F Shadowsocks-QT</h1><p>翻越长城必备神器 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYWRvd3NvY2tzL3NoYWRvd3NvY2tzLXF0NQ==" title="https://github.com/shadowsocks/shadowsocks-qt5">Shadowsocks-QT<i class="fa fa-external-link"></i></span>。目前为止这东西是最好用的，但是不能像Windows和Mac中的那样直接支持PAC，需要浏览器的扩展来配合实现PAC功能。</p>
-<h1 id="0X10-Jetbrains"><a href="#0X10-Jetbrains" class="headerlink" title="0X10 Jetbrains"></a>0X10 Jetbrains</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cuamV0YnJhaW5zLmNvbS8=" title="https://www.jetbrains.com/">Jetbrains<i class="fa fa-external-link"></i></span>他们的产品简直是厉害，如果是学生的话可以去申请全部软件的专业版。我用过的有WebStorm/PyCharm/IntellJ IDEA/DataGrip/Android Studio这五款，其中AndroidStudio免费，PyCharm和IDEA提供社区版。他们的软件最大的特点就是统一性强，你用过其中一款之后再去用其他的很快就能上手。而且都非常智能，这才是IDE应该有的样子。</p>
+<h1 id="0X0C-Virtualbox"><a href="#0X0C-Virtualbox" class="headerlink" title="0X0C Virtualbox"></a>0X0C Virtualbox</h1><p>这款软件想必也不需要介绍，是目前免费桌面虚拟机软件中最好的一款了。大量人在用破解的VMwareWorkstadion，虽然比VirtualBox好用一点，但是我们还是应该按版权来，不想花钱就用VirtualBox吧，况且也挺好用的。比如你在长期用Linux的环境下偶尔也需要用一下Windows，比如你长期用Fedora偶尔也要用一下Ubuntu，这就是<a target="_blank" rel="noopener" href="https://www.virtualbox.org/wiki/Downloads">VirtualBox</a>出场的时候了。</p>
+<h1 id="0X0D-TeamViewer"><a href="#0X0D-TeamViewer" class="headerlink" title="0X0D TeamViewer"></a>0X0D TeamViewer</h1><p>平时在Windows下大家都用习惯了QQ的远程协助，那么到了Linux下应该怎么办呢？<a target="_blank" rel="noopener" href="https://www.teamviewer.com/zh/">Teamviewer</a>应该就是最好的选择了。其实Teamviewer在性能上是要比QQ的远程协助更强的。注意一点：这款软件对个人免费，但是要在公司里用的话是要花钱买的。</p>
+<h1 id="0X0E-深度终端"><a href="#0X0E-深度终端" class="headerlink" title="0X0E 深度终端"></a>0X0E 深度终端</h1><p><a target="_blank" rel="noopener" href="https://www.deepin.org/2016/09/22/deepin-terminal-v2-0-released-all-can-be-done-in-terminal/">深度终端</a>是我目前在Linux里用过最好用的终端模拟器了。自带的主题很漂亮，对中文支持完美，而且还集成了SSH管理功能。</p>
+<h1 id="0X0F-Shadowsocks-QT"><a href="#0X0F-Shadowsocks-QT" class="headerlink" title="0X0F Shadowsocks-QT"></a>0X0F Shadowsocks-QT</h1><p>翻越长城必备神器 <a target="_blank" rel="noopener" href="https://github.com/shadowsocks/shadowsocks-qt5">Shadowsocks-QT</a>。目前为止这东西是最好用的，但是不能像Windows和Mac中的那样直接支持PAC，需要浏览器的扩展来配合实现PAC功能。</p>
+<h1 id="0X10-Jetbrains"><a href="#0X10-Jetbrains" class="headerlink" title="0X10 Jetbrains"></a>0X10 Jetbrains</h1><p><a target="_blank" rel="noopener" href="https://www.jetbrains.com/">Jetbrains</a>他们的产品简直是厉害，如果是学生的话可以去申请全部软件的专业版。我用过的有WebStorm/PyCharm/IntellJ IDEA/DataGrip/Android Studio这五款，其中AndroidStudio免费，PyCharm和IDEA提供社区版。他们的软件最大的特点就是统一性强，你用过其中一款之后再去用其他的很快就能上手。而且都非常智能，这才是IDE应该有的样子。</p>
 <h1 id="0X11-Audacious"><a href="#0X11-Audacious" class="headerlink" title="0X11 Audacious"></a>0X11 Audacious</h1><p>如果你有把音乐下载到本地再听的习惯，那么这款软件就特别适合。这款软件特别小，界面简洁，使用简单。是我用过Linux下最好用的离线播放器了。</p>
 <h1 id="0X12-Wireshark"><a href="#0X12-Wireshark" class="headerlink" title="0X12 Wireshark"></a>0X12 Wireshark</h1><p>一款可以用来分析网络流量包的软件，可以在官网下载最新的也可以在包管理中安装使用。这应该是开发者必备的工具之一了吧，有的时候为了分析一波流量或者看看自己的请求到底是不是有问题等等。。。当然，如果是大黑客的话还能有更炫酷的应用场景。</p>
 <h1 id="0X13-Dia"><a href="#0X13-Dia" class="headerlink" title="0X13 Dia"></a>0X13 Dia</h1><p>一款用来画图的开源软件，可以简单的画出流程图，数据库模型等等。。使用体验还是不错，如果只是轻度使用的话足够了。</p>
@@ -451,321 +473,199 @@
     
     
     
-        
       
-        <div id="reward-container">
-  <div>觉得写的还凑合可以请我喝杯肥宅快乐水喔</div>
-  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
-    打赏
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/05/14/django-fast/" rel="bookmark">如何让Django API再快一点</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2018/03/14/dnf-proxy/" rel="bookmark">Fedora中dnf命令使用Socks5代理</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2016/12/15/linux-mysql-chinese/" rel="bookmark">解决Linux下MySQL/MariaDB中文变问号？问题</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2016/11/20/linux-mysql-dump/" rel="bookmark">Linux下MariaDB/MySql的安装配置、用户管理和备份</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/11/02/better-linux/" rel="bookmark">在Linux桌面下活得舒服</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>这篇文章对你有帮助吗？</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
   </button>
-  <div id="qr" style="display: none;">
-        
-      
-      <div style="display: inline-block">
-        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.08.png" alt="Shawn 微信支付">
-        <p>微信支付</p>
+  <div class="post-reward">
+      <div>
+        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.08.png" alt="Shawn 微信">
+        <span>微信</span>
       </div>
-        
-      
-      <div style="display: inline-block">
+      <div>
         <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.37.png" alt="Shawn 支付宝">
-        <p>支付宝</p>
+        <span>支付宝</span>
       </div>
 
   </div>
 </div>
 
-      
-        
+          
 
-<div>
-<ul class="post-copyright">
+<div class="post-copyright">
+<ul>
   <li class="post-copyright-author">
-    <strong>本文作者： </strong>Shawn</li>
+      <strong>本文作者： </strong>Shawn
+  </li>
   <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="https://blog.just666.com/2017/09/29/use-linux-better/" title="用好Linux之：软件推荐">https://blog.just666.com/2017/09/29/use-linux-better/</a>
+      <strong>本文链接：</strong>
+      <a href="https://blog.just666.com/2017/09/29/use-linux-better/" title="用好Linux之：软件推荐">https://blog.just666.com/2017/09/29/use-linux-better/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li>
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
 </ul>
 </div>
 
-      
-
-      <footer class="post-footer">
-          
-            
-          
           <div class="post-tags">
-            
-              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
-            
-              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
-            
-              <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
-            
-              <a href="/tags/Shadowsocks/" rel="tag"><i class="fa fa-tag"></i> Shadowsocks</a>
-            
-              <a href="/tags/Software/" rel="tag"><i class="fa fa-tag"></i> Software</a>
-            
-              <a href="/tags/Tools/" rel="tag"><i class="fa fa-tag"></i> Tools</a>
-            
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+              <a href="/tags/Shadowsocks/" rel="tag"># Shadowsocks</a>
+              <a href="/tags/Software/" rel="tag"># Software</a>
+              <a href="/tags/Tools/" rel="tag"># Tools</a>
           </div>
-        
 
         
 
           <div class="post-nav">
-            <div class="post-nav-next post-nav-item">
-              
-                <a href="/2017/09/20/python-virtualenvwapper/" rel="next" title="Python使用virtualenvwapper管理虚拟环境">
+            <div class="post-nav-item">
+                <a href="/2017/09/20/python-virtualenvwapper/" rel="prev" title="Python使用virtualenvwapper管理虚拟环境">
                   <i class="fa fa-chevron-left"></i> Python使用virtualenvwapper管理虚拟环境
                 </a>
-              
             </div>
-
-            <span class="post-nav-divider"></span>
-
-            <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2017/11/12/git-experience/" rel="prev" title="Git初步使用经验">
+            <div class="post-nav-item">
+                <a href="/2017/11/12/git-experience/" rel="next" title="Git初步使用经验">
                   Git初步使用经验 <i class="fa fa-chevron-right"></i>
                 </a>
-              
             </div>
           </div>
-        
-      </footer>
-    
-  </div>
-  
-  
-  
+    </footer>
   </article>
-
-  </div>
-
-
-          </div>
-          
-
-        </div>
-          
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-        
-        
-        
-        
-      
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-推荐一波Linux下的软件"><span class="nav-text">0X00 推荐一波Linux下的软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-zsh"><span class="nav-text">0X01 zsh</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-vim"><span class="nav-text">0X02 vim</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-htop"><span class="nav-text">0X03 htop</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-mycli"><span class="nav-text">0X04 mycli</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-WPS"><span class="nav-text">0X05 WPS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-Chrome-Firefox"><span class="nav-text">0X06 Chrome/Firefox</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X07-为知笔记-蚂蚁笔记"><span class="nav-text">0X07 为知笔记/蚂蚁笔记</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X08-网易云音乐"><span class="nav-text">0X08 网易云音乐</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X09-Atom-vscode"><span class="nav-text">0X09 Atom/vscode</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0A-Nylas"><span class="nav-text">0X0A Nylas</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0B-Guake"><span class="nav-text">0X0B Guake</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0C-Virtualbox"><span class="nav-text">0X0C Virtualbox</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0D-TeamViewer"><span class="nav-text">0X0D TeamViewer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0E-深度终端"><span class="nav-text">0X0E 深度终端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X0F-Shadowsocks-QT"><span class="nav-text">0X0F Shadowsocks-QT</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X10-Jetbrains"><span class="nav-text">0X10 Jetbrains</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X11-Audacious"><span class="nav-text">0X11 Audacious</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X12-Wireshark"><span class="nav-text">0X12 Wireshark</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X13-Dia"><span class="nav-text">0X13 Dia</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X14-Stellarium"><span class="nav-text">0X14 Stellarium</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X015-VLC"><span class="nav-text">0X015 VLC</span></a></li></ol></div>
-        
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image"
-      src="/uploads/naruto.png"
-      alt="Shawn">
-  <p class="site-author-name" itemprop="name">Shawn</p>
-  <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">108</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-    
-      
-      
-      <div class="site-state-item site-state-tags">
-        
-          
-            <a href="/tags/">
-          
-        
-        <span class="site-state-item-count">140</span>
-        <span class="site-state-item-name">标签</span>
-        </a>
-      </div>
-    
-  </nav>
-</div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="GitHub &rarr; https://github.com/shawn-bluce"><i class="fa fa-fw fa-github"></i></span>
-      </span>
-    
-      <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <span class="exturl" data-url="bWFpbHRvOnNoYXduYmx1Y2VAZ21haWwuY29t" title="E-Mail &rarr; mailto:shawnbluce@gmail.com"><i class="fa fa-fw fa-inbox"></i></span>
-      </span>
-    
-      <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <span class="exturl" data-url="aHR0cHM6Ly9zcGFjZS5iaWxpYmlsaS5jb20vMTUzODc5MTc=" title="Bilibili &rarr; https://space.bilibili.com/15387917"><i class="fa fa-fw fa-video-camera"></i></span>
-      </span>
-    
-      <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy84OTY5ODc1L3NoYXdu" title="StackOverflow &rarr; https://stackoverflow.com/users/8969875/shawn"><i class="fa fa-fw fa-stack-overflow"></i></span>
-      </span>
-    
-  </div>
-  <div class="cc-license motion-element" itemprop="license">
-    
   
-    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
-  </div>
+  
 
 
 
-      </div>
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
 
     </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
+      
 
-      </div>
-    </main>
+      
 
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Shawn </br> 月亮很圆，圆也没用，没用也圆</span>
 </div>
-  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v3.9.0</div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Pisces</span> v7.4.1</div>
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
+    </div>
+  </footer>
+
   
-  <script src="//cdn.staticfile.org/animejs/2.2.0/anime.min.js"></script>
-  <script src="//cdn.staticfile.org/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
-<script src="/js/schemes/pisces.js?v=7.4.1"></script>
-<script src="/js/next-boot.js?v=7.4.1"></script>
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/animejs/1.0/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
   <script>
 var pjax = new Pjax({
   selectors: [
     'head title',
-    '#page-configurations',
-    '.content-wrap',
+    '.page-configurations',
+    '.main-inner',
     '.post-toc-wrap',
-    '#pjax'
+    '.languages',
+    '.pjax'
   ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
   analytics: false,
   cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
 });
 
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
   NexT.boot.refresh();
   // Define Motion Sequence & Bootstrap Motion.
   if (CONFIG.motion.enable) {
     NexT.motion.integrator
       .init()
+      .add(NexT.motion.middleWares.subMenu)
       .add(NexT.motion.middleWares.postList)
       .bootstrap();
   }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
   NexT.utils.updateSidebarPosition();
 });
 </script>
 
 
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
 
 
   
@@ -777,27 +677,30 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script src="/js/local-search.js?v=7.4.1"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div id="pjax">
-
+    <div class="pjax">
   
 
   
 
-  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '79f0f80e1019d9521c50',
+      clientSecret: '8f463866cba423bfaa63f5162824d03533327b73',
+      repo        : 'shawn-bluce.github.io',
+      owner       : 'shawn-bluce',
+      admin       : ['shawn-bluce'],
+      id          : '5a7289c0950b846c322874f347deb438',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
     </div>
 </body>

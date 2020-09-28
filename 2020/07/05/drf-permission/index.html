@@ -1,104 +1,59 @@
 <!DOCTYPE html>
-
-
-
-
-
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png?v=7.4.1">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=7.4.1">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png?v=7.4.1">
-  <link rel="mask-icon" href="/favicon.png?v=7.4.1" color="#222">
-  <meta http-equiv="Cache-Control" content="no-transform">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/favicon.png" color="#222">
 
-<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
 
-<script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '7.4.1',
-    exturl: true,
-    sidebar: {"position":"left","width":300,"display":"post","offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: true,
-    lazyload: false,
-    pangu: true,
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":"auto","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
-    path: 'search.xml',
-    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    translation: {
-      copy_button: '复制',
-      copy_success: '复制成功',
-      copy_failure: '复制失败'
-    },
-    sidebarPadding: 40
-  };
-</script>
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.just666.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":true,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}};
+  </script>
 
   <meta name="description" content="0X00 Django 中的权限结构、定义我们知道在创建了一个 Django 项目之后，默认就有两个公开可用的 model：User 和 Group，这两个 model 的一项功能就是用来做权限管理的。系统中会有很多项权限，单个 user 可以配置拥有哪些权限，也可以将权限配置给 group。然后校验单个权限的时候其实就是将 user 本身的权限，和 user 所在的所有组的权限做一个并集，看本次">
-<meta name="keywords" content="Django,Django REST framework,Permission">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何在 Django 与 DRF 中优雅地校验权限">
 <meta property="og:url" content="https://blog.just666.com/2020/07/05/drf-permission/index.html">
 <meta property="og:site_name" content="Shawn&#39;s Blog">
 <meta property="og:description" content="0X00 Django 中的权限结构、定义我们知道在创建了一个 Django 项目之后，默认就有两个公开可用的 model：User 和 Group，这两个 model 的一项功能就是用来做权限管理的。系统中会有很多项权限，单个 user 可以配置拥有哪些权限，也可以将权限配置给 group。然后校验单个权限的时候其实就是将 user 本身的权限，和 user 所在的所有组的权限做一个并集，看本次">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200705173202.png">
-<meta property="og:updated_time" content="2020-07-05T09:50:24.653Z">
+<meta property="article:published_time" content="2020-07-05T05:24:07.000Z">
+<meta property="article:modified_time" content="2020-07-05T09:50:24.653Z">
+<meta property="article:author" content="Shawn">
+<meta property="article:tag" content="Django">
+<meta property="article:tag" content="Django REST framework">
+<meta property="article:tag" content="Permission">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何在 Django 与 DRF 中优雅地校验权限">
-<meta name="twitter:description" content="0X00 Django 中的权限结构、定义我们知道在创建了一个 Django 项目之后，默认就有两个公开可用的 model：User 和 Group，这两个 model 的一项功能就是用来做权限管理的。系统中会有很多项权限，单个 user 可以配置拥有哪些权限，也可以将权限配置给 group。然后校验单个权限的时候其实就是将 user 本身的权限，和 user 所在的所有组的权限做一个并集，看本次">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200705173202.png">
-  <link rel="canonical" href="https://blog.just666.com/2020/07/05/drf-permission/">
 
 
-<script id="page-configurations">
+<link rel="canonical" href="https://blog.just666.com/2020/07/05/drf-permission/">
+
+
+<script data-pjax class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: false,
-    isPost: true,
-    isPage: false,
-    isArchive: false
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
 
   <title>如何在 Django 与 DRF 中优雅地校验权限 | Shawn's Blog</title>
   
-  <script async src="https://www.googletagmanager.com/gtag/js?id=16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w"></script>
-  <script pjax>
-    var host = window.location.hostname;
-    if (host !== "localhost" || !true) {
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '16trSv53C6kR4OaQtAdbg2vLpbM94dGLhuod0B-vr8w');
-    }
-  </script>
-
-
 
 
 
@@ -107,421 +62,147 @@
 
   <noscript>
   <style>
-  .use-motion .brand,
+  body { margin-top: 2rem; }
+
   .use-motion .menu-item,
-  .sidebar-inner,
+  .use-motion .sidebar,
   .use-motion .post-block,
   .use-motion .pagination,
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  .use-motion .collection-header {
+    visibility: visible;
+  }
 
-  .use-motion .logo,
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
   .use-motion .site-title,
-  .use-motion .site-subtitle {
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
     opacity: initial;
     top: initial;
   }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
   </style>
 </noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
-
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Shawn's Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-        <h1 class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</h1>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Shawn's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
   </div>
 </div>
 
 
+
 <nav class="site-nav">
-  
-  <ul id="menu" class="menu">
-      
-      
-      
-        
+  <ul class="main-menu menu">
         <li class="menu-item menu-item-home">
-      
-    
-      
-      
-        
-      
-        
-      
-        
-      
-    
 
-    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-about">
-      
-    
-      
-      
-        
-      
-        
-      
-        
-      
-    
 
-    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-tags">
-      
-    
-      
-      
-        
-      
-        
-      
-        
-          
-        
-      
-    
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">140</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-archives">
-      
-    
-      
-      
-        
-          
-        
-      
-        
-      
-        
-      
-    
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">108</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-      
-      
-      
-        
-        <li class="menu-item menu-item-链接">
-      
-    
-      
-      
-        
-      
-        
-      
-        
-      
-    
+        <li class="menu-item menu-item-sitemap">
 
-    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>链接</a>
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
 
   </li>
       <li class="menu-item menu-item-search">
-        <a href="javascript:;" class="popup-trigger">
-        
-          <i class="fa fa-search fa-fw"></i>搜索</a>
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
       </li>
-    
   </ul>
-
 </nav>
-  <div class="site-search">
+
+
+
+  <div class="search-pop-overlay">
     <div class="popup search-popup">
-    <div class="search-header">
+        <div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
   <div class="search-input-container">
-    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
            placeholder="搜索..." spellcheck="false"
-           type="text" id="search-input">
+           type="search" class="search-input">
   </div>
   <span class="popup-btn-close">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
-<div id="search-result"></div>
-
-</div>
-<div class="search-pop-overlay"></div>
-
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
   </div>
 </div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-  <div class="reading-progress-bar"></div>
-
-  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="点这里没用，不信你试试" aria-label="点这里没用，不信你试试"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
-
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-            
-
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-      <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/07/05/drf-permission/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-      <meta itemprop="image" content="/uploads/naruto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">如何在 Django 与 DRF 中优雅地校验权限
-
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2020-07-05 13:24:07" itemprop="dateCreated datePublished" datetime="2020-07-05T13:24:07+08:00">2020-07-05</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <h1 id="0X00-Django-中的权限结构、定义"><a href="#0X00-Django-中的权限结构、定义" class="headerlink" title="0X00 Django 中的权限结构、定义"></a>0X00 Django 中的权限结构、定义</h1><p>我们知道在创建了一个 Django 项目之后，默认就有两个公开可用的 model：User 和 Group，这两个 model 的一项功能就是用来做权限管理的。系统中会有很多项权限，单个 user 可以配置拥有哪些权限，也可以将权限配置给 group。然后校验单个权限的时候其实就是将 user 本身的权限，和 user 所在的所有组的权限做一个并集，看本次操作的权限是否在这个并集里。在，那就校验通过；不在，那就只有 HTTP 403 了。</p>
-<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200705173202.png" alt></p>
-<blockquote>
-<p>HTTP 401 和 HTTP 403 的区别：401 的描述是 Forbidden，而 401 是 Unauthorized，前者是没有权限，而后者干脆没通过认证。举个例子，你想查看公司财务的详细报表，财务经理一看你就是个一线小程序员，就给你一个 401，告诉你这不是你可以看的东西。如果你想看别的公司财务的详细报表，别人公司财务经理一看你根本不是他们公司的人，就直接给你了个 401 了。（俗话说十个比喻九个不准，我这个比喻当然也并不非常准确，不过对于分不清 401 和 403 的同学而言应该也问题不大🤣）</p>
-</blockquote>
-<p>Django 自己对每一个 model 都创建了 create，update，delete 的权限，我们可以直接拿来用，也可以自己添加新权限。Django 自己是针对各个 model 做的权限，所以最简单的权限建立是在 model 层进行的。就比如下面这种，如果我想要为 Student 这个 model 建立相关的权限，就可以通过修改 <code>Meta</code> 类里的 <code>permissions</code> 来实现。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">  	user = models.OneToOneField(<span class="string">'django.contrib.auth.models.User'</span>)</span><br><span class="line">  	name = models.CharField() <span class="comment"># 纯展示，就不详细定义了</span></span><br><span class="line">    birthday = models.DatetimeField()</span><br><span class="line">    phone = models.CharField()</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">				verbose_name = <span class="string">'学生'</span></span><br><span class="line">        verbose_name_plural = verbose_name</span><br><span class="line">        permissions = (</span><br><span class="line">        		<span class="comment"># ('权限名', '权限描述'),</span></span><br><span class="line">          	(<span class="string">'check_classmate_score'</span>, <span class="string">'查看同班同学的成绩'</span>),</span><br><span class="line">          	(<span class="string">'send_class_notify'</span>, <span class="string">'发送班级通知'</span>),</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
-<p>不过这里也看到了，每次对权限进行 CUD 的时候都是在改 model 的，所以每次改动完 model 记得都要进行一次<code>migrate</code>操作才行。不过不用担心性能问题，这个 migrate 只对 Permission 表进行 CUD 操作，而并非改表，所以非常快就搞定了。注意的一点是，不管你把这些 permissions 写在哪个 model 下，最终他们创建好的数据都还是在 Permission 表里，也就是数据库（我这里用的是 MySQL）里的<code>auth_permission</code>表了，这个表结构和数据是下面这样的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+-----------------+--------------+------+-----+---------+----------------+</span><br><span class="line">| Field           | Type         | Null | Key | Default | Extra          |</span><br><span class="line">+-----------------+--------------+------+-----+---------+----------------+</span><br><span class="line">| id              | int(11)      | NO   | PRI | &lt;null&gt;  | auto_increment |</span><br><span class="line">| name            | varchar(255) | NO   |     | &lt;null&gt;  |                |</span><br><span class="line">| content_type_id | int(11)      | NO   | MUL | &lt;null&gt;  |                |</span><br><span class="line">| codename        | varchar(100) | NO   |     | &lt;null&gt;  |                |</span><br><span class="line">+-----------------+--------------+------+-----+---------+----------------+</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">+-----+------------------------------------+-----------------+-------------------------------+</span><br><span class="line">| id  | name                               | content_type_id | codename                      |</span><br><span class="line">+-----+------------------------------------+-----------------+-------------------------------+</span><br><span class="line">| 1   | Can add log entry                  | 1               | add_logentry                  |</span><br><span class="line">| 2   | Can change log entry               | 1               | change_logentry               |</span><br><span class="line">| 3   | Can delete log entry               | 1               | delete_logentry               |</span><br><span class="line">| 4   | Can add group                      | 2               | add_group                     |</span><br><span class="line">| 5   | Can change group                   | 2               | change_group                  |</span><br><span class="line">| 6   | Can delete group                   | 2               | delete_group                  |</span><br><span class="line">| 7   | Can add permission                 | 3               | add_permission                |</span><br><span class="line">| 8   | Can change permission              | 3               | change_permission             |</span><br><span class="line">| 9   | Can delete permission              | 3               | delete_permission             |</span><br><span class="line">| 10  | Can add user                       | 4               | add_user                      |</span><br><span class="line">| 11  | Can change user                    | 4               | change_user                   |</span><br><span class="line">| 12  | Can delete user                    | 4               | delete_user                   |</span><br><span class="line">+-----+------------------------------------+-----------------+-------------------------------+</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h1 id="0X01-在-Django-中校验与分配权限"><a href="#0X01-在-Django-中校验与分配权限" class="headerlink" title="0X01 在 Django 中校验与分配权限"></a>0X01 在 Django 中校验与分配权限</h1><p>权限在表里之后“唯一”生效的地方就是 django-admin 了，就是说如果登录 django-admin 的用户没有<code>add_user</code>的权限，那你创建用户的时候就会被拒绝。但是我们平时更多的时候并不是在 django-admin 里，而是自己实现的前台页面，那该怎么自己校验权限呢？Django 中给 user 实例了两个方法：<code>user.has_perm</code>和<code>user.has_perms</code>。显然，前者校验单个权限，后者校验多个权限。咱们先来看一下是如何校验的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: shawn = User.objects.create(username=<span class="string">'shawn'</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: shawn.has_perm(<span class="string">'auth.add_user'</span>)	<span class="comment"># 单个权限校验直接传权限的 code_name</span></span><br><span class="line">Out[<span class="number">3</span>]: <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: shawn.has_perms([<span class="string">'auth.add_user'</span>, <span class="string">'auth.del_user'</span>])  <span class="comment"># 多个全线同时检验时将多个 code_name 放在列表中</span></span><br><span class="line">Out[<span class="number">4</span>]: <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: admin = User.objects.create(username=<span class="string">'admin'</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: admin.is_superuser = <span class="literal">True</span>		<span class="comment"># 设置 admin 用户为超级管理员</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: admin.save()</span><br><span class="line"></span><br><span class="line">In [<span class="number">8</span>]: admin.has_perm(<span class="string">'auth.add_user'</span>)</span><br><span class="line">Out[<span class="number">8</span>]: <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">9</span>]: admin.has_perms([<span class="string">'auth.add_user'</span>, <span class="string">'auth.del_user'</span>])</span><br><span class="line">Out[<span class="number">9</span>]: <span class="literal">True</span></span><br></pre></td></tr></table></figure>
-<p>我们从 Django 源码中可以看到，如果正在校验的用户是“活跃的”而且是“超级管理员”，那就直接不校验了，通过。否则就去校验一波。同时校验多个权限的时候用了<code>all</code>去逐个校验，遇到一个没有的权限也就 False 了。具体的细节这里就不多说了，感兴趣的话可以看一下源码，在<code>django.contrib.auth.models.User</code>中。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">has_perm</span><span class="params">(self, perm, obj=None)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Return True if the user has the specified permission. Query all</span></span><br><span class="line"><span class="string">    available auth backends, but return immediately if any backend returns</span></span><br><span class="line"><span class="string">    True. Thus, a user who has permission from a single auth backend is</span></span><br><span class="line"><span class="string">    assumed to have permission in general. If an object is provided, check</span></span><br><span class="line"><span class="string">    permissions for that object.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># Active superusers have all permissions.</span></span><br><span class="line">    <span class="keyword">if</span> self.is_active <span class="keyword">and</span> self.is_superuser:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Otherwise we need to check the backends.</span></span><br><span class="line">    <span class="keyword">return</span> _user_has_perm(self, perm, obj)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">has_perms</span><span class="params">(self, perm_list, obj=None)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Return True if the user has each of the specified permissions. If</span></span><br><span class="line"><span class="string">    object is passed, check if the user has all required perms for it.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">return</span> all(self.has_perm(perm, obj) <span class="keyword">for</span> perm <span class="keyword">in</span> perm_list)</span><br></pre></td></tr></table></figure>
-<p>然后要考虑的就是如何将权限分给用户了，我们可以在 Django 源码中看到 user 和 permission 的关联关系是：ManyToMany ，所以直接修改用户的<code>user_permissions</code>字段就可以了。针对 group 也是一样的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">36</span>]: shawn = User.objects.get(username=<span class="string">'shawn'</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">37</span>]: perm = Permission.objects.get(codename=<span class="string">'add_user'</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">38</span>]: shawn.user_permissions.add(perm)</span><br><span class="line"></span><br><span class="line">In [<span class="number">39</span>]: shawn.save()</span><br><span class="line"></span><br><span class="line">In [<span class="number">40</span>]: shawn.has_perm(<span class="string">'auth.add_user'</span>)</span><br><span class="line">Out[<span class="number">40</span>]: <span class="literal">True</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>这里有一个比较干扰人的问题，就是为什么我的 codename 明明是 add_user 但是校验的时候却要用<code>auth.add_user</code>。当是这个问题也是困扰了我比较久，还因为这个问题导致了我程序出现 bug（比如本来该校验<code>car.open_door</code>的地方我校验了<code>open_door</code>）。比较明显的一处是因为“重名“，因为我们 model 多了之后会出现好多处重名的权限名，所以校验的时候应该在codename 前面加上 app_name。可以看一下我们 settings 里面的 INSTALLED_APPS 配置，有一条就是<code>django.contrib.auth</code>。</p>
-</blockquote>
-<h1 id="0X02-DRF-中的权限设计"><a href="#0X02-DRF-中的权限设计" class="headerlink" title="0X02 DRF 中的权限设计"></a>0X02 DRF 中的权限设计</h1><p>我们在配置 DRF 的时候通常会在 settings 里写下类似这样的配置，这意味着给默认的 permission_class 设置成了<code>IsAuthenticated</code>，也就是说登录即可。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="string">'DEFAULT_PERMISSION_CLASSES'</span>: (</span><br><span class="line">        <span class="string">'rest_framework.permissions.IsAuthenticated'</span>,</span><br><span class="line">    ),</span><br><span class="line">	  <span class="comment">#..............</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>但是这也只是一个默认的权限配置，你用 DRF 的<code>ViewSet</code>创建的新 API 默认是登录即可，但是总会有其他的情况，这种时候通常来说我我们会重写 ViewSet 中的两个方法：<code>get_permissions</code>和<code>get_queryset</code>。先说正经的权限，也就是<code>get_permissions</code>好了。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">APIView</span><span class="params">(View)</span>:</span></span><br><span class="line">    permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES</span><br><span class="line">    <span class="comment"># .........</span></span><br><span class="line">    </span><br><span class="line">		<span class="function"><span class="keyword">def</span> <span class="title">get_permissions</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Instantiates and returns the list of permissions that this view requires.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> [permission() <span class="keyword">for</span> permission <span class="keyword">in</span> self.permission_classes]</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">check_permissions</span><span class="params">(self, request)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Check if the request should be permitted.</span></span><br><span class="line"><span class="string">        Raises an appropriate exception if the request is not permitted.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">for</span> permission <span class="keyword">in</span> self.get_permissions():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> permission.has_permission(request, self):</span><br><span class="line">                self.permission_denied(</span><br><span class="line">                    request, message=getattr(permission, <span class="string">'message'</span>, <span class="literal">None</span>)</span><br><span class="line">                )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">check_object_permissions</span><span class="params">(self, request, obj)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Check if the request should be permitted for a given object.</span></span><br><span class="line"><span class="string">        Raises an appropriate exception if the request is not permitted.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">for</span> permission <span class="keyword">in</span> self.get_permissions():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> permission.has_object_permission(request, self, obj):</span><br><span class="line">                self.permission_denied(</span><br><span class="line">                    request, message=getattr(permission, <span class="string">'message'</span>, <span class="literal">None</span>)</span><br><span class="line">                )</span><br></pre></td></tr></table></figure>
-<p>我们从源码中可以看到这个方法其实很很简单，就只是把<code>self.permission_classes一遍，通过 codename 进行实例化，最终返回一个实例化的 permission 列表。然后在</code>check_permissions<code>或者</code>check_object_permissions<code>的时候对这个列表轮询一遍，调用 permission 实例的</code>has_object_permission(request, view)`方法来判断是否有权限执行本次请求，最终通过返回的 True/False 来确定是否有权限继续操作，如果没有权限就直接终止请求了。</p>
-<p>根据上述条件，我们就可以自己写一个权限校验类了，一个简单的实现时下面这种样子的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> permissions</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PermsRequired</span><span class="params">(permissions.BasePermission)</span>:</span></span><br><span class="line">		<span class="string">"""需要有多个权限之一，也就是说有其中一个权限即可"""</span></span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, *perms)</span>:</span></span><br><span class="line">        self.perms = perms	<span class="comment"># 接受多个参数，全部都是权限</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self  <span class="comment"># 被 call（前期可以理解成被当成函数调用） 的时候返回自身</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">has_permission</span><span class="params">(self, request, view)</span>:</span></span><br><span class="line">        user = request.user		<span class="comment"># 既然传进来了 request，那就可以拿到 user 了</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> user.is_superuser:	<span class="comment"># superuser 拥有一切权限</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        user_perms = user.get_all_permissions()	 <span class="comment"># 取得用户所拥有的的所有权限</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 取本次需要的权限和用户所有的权限的交集，如果有交集则校验通过（也就是 “或” 校验</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span> <span class="keyword">if</span> user_perms &amp; set(self.perms) <span class="keyword">else</span> <span class="literal">False</span></span><br><span class="line">      </span><br><span class="line">      	<span class="comment"># 如果想要“与”校验，可以改成下面这种</span></span><br><span class="line">        <span class="comment"># return all([perm in user_perms for perm in set(self.perms)])</span></span><br></pre></td></tr></table></figure>
-<h1 id="0X03-DRF-如何校验权限"><a href="#0X03-DRF-如何校验权限" class="headerlink" title="0X03 DRF 如何校验权限"></a>0X03 DRF 如何校验权限</h1><p>现在我们知道 Django 和 DRF 中的权限大概是怎么实现的了，那么具体怎么用在 DRF 框架的 web 程序中呢？下面看一段实例代码。这坨代码就是我们最常见的一个 DRF 开出来的 ViewSet 了，同时支持<code>GET/POST/PUT/PATCH/DELETE</code>五种 HTTP 方法。</p>
-<blockquote>
-<p>在 DRF 的 ViewSet 中，可以使用 self.action 来访问到当前请求的 function。默认情况下的 CRUD 对应的方法名是：<code>list/create/retrieve/partial_update/update/delete</code>这五个，分别对应了<code>GET /</code>,<code>POST /</code>,<code>GET /id/</code>,<code>PATCH /id/</code>,<code>PUT /id/</code>,<code>DELETE /id/</code></p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StudentViewSet</span><span class="params">(viewsets.ModelViewSet)</span>:</span></span><br><span class="line">  	queryset = models.Student.objects.all()</span><br><span class="line">  	<span class="comment"># ...........</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_permissions</span><span class="params">(self)</span>:</span></span><br><span class="line">      	<span class="keyword">if</span> self.action == <span class="string">'list'</span>:		<span class="comment"># 如果是对根目录进行 GET 则需要列表权限</span></span><br><span class="line"> 						self.permission_classes = (</span><br><span class="line">                perms.PermsRequired(<span class="string">'student.list_student'</span>),</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">if</span> self.action == <span class="string">'create'</span>:		<span class="comment"># 如果对根目录进行 POST 则需要创建权限</span></span><br><span class="line">            self.permission_classes = (</span><br><span class="line">                perms.PermsRequired(<span class="string">'student.create_student'</span>),</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> super(StudentViewSet, self).get_permissions()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_serializer_class</span><span class="params">(self)</span>:</span></span><br><span class="line">      	<span class="comment"># ........</span></span><br><span class="line">        <span class="keyword">return</span> self.serializer_class</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_queryset</span><span class="params">(self)</span>:</span></span><br><span class="line">        user = self.request.user</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如果用户拥有查看所有学生信息的权限，则返回所有学生信息</span></span><br><span class="line">        <span class="keyword">if</span> user.has_perm(<span class="string">'student.query_all_students'</span>):</span><br><span class="line">            <span class="keyword">return</span> self.queryset</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 如果用户有查看自己班里学生信息的权限，则返回自己班里的学生信息</span></span><br><span class="line">        <span class="keyword">if</span> user.has_perm(<span class="string">'ratel.query_self_class_students'</span>):</span><br><span class="line">            <span class="keyword">return</span> self.queryset.filter(</span><br><span class="line">                student_class=user.student.student_class</span><br><span class="line">            )</span><br><span class="line">        <span class="comment"># ...还有其他校验</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 如果什么权限都没找到，那就只能返回自己的数据了</span></span><br><span class="line">        <span class="keyword">return</span> models.Student.objects.filter(id=user.student.id)</span><br></pre></td></tr></table></figure>
-<p>我们可以从上面看到有两个地方在校验权限，一个是<code>get_permissions()</code>，另一个是<code>get_queryset()</code>。前者是严谨的“权限”，也就是说“你想要执行某某某操作，你就需要拥有某某某权限，没有就不信”；后者是广义的“权限”，会从大到小来校验，比如这里可以先判断你是否拥有查看所有人信息的权限，有，就给你所有人的信息；没有，就看你能不能看班里人的信息，有，就给你班里人的信息；没有，就只返回给你自己的数据。</p>
-<p>这两种用法是在日常工作中用法最多的了。其他再有的话就是在 serializer 的 validate 中进行的校验，比如有一个功能叫做“强制删除”，这个功能可以跳过一切检测（比如检测学生是否在校，学生是否毕业超过3 年，学生饭卡是否还有钱），就直接删除。这种权限可能只会分配给高级别管理员使用，但是又不可能针对这种功能再单独开新的 API 来做，这样太奇怪了。所以我们可以通过一个参数来控制前置删除，比如<code>force_delete</code>。这样我们就可以写出类似下面的代码</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">validate</span><span class="params">(self, validated_data)</span>:</span></span><br><span class="line">  	user = self.context[<span class="string">'request'</span>].user</span><br><span class="line">    force_delete = validated_data.get(<span class="string">'force_delete'</span>, <span class="literal">False</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> force_delete:</span><br><span class="line">      	<span class="keyword">if</span> <span class="keyword">not</span> user.has_perm(<span class="string">'student.force_delete'</span>):</span><br><span class="line">        		<span class="keyword">raise</span> serializers.ValidationError(<span class="string">'你没有强制删除用户的权限'</span>)</span><br><span class="line">      	</span><br><span class="line">  	<span class="keyword">return</span> validated_data</span><br></pre></td></tr></table></figure>
-<h1 id="0X04-THE-END"><a href="#0X04-THE-END" class="headerlink" title="0X04 THE END"></a>0X04 THE END</h1><p>今天是个美好的周日，中午的时候想要喝了咖啡写篇博客就去玩 <em>火焰纹章</em> 的的，然而越看这个权限越越觉得自己不懂，之前一度以为自己挺明白的，结果一直是处在知其然的状态，并没有知其所以然（虽然现在知道也也不彻底）。然后就一点点看之前的代码，看实现方案，看着看着又得进去看源码，结果计划一个多小时搞定的东西搞了快四个小时。不过还好，也不亏，收获颇丰~</p>
 
     </div>
-
-    
-    
-    
-        
-      
-        <div id="reward-container">
-  <div>觉得写的还凑合可以请我喝杯肥宅快乐水喔</div>
-  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
-    打赏
-  </button>
-  <div id="qr" style="display: none;">
-        
-      
-      <div style="display: inline-block">
-        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.08.png" alt="Shawn 微信支付">
-        <p>微信支付</p>
-      </div>
-        
-      
-      <div style="display: inline-block">
-        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.37.png" alt="Shawn 支付宝">
-        <p>支付宝</p>
-      </div>
-
   </div>
+
 </div>
-
-      
         
-
-<div>
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>Shawn</li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="https://blog.just666.com/2020/07/05/drf-permission/" title="如何在 Django 与 DRF 中优雅地校验权限">https://blog.just666.com/2020/07/05/drf-permission/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li>
-</ul>
-</div>
-
-      
-
-      <footer class="post-footer">
-          
-            
-          
-          <div class="post-tags">
-            
-              <a href="/tags/Django/" rel="tag"><i class="fa fa-tag"></i> Django</a>
-            
-              <a href="/tags/Django-REST-framework/" rel="tag"><i class="fa fa-tag"></i> Django REST framework</a>
-            
-              <a href="/tags/Permission/" rel="tag"><i class="fa fa-tag"></i> Permission</a>
-            
-          </div>
-        
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-next post-nav-item">
-              
-                <a href="/2020/07/04/cas-sso/" rel="next" title="SSO 与 CAS">
-                  <i class="fa fa-chevron-left"></i> SSO 与 CAS
-                </a>
-              
-            </div>
-
-            <span class="post-nav-divider"></span>
-
-            <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2020/07/11/django-save/" rel="prev" title="记一次 Django Save 导致的数据异常">
-                  记一次 Django Save 导致的数据异常 <i class="fa fa-chevron-right"></i>
-                </a>
-              
-            </div>
-          </div>
-        
-      </footer>
-    
-  </div>
   
-  
-  
-  </article>
-
-  </div>
-
-
-          </div>
-          
-
-        </div>
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
   </div>
 
   <aside class="sidebar">
-    <div class="sidebar-inner">
-        
-        
-        
-        
-      
 
-      <ul class="sidebar-nav motion-element">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
         </li>
@@ -531,193 +212,409 @@
       </ul>
 
       <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-Django-中的权限结构、定义"><span class="nav-text">0X00 Django 中的权限结构、定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-在-Django-中校验与分配权限"><span class="nav-text">0X01 在 Django 中校验与分配权限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-DRF-中的权限设计"><span class="nav-text">0X02 DRF 中的权限设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-DRF-如何校验权限"><span class="nav-text">0X03 DRF 如何校验权限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-THE-END"><span class="nav-text">0X04 THE END</span></a></li></ol></div>
-        
-      </div>
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-Django-%E4%B8%AD%E7%9A%84%E6%9D%83%E9%99%90%E7%BB%93%E6%9E%84%E3%80%81%E5%AE%9A%E4%B9%89"><span class="nav-text">0X00 Django 中的权限结构、定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-%E5%9C%A8-Django-%E4%B8%AD%E6%A0%A1%E9%AA%8C%E4%B8%8E%E5%88%86%E9%85%8D%E6%9D%83%E9%99%90"><span class="nav-text">0X01 在 Django 中校验与分配权限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-DRF-%E4%B8%AD%E7%9A%84%E6%9D%83%E9%99%90%E8%AE%BE%E8%AE%A1"><span class="nav-text">0X02 DRF 中的权限设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-DRF-%E5%A6%82%E4%BD%95%E6%A0%A1%E9%AA%8C%E6%9D%83%E9%99%90"><span class="nav-text">0X03 DRF 如何校验权限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-THE-END"><span class="nav-text">0X04 THE END</span></a></li></ol></div>
+      </section>
       <!--/noindex-->
 
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image"
-      src="/uploads/naruto.png"
-      alt="Shawn">
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shawn"
+      src="/uploads/naruto.png">
   <p class="site-author-name" itemprop="name">Shawn</p>
   <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
 </div>
-<div class="site-state-wrap motion-element">
+<div class="site-state-wrap animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-        
           <a href="/archives/">
         
-          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-count">109</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
-    
-      
-      
       <div class="site-state-item site-state-tags">
-        
-          
             <a href="/tags/">
           
-        
         <span class="site-state-item-count">140</span>
-        <span class="site-state-item-name">标签</span>
-        </a>
+        <span class="site-state-item-name">标签</span></a>
       </div>
-    
   </nav>
 </div>
-  <div class="links-of-author motion-element">
+  <div class="links-of-author animated">
       <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NoYXduLWJsdWNl" title="GitHub &rarr; https://github.com/shawn-bluce"><i class="fa fa-fw fa-github"></i></span>
+        <a href="https://github.com/shawn-bluce" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;shawn-bluce" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
-    
       <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <span class="exturl" data-url="bWFpbHRvOnNoYXduYmx1Y2VAZ21haWwuY29t" title="E-Mail &rarr; mailto:shawnbluce@gmail.com"><i class="fa fa-fw fa-inbox"></i></span>
+        <a href="mailto:shawnbluce@gmail.com" title="E-Mail → mailto:shawnbluce@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
       </span>
-    
       <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <span class="exturl" data-url="aHR0cHM6Ly9zcGFjZS5iaWxpYmlsaS5jb20vMTUzODc5MTc=" title="Bilibili &rarr; https://space.bilibili.com/15387917"><i class="fa fa-fw fa-video-camera"></i></span>
+        <a href="https://space.bilibili.com/15387917" title="B-Site → https:&#x2F;&#x2F;space.bilibili.com&#x2F;15387917" rel="noopener" target="_blank"><i class="fa fa-video fa-fw"></i>B-Site</a>
       </span>
-    
       <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy84OTY5ODc1L3NoYXdu" title="StackOverflow &rarr; https://stackoverflow.com/users/8969875/shawn"><i class="fa fa-fw fa-stack-overflow"></i></span>
+        <a href="https://stackoverflow.com/users/8969875/shawn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;8969875&#x2F;shawn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
       </span>
-    
   </div>
-  <div class="cc-license motion-element" itemprop="license">
-    
-  
-    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
   </div>
 
 
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://qqdie.com/" title="https:&#x2F;&#x2F;qqdie.com&#x2F;" rel="noopener" target="_blank">Jrotty</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/303donatello" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;303donatello" rel="noopener" target="_blank">303Donatello</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://lixianhua.com/" title="http:&#x2F;&#x2F;lixianhua.com&#x2F;" rel="noopener" target="_blank">绛木子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://duuge.com/" title="http:&#x2F;&#x2F;duuge.com&#x2F;" rel="noopener" target="_blank">杜哥</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://hubojing.github.io/" title="http:&#x2F;&#x2F;hubojing.github.io&#x2F;" rel="noopener" target="_blank">胡博靖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/Ypersistence" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;Ypersistence" rel="noopener" target="_blank">威大爷</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://wenqy.com/" title="http:&#x2F;&#x2F;wenqy.com&#x2F;" rel="noopener" target="_blank">小温之家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.rumoss.cn/" title="http:&#x2F;&#x2F;www.rumoss.cn&#x2F;" rel="noopener" target="_blank">濡沫杂记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/shouldnotappearcalm" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;shouldnotappearcalm" rel="noopener" target="_blank">不应有的淡定的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://hiwannz.com/" title="https:&#x2F;&#x2F;hiwannz.com" rel="noopener" target="_blank">见字如面</a>
+        </li>
+    </ul>
+  </div>
 
-      </div>
-
+      </section>
     </div>
   </aside>
-  <div id="sidebar-dimmer"></div>
+  <div class="sidebar-dimmer"></div>
 
 
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/shawn-bluce" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/07/05/drf-permission/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何在 Django 与 DRF 中优雅地校验权限
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-07-05 13:24:07 / 修改时间：17:50:24" itemprop="dateCreated datePublished" datetime="2020-07-05T13:24:07+08:00">2020-07-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="0X00-Django-中的权限结构、定义"><a href="#0X00-Django-中的权限结构、定义" class="headerlink" title="0X00 Django 中的权限结构、定义"></a>0X00 Django 中的权限结构、定义</h1><p>我们知道在创建了一个 Django 项目之后，默认就有两个公开可用的 model：User 和 Group，这两个 model 的一项功能就是用来做权限管理的。系统中会有很多项权限，单个 user 可以配置拥有哪些权限，也可以将权限配置给 group。然后校验单个权限的时候其实就是将 user 本身的权限，和 user 所在的所有组的权限做一个并集，看本次操作的权限是否在这个并集里。在，那就校验通过；不在，那就只有 HTTP 403 了。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200705173202.png"></p>
+<blockquote>
+<p>HTTP 401 和 HTTP 403 的区别：401 的描述是 Forbidden，而 401 是 Unauthorized，前者是没有权限，而后者干脆没通过认证。举个例子，你想查看公司财务的详细报表，财务经理一看你就是个一线小程序员，就给你一个 401，告诉你这不是你可以看的东西。如果你想看别的公司财务的详细报表，别人公司财务经理一看你根本不是他们公司的人，就直接给你了个 401 了。（俗话说十个比喻九个不准，我这个比喻当然也并不非常准确，不过对于分不清 401 和 403 的同学而言应该也问题不大🤣）</p>
+</blockquote>
+<p>Django 自己对每一个 model 都创建了 create，update，delete 的权限，我们可以直接拿来用，也可以自己添加新权限。Django 自己是针对各个 model 做的权限，所以最简单的权限建立是在 model 层进行的。就比如下面这种，如果我想要为 Student 这个 model 建立相关的权限，就可以通过修改 <code>Meta</code> 类里的 <code>permissions</code> 来实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>(<span class="params">models.Model</span>):</span></span><br><span class="line">  	user = models.OneToOneField(<span class="string">&#x27;django.contrib.auth.models.User&#x27;</span>)</span><br><span class="line">  	name = models.CharField() <span class="comment"># 纯展示，就不详细定义了</span></span><br><span class="line">    birthday = models.DatetimeField()</span><br><span class="line">    phone = models.CharField()</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">				verbose_name = <span class="string">&#x27;学生&#x27;</span></span><br><span class="line">        verbose_name_plural = verbose_name</span><br><span class="line">        permissions = (</span><br><span class="line">        		<span class="comment"># (&#x27;权限名&#x27;, &#x27;权限描述&#x27;),</span></span><br><span class="line">          	(<span class="string">&#x27;check_classmate_score&#x27;</span>, <span class="string">&#x27;查看同班同学的成绩&#x27;</span>),</span><br><span class="line">          	(<span class="string">&#x27;send_class_notify&#x27;</span>, <span class="string">&#x27;发送班级通知&#x27;</span>),</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+
+<p>不过这里也看到了，每次对权限进行 CUD 的时候都是在改 model 的，所以每次改动完 model 记得都要进行一次<code>migrate</code>操作才行。不过不用担心性能问题，这个 migrate 只对 Permission 表进行 CUD 操作，而并非改表，所以非常快就搞定了。注意的一点是，不管你把这些 permissions 写在哪个 model 下，最终他们创建好的数据都还是在 Permission 表里，也就是数据库（我这里用的是 MySQL）里的<code>auth_permission</code>表了，这个表结构和数据是下面这样的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+-----------------+--------------+------+-----+---------+----------------+</span><br><span class="line">| Field           | Type         | Null | Key | Default | Extra          |</span><br><span class="line">+-----------------+--------------+------+-----+---------+----------------+</span><br><span class="line">| id              | int(11)      | NO   | PRI | &lt;null&gt;  | auto_increment |</span><br><span class="line">| name            | varchar(255) | NO   |     | &lt;null&gt;  |                |</span><br><span class="line">| content_type_id | int(11)      | NO   | MUL | &lt;null&gt;  |                |</span><br><span class="line">| codename        | varchar(100) | NO   |     | &lt;null&gt;  |                |</span><br><span class="line">+-----------------+--------------+------+-----+---------+----------------+</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">+-----+------------------------------------+-----------------+-------------------------------+</span><br><span class="line">| id  | name                               | content_type_id | codename                      |</span><br><span class="line">+-----+------------------------------------+-----------------+-------------------------------+</span><br><span class="line">| 1   | Can add log entry                  | 1               | add_logentry                  |</span><br><span class="line">| 2   | Can change log entry               | 1               | change_logentry               |</span><br><span class="line">| 3   | Can delete log entry               | 1               | delete_logentry               |</span><br><span class="line">| 4   | Can add group                      | 2               | add_group                     |</span><br><span class="line">| 5   | Can change group                   | 2               | change_group                  |</span><br><span class="line">| 6   | Can delete group                   | 2               | delete_group                  |</span><br><span class="line">| 7   | Can add permission                 | 3               | add_permission                |</span><br><span class="line">| 8   | Can change permission              | 3               | change_permission             |</span><br><span class="line">| 9   | Can delete permission              | 3               | delete_permission             |</span><br><span class="line">| 10  | Can add user                       | 4               | add_user                      |</span><br><span class="line">| 11  | Can change user                    | 4               | change_user                   |</span><br><span class="line">| 12  | Can delete user                    | 4               | delete_user                   |</span><br><span class="line">+-----+------------------------------------+-----------------+-------------------------------+</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h1 id="0X01-在-Django-中校验与分配权限"><a href="#0X01-在-Django-中校验与分配权限" class="headerlink" title="0X01 在 Django 中校验与分配权限"></a>0X01 在 Django 中校验与分配权限</h1><p>权限在表里之后“唯一”生效的地方就是 django-admin 了，就是说如果登录 django-admin 的用户没有<code>add_user</code>的权限，那你创建用户的时候就会被拒绝。但是我们平时更多的时候并不是在 django-admin 里，而是自己实现的前台页面，那该怎么自己校验权限呢？Django 中给 user 实例了两个方法：<code>user.has_perm</code>和<code>user.has_perms</code>。显然，前者校验单个权限，后者校验多个权限。咱们先来看一下是如何校验的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: shawn = User.objects.create(username=<span class="string">&#x27;shawn&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: shawn.has_perm(<span class="string">&#x27;auth.add_user&#x27;</span>)	<span class="comment"># 单个权限校验直接传权限的 code_name</span></span><br><span class="line">Out[<span class="number">3</span>]: <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: shawn.has_perms([<span class="string">&#x27;auth.add_user&#x27;</span>, <span class="string">&#x27;auth.del_user&#x27;</span>])  <span class="comment"># 多个全线同时检验时将多个 code_name 放在列表中</span></span><br><span class="line">Out[<span class="number">4</span>]: <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: admin = User.objects.create(username=<span class="string">&#x27;admin&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: admin.is_superuser = <span class="literal">True</span>		<span class="comment"># 设置 admin 用户为超级管理员</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: admin.save()</span><br><span class="line"></span><br><span class="line">In [<span class="number">8</span>]: admin.has_perm(<span class="string">&#x27;auth.add_user&#x27;</span>)</span><br><span class="line">Out[<span class="number">8</span>]: <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">9</span>]: admin.has_perms([<span class="string">&#x27;auth.add_user&#x27;</span>, <span class="string">&#x27;auth.del_user&#x27;</span>])</span><br><span class="line">Out[<span class="number">9</span>]: <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>我们从 Django 源码中可以看到，如果正在校验的用户是“活跃的”而且是“超级管理员”，那就直接不校验了，通过。否则就去校验一波。同时校验多个权限的时候用了<code>all</code>去逐个校验，遇到一个没有的权限也就 False 了。具体的细节这里就不多说了，感兴趣的话可以看一下源码，在<code>django.contrib.auth.models.User</code>中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">has_perm</span>(<span class="params">self, perm, obj=None</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Return True if the user has the specified permission. Query all</span></span><br><span class="line"><span class="string">    available auth backends, but return immediately if any backend returns</span></span><br><span class="line"><span class="string">    True. Thus, a user who has permission from a single auth backend is</span></span><br><span class="line"><span class="string">    assumed to have permission in general. If an object is provided, check</span></span><br><span class="line"><span class="string">    permissions for that object.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># Active superusers have all permissions.</span></span><br><span class="line">    <span class="keyword">if</span> self.is_active <span class="keyword">and</span> self.is_superuser:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Otherwise we need to check the backends.</span></span><br><span class="line">    <span class="keyword">return</span> _user_has_perm(self, perm, obj)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">has_perms</span>(<span class="params">self, perm_list, obj=None</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Return True if the user has each of the specified permissions. If</span></span><br><span class="line"><span class="string">    object is passed, check if the user has all required perms for it.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> all(self.has_perm(perm, obj) <span class="keyword">for</span> perm <span class="keyword">in</span> perm_list)</span><br></pre></td></tr></table></figure>
+
+<p>然后要考虑的就是如何将权限分给用户了，我们可以在 Django 源码中看到 user 和 permission 的关联关系是：ManyToMany ，所以直接修改用户的<code>user_permissions</code>字段就可以了。针对 group 也是一样的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">36</span>]: shawn = User.objects.get(username=<span class="string">&#x27;shawn&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">37</span>]: perm = Permission.objects.get(codename=<span class="string">&#x27;add_user&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">38</span>]: shawn.user_permissions.add(perm)</span><br><span class="line"></span><br><span class="line">In [<span class="number">39</span>]: shawn.save()</span><br><span class="line"></span><br><span class="line">In [<span class="number">40</span>]: shawn.has_perm(<span class="string">&#x27;auth.add_user&#x27;</span>)</span><br><span class="line">Out[<span class="number">40</span>]: <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里有一个比较干扰人的问题，就是为什么我的 codename 明明是 add_user 但是校验的时候却要用<code>auth.add_user</code>。当是这个问题也是困扰了我比较久，还因为这个问题导致了我程序出现 bug（比如本来该校验<code>car.open_door</code>的地方我校验了<code>open_door</code>）。比较明显的一处是因为“重名“，因为我们 model 多了之后会出现好多处重名的权限名，所以校验的时候应该在codename 前面加上 app_name。可以看一下我们 settings 里面的 INSTALLED_APPS 配置，有一条就是<code>django.contrib.auth</code>。</p>
+</blockquote>
+<h1 id="0X02-DRF-中的权限设计"><a href="#0X02-DRF-中的权限设计" class="headerlink" title="0X02 DRF 中的权限设计"></a>0X02 DRF 中的权限设计</h1><p>我们在配置 DRF 的时候通常会在 settings 里写下类似这样的配置，这意味着给默认的 permission_class 设置成了<code>IsAuthenticated</code>，也就是说登录即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="string">&#x27;DEFAULT_PERMISSION_CLASSES&#x27;</span>: (</span><br><span class="line">        <span class="string">&#x27;rest_framework.permissions.IsAuthenticated&#x27;</span>,</span><br><span class="line">    ),</span><br><span class="line">	  <span class="comment">#..............</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是这也只是一个默认的权限配置，你用 DRF 的<code>ViewSet</code>创建的新 API 默认是登录即可，但是总会有其他的情况，这种时候通常来说我我们会重写 ViewSet 中的两个方法：<code>get_permissions</code>和<code>get_queryset</code>。先说正经的权限，也就是<code>get_permissions</code>好了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">APIView</span>(<span class="params">View</span>):</span></span><br><span class="line">    permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES</span><br><span class="line">    <span class="comment"># .........</span></span><br><span class="line">    </span><br><span class="line">		<span class="function"><span class="keyword">def</span> <span class="title">get_permissions</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Instantiates and returns the list of permissions that this view requires.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> [permission() <span class="keyword">for</span> permission <span class="keyword">in</span> self.permission_classes]</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">check_permissions</span>(<span class="params">self, request</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Check if the request should be permitted.</span></span><br><span class="line"><span class="string">        Raises an appropriate exception if the request is not permitted.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> permission <span class="keyword">in</span> self.get_permissions():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> permission.has_permission(request, self):</span><br><span class="line">                self.permission_denied(</span><br><span class="line">                    request, message=getattr(permission, <span class="string">&#x27;message&#x27;</span>, <span class="literal">None</span>)</span><br><span class="line">                )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">check_object_permissions</span>(<span class="params">self, request, obj</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Check if the request should be permitted for a given object.</span></span><br><span class="line"><span class="string">        Raises an appropriate exception if the request is not permitted.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> permission <span class="keyword">in</span> self.get_permissions():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> permission.has_object_permission(request, self, obj):</span><br><span class="line">                self.permission_denied(</span><br><span class="line">                    request, message=getattr(permission, <span class="string">&#x27;message&#x27;</span>, <span class="literal">None</span>)</span><br><span class="line">                )</span><br></pre></td></tr></table></figure>
+
+<p>我们从源码中可以看到这个方法其实很很简单，就只是把<code>self.permission_classes一遍，通过 codename 进行实例化，最终返回一个实例化的 permission 列表。然后在</code>check_permissions<code>或者</code>check_object_permissions<code>的时候对这个列表轮询一遍，调用 permission 实例的</code>has_object_permission(request, view)`方法来判断是否有权限执行本次请求，最终通过返回的 True/False 来确定是否有权限继续操作，如果没有权限就直接终止请求了。</p>
+<p>根据上述条件，我们就可以自己写一个权限校验类了，一个简单的实现时下面这种样子的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> permissions</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PermsRequired</span>(<span class="params">permissions.BasePermission</span>):</span></span><br><span class="line">		<span class="string">&quot;&quot;&quot;需要有多个权限之一，也就是说有其中一个权限即可&quot;&quot;&quot;</span></span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, *perms</span>):</span></span><br><span class="line">        self.perms = perms	<span class="comment"># 接受多个参数，全部都是权限</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self  <span class="comment"># 被 call（前期可以理解成被当成函数调用） 的时候返回自身</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">has_permission</span>(<span class="params">self, request, view</span>):</span></span><br><span class="line">        user = request.user		<span class="comment"># 既然传进来了 request，那就可以拿到 user 了</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> user.is_superuser:	<span class="comment"># superuser 拥有一切权限</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        user_perms = user.get_all_permissions()	 <span class="comment"># 取得用户所拥有的的所有权限</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 取本次需要的权限和用户所有的权限的交集，如果有交集则校验通过（也就是 “或” 校验</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span> <span class="keyword">if</span> user_perms &amp; set(self.perms) <span class="keyword">else</span> <span class="literal">False</span></span><br><span class="line">      </span><br><span class="line">      	<span class="comment"># 如果想要“与”校验，可以改成下面这种</span></span><br><span class="line">        <span class="comment"># return all([perm in user_perms for perm in set(self.perms)])</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="0X03-DRF-如何校验权限"><a href="#0X03-DRF-如何校验权限" class="headerlink" title="0X03 DRF 如何校验权限"></a>0X03 DRF 如何校验权限</h1><p>现在我们知道 Django 和 DRF 中的权限大概是怎么实现的了，那么具体怎么用在 DRF 框架的 web 程序中呢？下面看一段实例代码。这坨代码就是我们最常见的一个 DRF 开出来的 ViewSet 了，同时支持<code>GET/POST/PUT/PATCH/DELETE</code>五种 HTTP 方法。</p>
+<blockquote>
+<p>在 DRF 的 ViewSet 中，可以使用 self.action 来访问到当前请求的 function。默认情况下的 CRUD 对应的方法名是：<code>list/create/retrieve/partial_update/update/delete</code>这五个，分别对应了<code>GET /</code>,<code>POST /</code>,<code>GET /id/</code>,<code>PATCH /id/</code>,<code>PUT /id/</code>,<code>DELETE /id/</code></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StudentViewSet</span>(<span class="params">viewsets.ModelViewSet</span>):</span></span><br><span class="line">  	queryset = models.Student.objects.all()</span><br><span class="line">  	<span class="comment"># ...........</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_permissions</span>(<span class="params">self</span>):</span></span><br><span class="line">      	<span class="keyword">if</span> self.action == <span class="string">&#x27;list&#x27;</span>:		<span class="comment"># 如果是对根目录进行 GET 则需要列表权限</span></span><br><span class="line"> 						self.permission_classes = (</span><br><span class="line">                perms.PermsRequired(<span class="string">&#x27;student.list_student&#x27;</span>),</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">if</span> self.action == <span class="string">&#x27;create&#x27;</span>:		<span class="comment"># 如果对根目录进行 POST 则需要创建权限</span></span><br><span class="line">            self.permission_classes = (</span><br><span class="line">                perms.PermsRequired(<span class="string">&#x27;student.create_student&#x27;</span>),</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> super(StudentViewSet, self).get_permissions()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_serializer_class</span>(<span class="params">self</span>):</span></span><br><span class="line">      	<span class="comment"># ........</span></span><br><span class="line">        <span class="keyword">return</span> self.serializer_class</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_queryset</span>(<span class="params">self</span>):</span></span><br><span class="line">        user = self.request.user</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如果用户拥有查看所有学生信息的权限，则返回所有学生信息</span></span><br><span class="line">        <span class="keyword">if</span> user.has_perm(<span class="string">&#x27;student.query_all_students&#x27;</span>):</span><br><span class="line">            <span class="keyword">return</span> self.queryset</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 如果用户有查看自己班里学生信息的权限，则返回自己班里的学生信息</span></span><br><span class="line">        <span class="keyword">if</span> user.has_perm(<span class="string">&#x27;ratel.query_self_class_students&#x27;</span>):</span><br><span class="line">            <span class="keyword">return</span> self.queryset.filter(</span><br><span class="line">                student_class=user.student.student_class</span><br><span class="line">            )</span><br><span class="line">        <span class="comment"># ...还有其他校验</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 如果什么权限都没找到，那就只能返回自己的数据了</span></span><br><span class="line">        <span class="keyword">return</span> models.Student.objects.filter(id=user.student.id)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我们可以从上面看到有两个地方在校验权限，一个是<code>get_permissions()</code>，另一个是<code>get_queryset()</code>。前者是严谨的“权限”，也就是说“你想要执行某某某操作，你就需要拥有某某某权限，没有就不信”；后者是广义的“权限”，会从大到小来校验，比如这里可以先判断你是否拥有查看所有人信息的权限，有，就给你所有人的信息；没有，就看你能不能看班里人的信息，有，就给你班里人的信息；没有，就只返回给你自己的数据。</p>
+<p>这两种用法是在日常工作中用法最多的了。其他再有的话就是在 serializer 的 validate 中进行的校验，比如有一个功能叫做“强制删除”，这个功能可以跳过一切检测（比如检测学生是否在校，学生是否毕业超过3 年，学生饭卡是否还有钱），就直接删除。这种权限可能只会分配给高级别管理员使用，但是又不可能针对这种功能再单独开新的 API 来做，这样太奇怪了。所以我们可以通过一个参数来控制前置删除，比如<code>force_delete</code>。这样我们就可以写出类似下面的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">validate</span>(<span class="params">self, validated_data</span>):</span></span><br><span class="line">  	user = self.context[<span class="string">&#x27;request&#x27;</span>].user</span><br><span class="line">    force_delete = validated_data.get(<span class="string">&#x27;force_delete&#x27;</span>, <span class="literal">False</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> force_delete:</span><br><span class="line">      	<span class="keyword">if</span> <span class="keyword">not</span> user.has_perm(<span class="string">&#x27;student.force_delete&#x27;</span>):</span><br><span class="line">        		<span class="keyword">raise</span> serializers.ValidationError(<span class="string">&#x27;你没有强制删除用户的权限&#x27;</span>)</span><br><span class="line">      	</span><br><span class="line">  	<span class="keyword">return</span> validated_data</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="0X04-THE-END"><a href="#0X04-THE-END" class="headerlink" title="0X04 THE END"></a>0X04 THE END</h1><p>今天是个美好的周日，中午的时候想要喝了咖啡写篇博客就去玩 <em>火焰纹章</em> 的的，然而越看这个权限越越觉得自己不懂，之前一度以为自己挺明白的，结果一直是处在知其然的状态，并没有知其所以然（虽然现在知道也也不彻底）。然后就一点点看之前的代码，看实现方案，看着看着又得进去看源码，结果计划一个多小时搞定的东西搞了快四个小时。不过还好，也不亏，收获颇丰~</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2018/05/23/django-rest-framework-tips/" rel="bookmark">Django REST Framework中要注意的几个点</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2018/05/23/django-some-blank/" rel="bookmark">Django与Django REST Framework中的这些"空"</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2018/10/13/drf-fields/" rel="bookmark">Django REST framework中不那么常用的Fields</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/05/12/django-2-query/" rel="bookmark">使用Django中的select_related和prefetch_related优化查询</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/06/28/django-export-csv/" rel="bookmark">Django 相对优雅地导出 CSV</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>这篇文章对你有帮助吗？</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.08.png" alt="Shawn 微信">
+        <span>微信</span>
       </div>
-    </main>
+      <div>
+        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.37.png" alt="Shawn 支付宝">
+        <span>支付宝</span>
+      </div>
 
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Shawn
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.just666.com/2020/07/05/drf-permission/" title="如何在 Django 与 DRF 中优雅地校验权限">https://blog.just666.com/2020/07/05/drf-permission/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Django/" rel="tag"># Django</a>
+              <a href="/tags/Django-REST-framework/" rel="tag"># Django REST framework</a>
+              <a href="/tags/Permission/" rel="tag"># Permission</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/07/04/cas-sso/" rel="prev" title="SSO 与 CAS">
+                  <i class="fa fa-chevron-left"></i> SSO 与 CAS
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/07/11/django-save/" rel="next" title="记一次 Django Save 导致的数据异常">
+                  记一次 Django Save 导致的数据异常 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Shawn </br> 月亮很圆，圆也没用，没用也圆</span>
 </div>
-  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v3.9.0</div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Pisces</span> v7.4.1</div>
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
+    </div>
+  </footer>
+
   
-  <script src="//cdn.staticfile.org/animejs/2.2.0/anime.min.js"></script>
-  <script src="//cdn.staticfile.org/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
-<script src="/js/schemes/pisces.js?v=7.4.1"></script>
-<script src="/js/next-boot.js?v=7.4.1"></script>
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/animejs/1.0/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
   <script>
 var pjax = new Pjax({
   selectors: [
     'head title',
-    '#page-configurations',
-    '.content-wrap',
+    '.page-configurations',
+    '.main-inner',
     '.post-toc-wrap',
-    '#pjax'
+    '.languages',
+    '.pjax'
   ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
   analytics: false,
   cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
 });
 
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
   NexT.boot.refresh();
   // Define Motion Sequence & Bootstrap Motion.
   if (CONFIG.motion.enable) {
     NexT.motion.integrator
       .init()
+      .add(NexT.motion.middleWares.subMenu)
       .add(NexT.motion.middleWares.postList)
       .bootstrap();
   }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
   NexT.utils.updateSidebarPosition();
 });
 </script>
 
 
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
 
 
   
@@ -729,27 +626,30 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script src="/js/local-search.js?v=7.4.1"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div id="pjax">
-
+    <div class="pjax">
   
 
   
 
-  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '79f0f80e1019d9521c50',
+      clientSecret: '8f463866cba423bfaa63f5162824d03533327b73',
+      repo        : 'shawn-bluce.github.io',
+      owner       : 'shawn-bluce',
+      admin       : ['shawn-bluce'],
+      id          : '697369744acec30f87a53e8fabe6508f',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
     </div>
 </body>
