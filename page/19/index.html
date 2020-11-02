@@ -193,14 +193,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">110</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">140</span>
+        <span class="site-state-item-count">142</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -287,6 +287,98 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2016/10/17/openssh-pub-pri/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/10/17/openssh-pub-pri/" class="post-title-link" itemprop="url">OpenSSH 配置 免密码登陆 公钥和私钥 私钥签名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-10-17 14:41:00" itemprop="dateCreated datePublished" datetime="2016-10-17T14:41:00+08:00">2016-10-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-08-21 15:34:22" itemprop="dateModified" datetime="2018-08-21T15:34:22+08:00">2018-08-21</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="0X00-安装OpenSSH"><a href="#0X00-安装OpenSSH" class="headerlink" title="0X00 安装OpenSSH"></a>0X00 安装OpenSSH</h1><p>一般情况下我们的系统中都是自带SSH服务端和客户端的，万一没有的话就需要我们手动安装这个服务。</p>
+<p><code>yum install -y openssh</code></p>
+<p>然后重启OpenSSH服务</p>
+<p><code>systemctl restart sshd</code></p>
+<h1 id="0X01-两行简单的配置"><a href="#0X01-两行简单的配置" class="headerlink" title="0X01 两行简单的配置"></a>0X01 两行简单的配置</h1><p>OpenSSH的配置文件在<code>/etc/ssh/</code>目录下，有两个配置文件，一个是针对服务端的一个是针对客户端的，我们只需要修改针对服务端的<code>sshd_config</code>即可。</p>
+<p>配置文件里比较重要的两行是<code>PermitRootLogin</code>和<code>PasswordAuthentication</code>。</p>
+<ul>
+<li><code>PermitRootLogin</code> 当这个值为yes时，才允许root用户使用ssh登陆</li>
+<li><code>PasswordAuthentication</code> 当这个值为yes时，允许使用密码登陆，反之则拒绝密码登陆(只能使用密钥)。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PermitRootLogin yes</span><br><span class="line">PasswordAuthentication yes</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里的配置就允许使用root用户登陆，也允许输入密码登陆</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/10/17/openssh-pub-pri/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -599,89 +691,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2016/09/07/python-list-tumple/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2016/09/05/python-str/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/09/05/python-str/" class="post-title-link" itemprop="url">Python之字符串</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2016-09-05 10:12:00" itemprop="dateCreated datePublished" datetime="2016-09-05T10:12:00+08:00">2016-09-05</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2018-08-21 15:34:22" itemprop="dateModified" datetime="2018-08-21T15:34:22+08:00">2018-08-21</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="0X00-如何定义一个字符串"><a href="#0X00-如何定义一个字符串" class="headerlink" title="0X00 如何定义一个字符串"></a>0X00 如何定义一个字符串</h1><p>** Python不需要定义 ** 其实就是这样的。。在Python中的字符串通常这么写</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>str1 = <span class="string">&#x27;hello,world&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str2 = <span class="string">&quot;It&#x27;s work&quot;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str3 = <span class="string">&quot;&quot;&quot; Jack:&quot;oh shit&quot; &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-<p>str1 的声明方式是最普通的声明方式<br>str2 的声明方式可以在字符串中存在单引号‘<br>str3 的声明方式可以在字符串中存在双引号 “ 还能在字符串中换行</p>
-<h1 id="0X01-拼接字符串"><a href="#0X01-拼接字符串" class="headerlink" title="0X01 拼接字符串"></a>0X01 拼接字符串</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>str1 = <span class="string">&quot;hello&quot;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str2 = <span class="string">&quot;,&quot;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str3 = <span class="string">&quot;world&quot;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> str1 + str2 + str3</span><br><span class="line">	hello,world</span><br></pre></td></tr></table></figure>
-<p>注意：<br>连接的时候加号左右都要是字符串，如果是字符串加数字就不行了。除非把数字转成字符串格式</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/09/05/python-str/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.just666.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":true,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="0X00 前言上周在新公司接到的一个任务”给 XXX 系统集成 LDAP 登录”。我以前是没有了解过 LDAP 的，一听是集成登录功能，脑子里第一时间想到的就是之前做过的 SSO，但是经过一番搜索发现 LDAP 和 SSO 完全是两回事，而且发现还是不少人不了解其中的一项或两项技术，正好在这儿整理一下顺便分享给大家~ 内容都是比较基础的，主要介绍了什么是 SSO、SSO 的基本原理、什么是 LDA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSO 和 LDAP">
+<meta property="og:url" content="https://blog.just666.com/2020/11/02/sso-ldap/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="0X00 前言上周在新公司接到的一个任务”给 XXX 系统集成 LDAP 登录”。我以前是没有了解过 LDAP 的，一听是集成登录功能，脑子里第一时间想到的就是之前做过的 SSO，但是经过一番搜索发现 LDAP 和 SSO 完全是两回事，而且发现还是不少人不了解其中的一项或两项技术，正好在这儿整理一下顺便分享给大家~ 内容都是比较基础的，主要介绍了什么是 SSO、SSO 的基本原理、什么是 LDA">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-02T15:26:50.000Z">
+<meta property="article:modified_time" content="2020-11-02T15:27:23.479Z">
+<meta property="article:author" content="Shawn">
+<meta property="article:tag" content="SSO">
+<meta property="article:tag" content="Auth">
+<meta property="article:tag" content="LDAP">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.just666.com/2020/11/02/sso-ldap/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SSO 和 LDAP | Shawn's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Shawn's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-%E5%89%8D%E8%A8%80"><span class="nav-text">0X00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-SSO"><span class="nav-text">0X01 SSO</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-LDAP"><span class="nav-text">0X02 LDAP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-%E8%81%94%E5%8A%A8"><span class="nav-text">0X03 联动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">0X04 参考资料</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shawn"
+      src="/uploads/naruto.png">
+  <p class="site-author-name" itemprop="name">Shawn</p>
+  <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">142</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/shawn-bluce" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;shawn-bluce" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:shawnbluce@gmail.com" title="E-Mail → mailto:shawnbluce@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/15387917" title="B-Site → https:&#x2F;&#x2F;space.bilibili.com&#x2F;15387917" rel="noopener" target="_blank"><i class="fa fa-video fa-fw"></i>B-Site</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/8969875/shawn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;8969875&#x2F;shawn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://qqdie.com/" title="https:&#x2F;&#x2F;qqdie.com&#x2F;" rel="noopener" target="_blank">Jrotty</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/303donatello" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;303donatello" rel="noopener" target="_blank">303Donatello</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://lixianhua.com/" title="http:&#x2F;&#x2F;lixianhua.com&#x2F;" rel="noopener" target="_blank">绛木子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://duuge.com/" title="http:&#x2F;&#x2F;duuge.com&#x2F;" rel="noopener" target="_blank">杜哥</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://hubojing.github.io/" title="http:&#x2F;&#x2F;hubojing.github.io&#x2F;" rel="noopener" target="_blank">胡博靖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/Ypersistence" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;Ypersistence" rel="noopener" target="_blank">威大爷</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://wenqy.com/" title="http:&#x2F;&#x2F;wenqy.com&#x2F;" rel="noopener" target="_blank">小温之家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.rumoss.cn/" title="http:&#x2F;&#x2F;www.rumoss.cn&#x2F;" rel="noopener" target="_blank">濡沫杂记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/shouldnotappearcalm" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;shouldnotappearcalm" rel="noopener" target="_blank">不应有的淡定的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://hiwannz.com/" title="https:&#x2F;&#x2F;hiwannz.com" rel="noopener" target="_blank">见字如面</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/shawn-bluce" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/11/02/sso-ldap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SSO 和 LDAP
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-02 23:26:50 / 修改时间：23:27:23" itemprop="dateCreated datePublished" datetime="2020-11-02T23:26:50+08:00">2020-11-02</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>上周在新公司接到的一个任务”给 XXX 系统集成 LDAP 登录”。我以前是没有了解过 LDAP 的，一听是集成登录功能，脑子里第一时间想到的就是之前做过的 SSO，但是经过一番搜索发现 LDAP 和 SSO 完全是两回事，而且发现还是不少人不了解其中的一项或两项技术，正好在这儿整理一下顺便分享给大家~</p>
+<p>内容都是比较基础的，主要介绍了什么是 SSO、SSO 的基本原理、什么是 LDAP、LDAP 的基本原理和 LDAP 如何与 SSO 关联。如果你对这些有兴趣那不妨继续看下去，如果你都了解了那就去看看其他文章或者休息一会儿好了~</p>
+<p>现在开始做一些技术背景预设：假设你公司有 10 个站点，分别是<code>site_0.just666.com/site_1.just666.com.....</code>，同时每个站点都有用户系统，也就是说用户可以登录到站点上去做些操作。</p>
+<p>用户肯定不愿意访问每个站点的时候都要登录，比如你登陆淘宝之后再看天猫肯定不想再登陆一次了，如果天猫要你再登陆一次且密码还跟淘宝那边不通你肯定要骂人了。现在怎么办呢？SSO 和 LDAP 两种技术就是用来解决这个问题的。</p>
+<a id="more"></a>
+
+<h1 id="0X01-SSO"><a href="#0X01-SSO" class="headerlink" title="0X01 SSO"></a>0X01 SSO</h1><p>SSO全称是 Single Sign On，中文叫”单点登录”，听名字也猜得出来，就是从单一节点上登录。SSO 需要在传统的”客户/服务”之外再加了一个 SSO 服务，专门用来校验用户登录和管理 token。</p>
+<ol>
+<li>客户点开站点</li>
+<li>站点发现这次请求没有携带有效 token，将客户跳转到 SSO 的登录页面（并告诉 SSO 本次跳转的来源）</li>
+<li>客户在登录页面输入用户名密码，点击登录（此时在和 SSO 服务进行交互）</li>
+<li>SSO 服务器对登录信息进行校验，通过后发放一个 token 并跳转回源页面（因为第 2 步告诉 SSO 跳转的来源了）</li>
+<li>客户带着 token 再次访问目标页面，服务器拿到 token</li>
+<li>服务器带着 token 去 SSO 那儿校验，SSO服务 反馈：”这个 token 合法，用户是 shawn”</li>
+<li>服务器通过校验，当前用户以 shawn 的身份登入到站点中了</li>
+</ol>
+<p>这样一来，原本 10 个站点需要配备 10 个用户登录模块的，现在只需要独立出来的一个登录模块了；后面再有新的站点，接入到 SSO 也是非常方便的；不仅如此，SSO 也可以做到让你登录一个站点后带着 token 直接访问同域的其他站点。</p>
+<p>所以简单点来说的话，”SSO 是一种用来验证登录的服务”。</p>
+<h1 id="0X02-LDAP"><a href="#0X02-LDAP" class="headerlink" title="0X02 LDAP"></a>0X02 LDAP</h1><p>上面 SSO 介绍完了看起来好像验证就完美了，完全不需要什么 LDAP 这种东西，但是实际上不是的。</p>
+<p>LDAP 是一个树形结构的查询性能优秀的目录数据库，可以方便的管理公司员工和部门的结构，并且 LDAP 也并非基于 HTTP 协议，硬说的话 LDAP 其实可以是一个”DB”。只不过因为是”目录结构”的数据库，所以非常适合存储树形组织的各项数据。</p>
+<p>所以这么说来 LDAP 从技术上并非无可替代，我们完全可以用 MySQL 这种关系型数据库来做个对应的表结构来存储相同的数据，再自己写一套简单的程序要进行查询。<strong>但是</strong>我们使用 LDAP 最大的原因之一应该就是 wiki 上说的那样：”开放的，中立的，工业标准的应用协议”，因为他足够开放、中立且应用非常广泛，我们随便一个程序都可以很快的接入进来。</p>
+<p>我这里就不过多介绍 LDAP 了，这东西三两句是真的说不清楚，这里也主要是让大家知道”我还有什么不知道”，这样后面学习也有个点可以看。（主要是我自己也没有摸的很明白，现在真是说把基本原理搞明白了然后正确的把程序接入进去了，万一我说错了什么误人子弟就不好了）。</p>
+<h1 id="0X03-联动"><a href="#0X03-联动" class="headerlink" title="0X03 联动"></a>0X03 联动</h1><p>如果说把上面两个部分看完了，那么联动这里就很容易了。SSO 和 LDAP 两个东西一前一后，LDAP 可以作为 SSO 服务的后端数据库，就算是将这两个连动起来了。不过通常来说企业里也不太会联动着用，一般来说一个 LDAP 就够了，多个站点都要登录但是用的相同的用户名密码，也没有多麻烦。</p>
+<h1 id="0X04-参考资料"><a href="#0X04-参考资料" class="headerlink" title="0X04 参考资料"></a>0X04 参考资料</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wilburxu/p/9174353.html">LDAP 概念和原理介绍 – WilburXu</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000014683418">我花了一个五一终于搞懂了OpenLDAP</a></p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%96%AE%E4%B8%80%E7%99%BB%E5%85%A5">单点登录 Wikipedia</a></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/07/04/cas-sso/" rel="bookmark">SSO 与 CAS</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>这篇文章对你有帮助吗？</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.08.png" alt="Shawn 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.37.png" alt="Shawn 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Shawn
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.just666.com/2020/11/02/sso-ldap/" title="SSO 和 LDAP">https://blog.just666.com/2020/11/02/sso-ldap/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/SSO/" rel="tag"># SSO</a>
+              <a href="/tags/Auth/" rel="tag"># Auth</a>
+              <a href="/tags/LDAP/" rel="tag"># LDAP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/27/leave-knownsec/" rel="prev" title="我的第一次跳槽之路">
+                  <i class="fa fa-chevron-left"></i> 我的第一次跳槽之路
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn </br> 月亮很圆，圆也没用，没用也圆</span>
+</div>
+
+<div>
+<script type="text/javascript">
+    document.write(unescape("%3Cspan id='cnzz_stat_icon_1279322050'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1279322050%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/animejs/1.0/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '79f0f80e1019d9521c50',
+      clientSecret: '8f463866cba423bfaa63f5162824d03533327b73',
+      repo        : 'shawn-bluce.github.io',
+      owner       : 'shawn-bluce',
+      admin       : ['shawn-bluce'],
+      id          : '489d3e9df82b29d33a4ce44d2d7d4127',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>

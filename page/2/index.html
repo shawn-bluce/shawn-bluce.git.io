@@ -193,14 +193,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">110</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">140</span>
+        <span class="site-state-item-count">142</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -287,6 +287,102 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/07/11/django-save/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/11/django-save/" class="post-title-link" itemprop="url">记一次 Django Save 导致的数据异常</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-07-11 13:22:47" itemprop="dateCreated datePublished" datetime="2020-07-11T13:22:47+08:00">2020-07-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-07-12 00:02:17" itemprop="dateModified" datetime="2020-07-12T00:02:17+08:00">2020-07-12</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="0X00-按惯例得有一个标题"><a href="#0X00-按惯例得有一个标题" class="headerlink" title="0X00 按惯例得有一个标题"></a>0X00 按惯例得有一个标题</h1><p>众所周知<code>save</code>是 Django 中最常用的保存数据的方法。但是一般来说大家经常会把“常用“理解成“万能“，然后能用的时候就全用这一种方式。不过编程 中是没有所谓的“一招鲜吃遍天“的，Django 之所以提供了那么多中保存数据的方法也侧面证实了这一点。</p>
+<p>首先来看一下我遇到的这个问题：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> Student</span><br><span class="line"><span class="keyword">from</span> .utils <span class="keyword">import</span> calculate_score</span><br><span class="line"></span><br><span class="line">queryset = Student.objects.all()</span><br><span class="line"><span class="keyword">for</span> student <span class="keyword">in</span> queryset:</span><br><span class="line">    student.score = calculate_score(student)    <span class="comment"># 调用一个工具函数计算该学生的成绩</span></span><br><span class="line">    student.save()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这段代码乍一看没有什么问题，因为计算的值是通过<code>calculate_score</code>这个函数进行的，所以不能使用<code>queryset.update(xxx)</code>的方法。然后咱们看一下 Django 文档是如何描述 queryset 的。</p>
+<blockquote>
+<p>QuerySets are lazy – the act of creating a QuerySet doesn’t involve any database activity. You can stack filters together all day long, and Django won’t actually run the query until the QuerySet is evaluated. </p>
+<p><a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/2.2/topics/db/queries/#querysets-are-lazy">QuerySets are lazy</a></p>
+</blockquote>
+<blockquote>
+<p>nternally, a QuerySet can be constructed, filtered, sliced, and generally passed around without actually hitting the database. No database activity actually occurs until you do something to evaluate the queryset.</p>
+<p><a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/2.2/ref/models/querysets/#when-querysets-are-evaluated">When QuerySets are evaluated</a></p>
+</blockquote>
+<p>QuerySets are lazy 内容总结来说就是“Django 中的 QuerySet 只有在用的时候才会真的去数据库里查，而不是生成 QuerySet 的时候“。后面的 When QuerySet are evaluated 则标明了什么叫做“真正在使用“，给出了下面几个条件，当你做这些事情的时候就是“真正在使用“了。这些条件包括：迭代、 切片、列表等（我英文水平小学三年级，解读地不对的地方还希望大家指出）。 所以显然我们对这个 queryset 来了个 <code>for</code> 循环就满足了上述的“迭代“，所以这时候数 Django 就会真正的从数据库中将数据真正的 <strong>取出来</strong>。</p>
+<p>现在问题来了。我们思考一个问题，如果我一秒钟能计算10 个学生的成绩，然后整个<code>Student</code>表有 3W 学生，得出“处理所有学生信息需要消耗 50 分钟的时间“这样的结论（每秒 10 条和一共 3W 是乱写的，真实数据通常比这个大得多）。</p>
+<p><strong>如果在执行这个循环的时候，某位同学修改了自己的的信息，比如手机号，会发生什么？</strong> 有两种可能：第一种可能是这位同学修改自己手机号的时候计算分数的循环已经把他的分数计算完了，那么他的手机号修改也生效了（这种最好）。但是如果他改手机号的时候循环还没到他呢？假设他把手机号从原来的 123 改成了 456，那么他改完手机号的一瞬间数据库里存进去的确实是 456，没有问题。<strong>但是 queryset 里是他改手机号以前取出来的 123</strong>，这时候循环到他了，计算完之后来了一个<code>student.save()</code>，如此一来他刚刚改好的手机号码就又回到了 123。</p>
+<p>所以说这种写法并不会 100% 出现问题。整个循环耗时越久，出现问题的可能性越大；系统中数据变更越频繁，出现问题的可能性越大。当然了，bug 就是 bug，不能因为 bug 没触发就无所畏惧了，还是得解决的。通常来说有两种解决方法，下面是第一种</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> student <span class="keyword">in</span> queryset:</span><br><span class="line">    new_score = calculate_score(student)</span><br><span class="line">    Student.objects.filter(id=student.id).update(score=new_score)</span><br></pre></td></tr></table></figure>
+
+<p>这种方式仍然比较 young 比较 simple 比较 naive，不过<strong>又不是不能用</strong>。<br><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200711151128.jpeg"></p>
+<p>但是这种用法显然是不好的，而且 <code>update</code> 本来也不是让我们这么用的。所以我们还是得回到<code>save</code>上，Django 其实已经提供了一个参数给 <code>save</code> 了，可以用下面这种方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> student <span class="keyword">in</span> queryset:</span><br><span class="line">    student.score = calculate_score(student)</span><br><span class="line">    student.save(update_fields=[<span class="string">&#x27;score&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<p>也就是在 <code>save</code> 的时候带上具体需要更新哪个字段，其他的就不更新了。而且通过传递的参数也可以看出，指定的是多个字段，如果有需要修改多个字段的话，就只修改这一个就好了。</p>
+<p>不过其实这里还是有一个潜在问题的，那就是说：恰好我们在更新 score 的时候，其他地方也在更新这个。不过这个更多的时候就是我们程序逻辑的问题了，因为在几乎同一时间对一个字段进行修改，然后修改的双方又互相不知道的话，总是会出问题的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -580,83 +676,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/06/28/django-export-csv/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/06/06/django-fast-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/06/django-fast-2/" class="post-title-link" itemprop="url">如何让 Django API 再快一点 (2)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-06-06 16:56:29 / 修改时间：17:05:39" itemprop="dateCreated datePublished" datetime="2020-06-06T16:56:29+08:00">2020-06-06</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><blockquote>
-<p>啊，这个破系统怎么这么慢。 -你写的程序的用户</p>
-</blockquote>
-<p>是的我写过一篇<a href="https://blog.just666.com/2020/05/14/django-fast/">类似的博客</a>，但是一篇肯定说不完，毕竟影响性能的东西太多了：数据量巨大、机器配置差、查询SQL效率低、额外的多余的查询、低质量的代码balabala的。今天这篇文章主要是从Django查询和ORM层面来分析一下API变慢的原因。</p>
-<p>其中可能性比较多，我这里先挑几个我经常遇到的情况来说：不管自己的需求直接查询所有字段、完全不在意索引、疯狂使用<code>in</code>、循环创建/更新数据、不善于使用缓存。这几个问题其实都会对我们的API响应速度造成比较大的影响，下面我们来一个个介绍一下。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/06/django-fast-2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
