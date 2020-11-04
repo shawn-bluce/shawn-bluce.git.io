@@ -3,6 +3,48 @@
   
     
     <entry>
+      <title><![CDATA[使用 Ab 和 Http_load 进行简单的性能测试]]></title>
+      <url>/2020/11/04/ab-http-load/</url>
+      <content type="html"><![CDATA[<h1 id="0X00-概述"><a href="#0X00-概述" class="headerlink" title="0X00 概述"></a>0X00 概述</h1><p>我们经常想要简单测试一下某个页面的性能，或者 REST API 的性能，用 postman 这种程序虽然可以很快的模拟请求出来但是并不方便发送大量请求；自己写脚本虽然自定义程度很高，但是写起来总归还是有点麻烦，而且并不能很方便得输出我们需要的一些常用数据。那这种时候一般就需要找些专业的工具来做这种专业的事情了。下面两个就是平时比较常用的性能测试工具，可以针对某个/某些 url 做性能测试，并且输出相对完整的报告。</p>
+<p>软件具体怎么装就自己想想办法吧，毕竟 Linux/macOS/windows 之间都不太一样，而且 Linux 上还有 apt/dnf/pacman 巴拉巴拉一堆包管理器，用法都不一样，没必要一个个找出来贴上。需要了解 API 性能的人肯定能很轻松装上这些工具了~</p>
+<a id="more"></a>
+
+<h1 id="0X01-apache-bench"><a href="#0X01-apache-bench" class="headerlink" title="0X01 apache bench"></a>0X01 apache bench</h1><p>最简单的使用方式：<code>ab -n 20 -c 2 https://example.org/</code>回车，就会执行一次简单的测试并输出报告。这串命令会用<code>GET</code>请求访问<code>https://example.com/</code>，并发为 2，总共发起 20 次请求。<strong>需要注意，测试的时候域名最后已经加上<code>/</code>，因为测试是针对 url 的，而非 domain</strong></p>
+<p>接着我们会得到一个这样的输出结果。其中第一部分是服务器的相关信息；第二部分是本次测试的相关信息；第三部分是连接相关的信息；第四部分是请求耗时的相关信息，我们只是简单看一下请求的响应速度，所以重点看第三和第四部分。<br><img src="https://blog-1251664340.cos.ap-chengdu.myqcloud.com/ab_result.png"></p>
+<p>第三部分内容是连接耗时的数据，分别统计了连接、处理、等待的最小、平均、中位、最大值。</p>
+<p>作为简单的测试结果，第四部分是最值得关注的，工具统计出了所有请求的耗时时间分布。我的这条结果显示 50% 的请求在 592ms 内完成；90% 的请求在 839ms 内完成，100% 的请求在 1069ms 内完成（也就是说最慢的一次请求用了 1069ms）。</p>
+<p>简单的<code>GET</code>请求就到此为止了。如果需要携带 Header（这太常见了，起码登录过后得带个 token 才能真正测试），那就携带新的参数<code>-H </code>即可，类似于这个样子<code>ab -n 10 -c 2 -H &#39;token: xxxxxxx&#39; https://example.org/</code>。如果需要携带多个 Header 参数，那就多接几个<code>-H</code>也没问题。</p>
+<p>如果要发送 <code>POST</code> 请求，需要先把请求内容写在一个文件里，例如在<code>/homes/shawn/post_data</code>，然后通过<code>-p /home/shawn/post_data</code>就可以把文件内容通过 <code>POST</code> 请求发送出去了，比如这样<code> ab -n 2 -c 1 -p /home/shawn/post_data http://127.0.0.1:2333/</code></p>
+<h1 id="0X02-http-load"><a href="#0X02-http-load" class="headerlink" title="0X02 http_load"></a>0X02 http_load</h1><p><code>http_load</code>可以测试多个 url，不用像 <code>ab</code> 那样只能同时测单一 url；但是问题是不能使用<code>GET</code>以外的其他方法，所以用途也比较单一，用法也比较简单。</p>
+<p>常用 4 个参数： </p>
+<ol>
+<li>-p –parallel  并发进程数</li>
+<li>-f –fetches  总访问数</li>
+<li>-r –rate  每秒访问数</li>
+<li>-s –seconds 访问总时间</li>
+</ol>
+<p>首先要准备一个纯文本文件，类似这样<code>/home/shawn/urlist</code>的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;about&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;blog.just666.com&#x2F;</span><br></pre></td></tr></table></figure>
+<p>保证每行一个 url，接下来就是<code>http_load -p 3 -f 10 /home/shawn/urllist</code>以 3 的并发量发起 10 次请求，或者<code>http_load -r 5 -s 10 xxx</code> 以每秒 5 次的频率请求 10 秒</p>
+<p>会得到类似这样的输出结果</p>
+<p><img src="https://blog-1251664340.cos.ap-chengdu.myqcloud.com/http_load.png"></p>
+<p>总共发起了 19 次请求；并发为 1；大小是697449 btes；总共用了 10.0025 秒；平均每个连接是36707.8 bytes；平均每次请求 1.89 秒；平均响应是 20ms、最大 125、最小 8.2；</p>
+<p>最后是各个状态码的数量，这里 19 个都是 200，一切正常；如果 50x，尤其是 502/503 这种就有可能是你频繁请求导致服务器不稳定了。</p>
+<p>中间缺了一行<code>msecs/first-response</code>的解释？实话说我也不知道。manual 里没有这个解释，google 没找到官方的解释，二手资料全是复制自同一个人的，结果最初的那个老哥可能也没搞明白就没写。。。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> HTTP </tag>
+            
+            <tag> Performence </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[SSO 和 LDAP]]></title>
       <url>/2020/11/02/sso-ldap/</url>
       <content type="html"><![CDATA[<h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>上周在新公司接到的一个任务”给 XXX 系统集成 LDAP 登录”。我以前是没有了解过 LDAP 的，一听是集成登录功能，脑子里第一时间想到的就是之前做过的 SSO，但是经过一番搜索发现 LDAP 和 SSO 完全是两回事，而且发现还是不少人不了解其中的一项或两项技术，正好在这儿整理一下顺便分享给大家~</p>
