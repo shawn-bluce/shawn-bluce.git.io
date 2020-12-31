@@ -193,7 +193,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">114</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -287,6 +287,91 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2019/08/22/python-decorator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/08/22/python-decorator/" class="post-title-link" itemprop="url">Python 装饰器</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-08-22 21:18:01" itemprop="dateCreated datePublished" datetime="2019-08-22T21:18:01+08:00">2019-08-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2019-10-09 22:34:56" itemprop="dateModified" datetime="2019-10-09T22:34:56+08:00">2019-10-09</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="0X00-给一个方法计时"><a href="#0X00-给一个方法计时" class="headerlink" title="0X00 给一个方法计时"></a>0X00 给一个方法计时</h1><p>现在我们有一个需求，需要给程序中的一部分方法计时，以监控他们执行完具体用了多久。那么在没有装饰器的情况下我们会写出类似这样的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span>():</span></span><br><span class="line">    <span class="keyword">pass</span>    <span class="comment"># some code</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">start = datetime.datetime.now()</span><br><span class="line">foo()</span><br><span class="line">end = datetime.datetime.now()</span><br><span class="line">print((end - start).seconds)</span><br></pre></td></tr></table></figure>
+
+<h1 id="0X01-引入装饰器"><a href="#0X01-引入装饰器" class="headerlink" title="0X01 引入装饰器"></a>0X01 引入装饰器</h1><p>如果只是临时给一个方法使用也不是不行，但是如果我们需要监控大量的方法呢？众所周知Python中<code>function</code>也是可以作为参数传递的，那来看一下下面这种写法呢</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timer</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run_func</span>():</span> <span class="comment"># 方法内部将之前计时的功能封装起来</span></span><br><span class="line">        start = datetime.datetime.now()</span><br><span class="line">        result = func() <span class="comment"># 得到参数方法的返回值</span></span><br><span class="line">        end = datetime.datetime.now()</span><br><span class="line">        print((end - start).seconds)</span><br><span class="line">        <span class="keyword">return</span> result   <span class="comment"># 将真正的结果返回给调用者</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> run_func   <span class="comment"># 调用内部方法，进行计时</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span>():</span></span><br><span class="line">    <span class="keyword">pass</span>    <span class="comment"># some code</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bar</span>():</span></span><br><span class="line">    <span class="keyword">pass</span>    <span class="comment"># some code</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将方法作为参数发送给 timer()</span></span><br><span class="line">timer(foo)()</span><br><span class="line">timer(bar)()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>因为上面timer(foo)返回的结果是一个<code>func</code>，所以后面需要再加一对括号来调用这个方法</strong></p>
+<p>这种方法只写了一次计时的逻辑，但是可以给任意一个方法使用，其实这时候<code>def timer(func)</code>已经是装饰器了，下面调用的方法<code>timer(foo)/timer(bar)</code>也是正确的装饰器使用方法。那是不是觉得和常见的装饰器使用不太一样呢？其实常见的<code>@timer</code>用法是Python中提供的一种语法糖。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/08/22/python-decorator/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -606,91 +691,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/01/19/vim-register/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2019/01/13/genuine-piracy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/13/genuine-piracy/" class="post-title-link" itemprop="url">我眼中的「正版」与「盗版」</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-01-13 22:59:45" itemprop="dateCreated datePublished" datetime="2019-01-13T22:59:45+08:00">2019-01-13</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2019-09-22 23:27:17" itemprop="dateModified" datetime="2019-09-22T23:27:17+08:00">2019-09-22</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="0X00-何为正版"><a href="#0X00-何为正版" class="headerlink" title="0X00 何为正版"></a>0X00 何为正版</h1><blockquote>
-<p>正版的即“正确地使用版权”。而版权是属于版权所有人的，版权所有人提出使用条件，使用者只要符合条件，就算是正确地使用，就不违反版权法。</p>
-</blockquote>
-<p>以上来自<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%AD%A3%E7%89%88">维基百科：“正版”词条</a></p>
-<h1 id="0X01-我的正版观念"><a href="#0X01-我的正版观念" class="headerlink" title="0X01 我的正版观念"></a>0X01 我的正版观念</h1><p>正确的版权观念当然应该是在任何情况下都要“正确的使用版权”。但是几乎不会有人能做到这一点，我这里不谈政治正确，只是说一下我个人的正版观念。我的正版观念简单说来就是“在自己条件允许的情况下尽可能的使用正版”，当然这里的条件允许不只是指的经济条件，还有各种其他的因素。</p>
-<p>比如说电影，按照最正确的正版意识来说应该是在上映时在电影院观看，院线下映后在各个视频网站观看或单独购买光盘/数字授权等。我个人只做到一部分，电影还在院线时我要么去电影院观看要么就等下映后在线观看，从来不下载观看“枪版”和“泄漏版”，不过下映比较久后也有可能会通过“torrent（也就是种子）”下载到本地观看。</p>
-<p>音乐也是类似。我一般都是使用本地音乐播放器听歌，不论是在电脑还是手机上。不过每次发现新音乐都是通过在线播放器，当喜欢的新音乐达到了一定数量后就充值对应平台的会员把他们下载下来，继续使用本地播放器播放。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/01/13/genuine-piracy/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
