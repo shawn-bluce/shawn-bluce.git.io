@@ -193,14 +193,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">146</span>
+        <span class="site-state-item-count">147</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -287,6 +287,91 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2019/11/19/python-oop-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/19/python-oop-2/" class="post-title-link" itemprop="url">Python之面向对象 2</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-11-19 22:31:48" itemprop="dateCreated datePublished" datetime="2019-11-19T22:31:48+08:00">2019-11-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2019-11-21 14:42:04" itemprop="dateModified" datetime="2019-11-21T14:42:04+08:00">2019-11-21</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="0X00-Python3的super"><a href="#0X00-Python3的super" class="headerlink" title="0X00 Python3的super"></a>0X00 Python3的super</h1><p>Python中对象的概念都快被大家淡忘了，因为一切都是对象（话虽然这么说，但是怎么可能淡忘对象呢）。看下面一段Python2的代码，Python2中麻烦的就是这个<code>super()</code>的用法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Human</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.name = <span class="string">&#x27;human&#x27;</span></span><br><span class="line">        <span class="keyword">print</span> <span class="string">&#x27;hello, i im&#x27;</span>, self.name</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>(<span class="params">Human</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        super(Student, self).__init__()</span><br><span class="line">        self.name = <span class="string">&#x27;student&#x27;</span></span><br><span class="line">        <span class="keyword">print</span> <span class="string">&#x27;hello, i im&#x27;</span>, self.name</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = Student()</span><br></pre></td></tr></table></figure>
+
+<p>在初学Python的时候，如果是Python2很大可能会在<code>super(Student, self).__init__()</code>这段迷惑好一阵子，不过好在<a target="_blank" rel="noopener" href="https://pythonclock.org/">Python2马上就要凉透了</a>，在Python3中可以将代码改写成如下方式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Human</span>:</span>    <span class="comment"># 不用强行继承自object了</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.name = <span class="string">&#x27;human&#x27;</span></span><br><span class="line">        print(<span class="string">&#x27;hello, i im&#x27;</span>, self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>(<span class="params">Human</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        super().__init__()  <span class="comment"># super的用法也更明了</span></span><br><span class="line">        self.name = <span class="string">&#x27;student&#x27;</span></span><br><span class="line">        print(<span class="string">&#x27;hello, i im&#x27;</span>, self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = Student()</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>super</code>的用法由<code>super(Student, self).__init__()</code>改成了<code>super().__init__()</code>，看起来清晰多了，在使用Python3后不建议以任何理由使用老式Python中的<code>super</code>调用。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/19/python-oop-2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -603,95 +688,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2019/11/02/better-linux/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/11/02/better-linux/" class="post-title-link" itemprop="url">在Linux桌面下活得舒服</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-11-02 22:13:25" itemprop="dateCreated datePublished" datetime="2019-11-02T22:13:25+08:00">2019-11-02</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2019-11-03 00:23:09" itemprop="dateModified" datetime="2019-11-03T00:23:09+08:00">2019-11-03</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>这篇博客的目标读者：正在使用Linux桌面，打算长期继续使用下去的同学（这也就意味着熟悉Linux下的基础操作，理解Linux下的常见概念）。</p>
-<p>这里有一个我之前写的“<a href="https://blog.just666.com/2019/10/29/use-linux/">在Linux桌面下存活</a>”可以参考一下。</p>
-<h1 id="0X01-颜值就是战斗力"><a href="#0X01-颜值就是战斗力" class="headerlink" title="0X01 颜值就是战斗力"></a>0X01 颜值就是战斗力</h1><p><strong>Linux也不都是黑色背景白色字的命令行。</strong></p>
-<p>首先要换的就是一套主题和图标，不论是KDE、Gnome还是Xfce都可以在对应的网站找到大量的主题，简单换过图标和主题之后再配合一张好看的壁纸，整个观感立马就好了不少。</p>
-<blockquote>
-<p>KDE: <a target="_blank" rel="noopener" href="https://store.kde.org/">https://store.kde.org/</a><br>Gnome: <a target="_blank" rel="noopener" href="https://www.gnome-look.org/">https://www.gnome-look.org/</a><br>Xfce: <a target="_blank" rel="noopener" href="https://www.xfce-look.org/">https://www.xfce-look.org/</a></p>
-</blockquote>
-<p>然后要换的就是字体了，<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E7%AD%89%E5%AE%BD%E5%AD%97%E4%BD%93">等宽字体</a>我推荐这几个<a target="_blank" rel="noopener" href="https://sourcefoundry.org/hack/">Hack</a>、<a target="_blank" rel="noopener" href="https://github.com/adobe-fonts/source-code-pro">Source Code Pro</a>、<a target="_blank" rel="noopener" href="https://github.com/microsoft/cascadia-code">Cascadia Code</a>都很好看，适合在终端、IDE和编辑器里使用。</p>
-<p>最后就是zsh主题，如果使用的是zsh的话推荐使用<a target="_blank" rel="noopener" href="https://github.com/romkatv/powerlevel10k">powerlevel10k</a>这个主题，是由<a target="_blank" rel="noopener" href="https://github.com/Powerlevel9k/powerlevel9k">powerlevel9k</a>发展而来的，但是速度比<code>powerlevel9k</code>快好多。</p>
-<h1 id="0X02-善用alias和bash函数"><a href="#0X02-善用alias和bash函数" class="headerlink" title="0X02 善用alias和bash函数"></a>0X02 善用alias和bash函数</h1><p>相信大家在初学Linux的时候都学过<code>alias</code>指令，没学过的话我简单介绍一句：“alias是给命令取别名的工具，例如执行<code>alias new_ls=&quot;ls -l&quot;</code>过后再使用<code>new_ls</code>命令就和使用<code>ls -l</code>一样了”。</p>
-<p>首先我们知道将<code>alias</code>命令直接写在shell里，在关闭重开shell之后就失效了（起码现在知道了）。所以我们要把<code>alias</code>写在<code>.bashrc</code>或者<code>.zshrc</code>中（依你使用的shell而定）。现在我的<code>.zshrc</code>中就有很多已经写好了的，下面给大家分项几个对大家都有用的</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/11/02/better-linux/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -736,7 +732,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

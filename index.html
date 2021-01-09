@@ -193,14 +193,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">146</span>
+        <span class="site-state-item-count">147</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -287,6 +287,87 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2021/01/09/linux-bridge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/09/linux-bridge/" class="post-title-link" itemprop="url">在 Linux 中创建网桥 Bridge</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-01-09 14:32:03 / 修改时间：15:49:08" itemprop="dateCreated datePublished" datetime="2021-01-09T14:32:03+08:00">2021-01-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="0X00-什么是网桥"><a href="#0X00-什么是网桥" class="headerlink" title="0X00 什么是网桥"></a>0X00 什么是网桥</h1><p>普通的桥就是连接本来不通的路的基础设施，网桥就是用来本来不通的网的设备。但是这里介绍的不是真正意义上的物理设备，而是在 Linux 上创建的虚拟设备。Linux 上不仅可以创建虚拟网卡，也可以创建虚拟网桥，所以说我们在 Linux 环境下学习网络知识确实是一个不错的选择（除非你有钱买一堆物理设备🤣）。</p>
+<blockquote>
+<p>桥接器（英语：network bridge），又称网桥，一种网络设备，负责网络桥接（network bridging）。桥接器将网络的多个网段在数据链路层（OSI模型第2层）连接起来（即桥接）。    – <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E6%A9%8B%E6%8E%A5%E5%99%A8">Wikipedia</a></p>
+</blockquote>
+<h1 id="0X01-网桥有什么用"><a href="#0X01-网桥有什么用" class="headerlink" title="0X01 网桥有什么用"></a>0X01 网桥有什么用</h1><p>网桥的本质就是将互不连通的网卡接到一起，原则上只有这么简单的功能，具体在这个功能之上能做什么事就看我们自己了。</p>
+<p>如果用过 Docker 的话可以看一下自己本地的网络拓扑，实际上 Docker 的容器间通信和外网访问也是用到了 bridge 的。</p>
+<p>最直观的一种操作就是：用一台双网卡机器串在两台主机之间，用来监听甚至修改数据包。乍一看这好像是搞坏事要用的技术手段呐，的确。如果有人拿一个双网卡的小机器（比如树莓派）串在了你的光猫和路由器之间，那么连接到路由器的所有外网请求都会经过这台小机器。如果你的流量不加密，比如用http协议或者ftp协议这种，那别人是可以看到中间的所有内容的，包括登录的密码之类的。所以这也是“不要随便连接来路不明的 Wi-Fi” 一大理由。</p>
+<p>当然也不只是做坏事，现在的好多 WAF（Web Application Firewall）都是可以支持 “透明模式部署” 的，也就是说把这种安全软件所在的机器串在你的网关和 web 服务器之间，就可以在不破坏网络拓扑的情况下做到安全防护。</p>
+<p>如果你想用这种方式来做软路由、绕开学校的网络共享限制，或是做流量分析都是可以实现的。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/01/09/linux-bridge/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -612,82 +693,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/11/02/sso-ldap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/02/sso-ldap/" class="post-title-link" itemprop="url">SSO 和 LDAP</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-11-02 23:26:50 / 修改时间：23:27:23" itemprop="dateCreated datePublished" datetime="2020-11-02T23:26:50+08:00">2020-11-02</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>上周在新公司接到的一个任务”给 XXX 系统集成 LDAP 登录”。我以前是没有了解过 LDAP 的，一听是集成登录功能，脑子里第一时间想到的就是之前做过的 SSO，但是经过一番搜索发现 LDAP 和 SSO 完全是两回事，而且发现还是不少人不了解其中的一项或两项技术，正好在这儿整理一下顺便分享给大家~</p>
-<p>内容都是比较基础的，主要介绍了什么是 SSO、SSO 的基本原理、什么是 LDAP、LDAP 的基本原理和 LDAP 如何与 SSO 关联。如果你对这些有兴趣那不妨继续看下去，如果你都了解了那就去看看其他文章或者休息一会儿好了~</p>
-<p>现在开始做一些技术背景预设：假设你公司有 10 个站点，分别是<code>site_0.just666.com/site_1.just666.com.....</code>，同时每个站点都有用户系统，也就是说用户可以登录到站点上去做些操作。</p>
-<p>用户肯定不愿意访问每个站点的时候都要登录，比如你登陆淘宝之后再看天猫肯定不想再登陆一次了，如果天猫要你再登陆一次且密码还跟淘宝那边不通你肯定要骂人了。现在怎么办呢？SSO 和 LDAP 两种技术就是用来解决这个问题的。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/02/sso-ldap/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -732,7 +737,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
