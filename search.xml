@@ -3,6 +3,69 @@
   
     
     <entry>
+      <title><![CDATA[地址解析协议 ARP]]></title>
+      <url>/2021/01/16/arp/</url>
+      <content type="html"><![CDATA[<h1 id="0X00-什么是-ARP"><a href="#0X00-什么是-ARP" class="headerlink" title="0X00 什么是 ARP"></a>0X00 什么是 ARP</h1><p>首先纠正一种说法，<code>ARP</code>就是“地址解析协议”，所以严格来说不应该说“ARP 协议”，因为<code>ARP Address Resolution Protocol</code>就已经包含了<code>Procotol</code>了，说“ARP 协议”就相当于是“地址解析协议协议”，很鬼畜。</p>
+<p>我们知道网络中寻找其他机器需要用到对方的 ip 地址，但是在局域网内两台机器之间通信是不用 ip 地址直接通信的，而是要用到 mac 地址。而且我们一般说的交换机也是二层交换机，现在假设两台电脑插到一个交换机上去，通过 ip 能找到对方吗？显然不能。因为交换机只支持到链路层，然而对于链路层来说它并不知道 ip 是个什么，ip 需要到再上一层的“网络层”才能发挥作用，所以在这种情况下就需要用到 mac 地址来通信了。</p>
+<p>当一个数据包需要被发送到某一 ip 地址的机器上去时，最后一步就需要找到 ip 地址对应机器（严格来说是网口）的 mac 地址，从而进行通信。那么在这一步里“通过 ip 地址找到 mac 地址”的解析协议就被称之为：地址解析协议，也就是<code>ARP: Address Resolution Protocol</code>了。</p>
+<h1 id="0X01-ARP-的工作"><a href="#0X01-ARP-的工作" class="headerlink" title="0X01 ARP 的工作"></a>0X01 ARP 的工作</h1><p>我们知道 arp 是将 ip 和 mac 地址进行转换映射的，那肯定不是每次都要去转换的，要留个缓存的嘛。我们可以使用 <code>arp -a</code> 来检查当前机器上的 arp 高速缓存表，命令在 Linux 和 macOS 上可用，Windows 上不确定各位可以试试看。我这里是防止隐私问题把一部分数据给人工打码了，正常输出的就是缓存表里每个 ip 对应的 mac 地址。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">? (192.xxx.xxx.1) at 4:xx:xx:xx:xx:0 on en0 ifscope [ethernet]</span><br><span class="line">? (192.xxx.xxx.103) at (incomplete) on en0 ifscope [ethernet]</span><br><span class="line">? (224.xxx.xxx.251) at 1:xx:xx:xx:xx:fb on en0 ifscope permanent [ethernet]</span><br><span class="line">? (239.xxx.xxx.250) at 1:xx:xx:xxx:xxx:fa on en0 ifscope permanent [ethernet]</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://blog-1251664340.cos.ap-chengdu.myqcloud.com/arp_network.png" alt="网络拓扑"></p>
+<p>ARP 的工作流程也是很简单的，当机器 A 想给 <code>10.0.0.4</code> 发一条数据的时候的时候：</p>
+<ol>
+<li>检查自己的高速缓存表，发现没找到（有点类似与 DNS 先找 <code>/etc/hosts</code> 的操作）</li>
+<li>机器 A 发出广播“你们谁是 <code>10.0.0.4</code>， 告诉我你的 mac 地址”</li>
+<li>因为是广播，所以 BCD 都会收到此条数据</li>
+<li>CD 因为不是 <code>10.0.0.4</code> 所以忽略</li>
+<li>B 发现是在找自己，回消息“我是 <code>10.0.0.4</code>，我的 mac 地址是 <code>1:0:2:7f:af:fa</code>”</li>
+<li>A 收到了回馈，并将 <code>10.0.0.4 -&gt; 1:0:2:7f:af:fa</code> 记入自己的缓存表</li>
+</ol>
+<p>所以 ARP 概括成一句话就是“广播一条消息：如果你是这个 ip 地址的拥有者，那么请回答你的 mac 地址”。</p>
+<a id="more"></a>
+
+<h1 id="0X02-ARP-的数据包"><a href="#0X02-ARP-的数据包" class="headerlink" title="0X02 ARP 的数据包"></a>0X02 ARP 的数据包</h1><p>一个 arp 数据包有 42 个字节，分成两部分：数据部分和链路层封装的首部。</p>
+<p>首部：以太网目的地址、以太网源地址、帧类型；</p>
+<p>数据：硬件类型、协议类型、硬件地址长度、协议地址长度、op、发送端以太网地址、发送端 IP 地址、目的以太网地址、目的 IP 地址（其中以太网地址就是指的 mac 地址）。</p>
+<p><img src="https://blog-1251664340.cos.ap-chengdu.myqcloud.com/arp_data.png" alt="arp 数据包"></p>
+<p>在整个数据包中我们最需要关注的是下面这 6 个字段以太网目的地址、以太网源地址、发送端以太网地址、发送端 IP 地址、目的以太网地址、目的 IP 地址。哎是不是发现有些数据有重复，比如发送者的 mac 地址就重复了？回忆一下 OSI 模型，因为工作在链路层的程序接受到的数据已经被链路层拆解了，也就是说 arp 程序拿到的数据是没有首部的，所以想要判断这个数据到底是从哪儿来的就需要在数据里存一份才行。</p>
+<p>现在我们来简单看一下这几个字段:</p>
+<ol>
+<li>以太网源地址、以太网目的地址：这个是首部要用的，要知道从哪儿发到哪儿。这里需要注意的是，广播的时候，目的地址是 <code>ff:ff:ff:ff:ff:ff</code> ，这个地址在 mac 地址中表示广播；</li>
+<li>发送端以太网地址、发送端 IP 地址：这个是数据里的部分，作为 arp 发出去后，别人响应的时候就是从这里取的地址返回给你</li>
+<li>目的端以太网地址、目的端 IP 地址：同样是数据中的部分，作为 arp 响应的时候，这里的“目的端”指的就是发送 arp 广播请求的那个机器</li>
+</ol>
+<p>我们来看一个实例好了，我自己笔记本配置的网关是<code>192.168.0.1</code>，那我们来看一下这个找网关 mac 地址的流程。上面这张图是我发送出去的广播，下面这张图是网关给我的回复。（各位有兴趣的话可以下载一个 Wireshark 来抓包看看，挺有意思的）</p>
+<p><img src="https://blog-1251664340.cos.ap-chengdu.myqcloud.com/arp_request.png" alt="arp 请求"></p>
+<p><img src="https://blog-1251664340.cos.ap-chengdu.myqcloud.com/arp_response.png" alt="arp 响应"></p>
+<p>这里可以看到这么几个值得注意的点：</p>
+<ol>
+<li>发送 arp 请求的时候，首部的接收者是 <code>ff:ff:ff:ff:ff:ff</code>，即广播地址；</li>
+<li>发送 arp 请求的时候，虽然不知道目的 mac 地址，数据里仍然携带了，只不过标记为了 <code>00:00:00:00:00:00</code>；</li>
+<li>响应时并非单纯的将请求数据包中的 <code>00:00:00:00:00:00</code> 替换成自己的 mac 地址，而是将自己的数据仍旧放在“发送者”的位置上。</li>
+</ol>
+<p>不过仔细观察一下这个协议会发现一个问题：它好像非常不安全。</p>
+<h1 id="0X03-ARP-欺骗"><a href="#0X03-ARP-欺骗" class="headerlink" title="0X03 ARP 欺骗"></a>0X03 ARP 欺骗</h1><p>正常来说有人在吼“谁是 xxx 这个 ip 地址的拥有者，告诉我你的 mac 地址”，应该只有一个人回复或者干脆没人理。但是如果这时候网络里出现了一个小老弟，他很不老实，明明自己不是这个 ip 的拥有者却一直再回复“我是，我的 mac 地址是 xx:xx:xx:xx”，那会发生什么？如果广播要找的是一台普通的机器，那么在这个小老弟的干扰下可能他就会网络不稳定，或者干脆断网；如果这个小老弟打算假冒自己是网关（也就是别人在广播找网关的时候，他站出来疯狂回复），则可能导致整个局域网挂掉。</p>
+<p>网断了还是小问题，如果这个小老弟冒充自己是网关，并且在自己本地做了个转发，将流量再转到真实网关上去会怎么样？局域网内其他机器并不会断网，但是却因为都以为这个小老弟是网关所以一切流量都会发送到这个小老弟这儿来，再由他转发到真网关。这时候这个小老弟就监听到了整个局域网内所有的数据包。如果这时候你的流量是不加密的，比如登录了一个 http 的站点，那小老弟就可以用上面提到的 wireshark 等工具抓到你的 htt 流量并轻而易举的看到你的登录密码，就算你没登录也能轻而易举得看到你的 cookie 从而模仿你登陆。即使你加密了，用上了 https 协议，也不能完全不泄露隐私。比如你登陆了某 PxxHub 正找视频呢，被人监听到流量抓包了，虽然他不能登录上你的号，但是他可以看到你所有的 http 请求的 url 哇，这样一来你看的所有视频这个小老弟都会知道。下次见到你直接跟你聊起你前一天晚上看的视频，岂不是很恐怖😱</p>
+<p>上面提到的：假装自己是网关的操作，就叫做“ARP 欺骗”；后面把自己假装成网关后再做转发，从中监听并篡改流量的行为就叫做“中间人攻击”。 那就没有什么解决方案了吗？当然有</p>
+<h1 id="0X04-防护-ARP-欺骗"><a href="#0X04-防护-ARP-欺骗" class="headerlink" title="0X04 防护 ARP 欺骗"></a>0X04 防护 ARP 欺骗</h1><p>防护的话有两种常见的方案：从网关上防护和从主机上防护。从网关上防护的一个方案叫做 <code>DAI: Dynamic ARP Inspection</code> 动态 ARP 检测，从主机上防护主要就是“不要连来路不明的 Wi-Fi，且自己的 Wi-Fi 密码要足够复杂”，给个人设备装防火墙。</p>
+<p>其中 DAI 的大致工作是这样的：如果你有一台具有 DAI 功能的路由器（不太可能，因为这玩意目前只在一些高级的企业级路由器上才会有）那么这台路由器可以做到 ARP 欺骗的拦截。首先我们知道连接到网关的机器，网关当然知道他的 mac 地址对吧，再加上 DAI 这个功能可以搞到他的 IP 地址，这样一来如果他发出的 arp 响应不对就会被网关发现直接 drop 掉，甚至还可以对这个地址进行“惩罚“。</p>
+<p>针对自己主机的防护我们能做的主要就是装 ARP 防火墙，防火墙可以绑定正确的 ip 和 mac地址，可以识别网络中的 arp 扫描行为。</p>
+<p>所以简单来说：把路由器换成带 DAI 的企业级路由器、不要乱连 Wi-Fi、把自己 Wi-Fi 密码设置地复杂点、装个安全软件（这个安全软件，说起来真头痛，反正注意鉴别，别到时候攻击没来自己先引狼入室了🤣）。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Network </tag>
+            
+            <tag> ARP </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[在 Linux 中创建网桥 Bridge]]></title>
       <url>/2021/01/09/linux-bridge/</url>
       <content type="html"><![CDATA[<h1 id="0X00-什么是网桥"><a href="#0X00-什么是网桥" class="headerlink" title="0X00 什么是网桥"></a>0X00 什么是网桥</h1><p>普通的桥就是连接本来不通的路的基础设施，网桥就是用来本来不通的网的设备。但是这里介绍的不是真正意义上的物理设备，而是在 Linux 上创建的虚拟设备。Linux 上不仅可以创建虚拟网卡，也可以创建虚拟网桥，所以说我们在 Linux 环境下学习网络知识确实是一个不错的选择（除非你有钱买一堆物理设备🤣）。</p>
