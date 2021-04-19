@@ -3,6 +3,127 @@
   
     
     <entry>
+      <title><![CDATA[我的家用 NAS 方案]]></title>
+      <url>/2021/04/19/nas/</url>
+      <content type="html"><![CDATA[<h1 id="0X00-背景"><a href="#0X00-背景" class="headerlink" title="0X00 背景"></a>0X00 背景</h1><p>本来家里有一台群晖的 DS118 单盘位机器装了一块 4TB 红盘，用了三年后存储空间已经告急了。再加上买了相机，有很多照片需要存储；还有两台 MacBook 的 Time Machine 需要备份，而且还有不少下载的电影时不时想要回顾一下，空间就非常紧张了。虽然这台群晖的体验确实是挺好的，不过因为我这款性能太弱了，每次上传照片的时候创建索引都会卡死很久，期间几乎所有操作都是无效的，而且因为是单盘位既没有数据冗余也不能扩展空间，就想着是时候给家里的 NAS 升个级了。毕竟再过不了多久这块磁盘也就被塞满了，到时候再研究迁移就会导致中间断层一段时间，还是不太好。</p>
+<p>一般来说自己家里的 NAS 有几种方案，这些方案各有其优劣，都有适合和不适合的群体，可以根据自己的实际情况进行选择。</p>
+<blockquote>
+<p>上下文提到的 FreeNAS 同时表示 FreeNAS 和 TrueNAS</p>
+</blockquote>
+<ol>
+<li><a href="https://www.synology.com/">群晖</a>：简单易用、几乎不需要任何计算机专业知识、体积小功耗还低、<strong>软件套件强大、软套件强大、软件套件强大</strong>，但是比较贵。群晖就有点像是电脑届的苹果：你花了更多的钱不需要付出什么额外的东西就能获得 80 分的使用体验，但是如果你对它不满意想要改造一下以便获取 90 分乃至 100 分的体验，那是很难的。就比如你想给群晖升级硬件配置，几乎是不可能的（有些机型允许升级内存）。系统虽然提供了 ssh 连接，但是由于定制化过高也导致我们不敢进去改一些配置；</li>
+<li>黑群晖：<strong>不推荐</strong>，没有别的理由，只是因为盗版；</li>
+<li><a href="https://www.qnap.com/zh-cn/">威联通</a>等：比群晖便宜，易用性可能比群晖弱一点，不过也很适合不怎么具备专业知识的用户。如果想省心还想省钱，可以考虑用威联通之类的来替换群晖；</li>
+<li>自建 <a href="https://www.truenas.com/">TrueNAS</a>：需要自己购买硬件攒机，需要自己安装操作系统进行配置，各种基础存储以外的功能都需要自己手动安装配置。所以不适合没有计算机专业知识储备的同学（当然你也可以先在虚拟机里尝试一下）。而且需要注意的是 FreeNAS 基于 FreeBSD，<strong>并不是Linux、并不是Linux、并不是Linux</strong>，所以即使有一些专业知识储备的同学也要注意到这一点。不过正式因为 FreeNAS 基于 FreeBSD 所以也就带来了完整且原生的 ZFS 支持。硬件方面毕竟是自己攒机装系统，性价比什么的当然就很高了；</li>
+<li>自建 <a href="https://www.openmediavault.org/">openmediavault</a>：同样需要自己攒机装系统，所以性价比依旧很高。但是 OMV(openmediavault) 是基于 Debian 的，所以普适性更强一些。虽然系统性能上貌似不如 FreeNAS 不过用起来也还不错，因为我自己对 Linux 比较熟悉就也选择了这个方案；</li>
+<li>自建纯 Linux：这个自由度是最高的，但是也是最折腾的。不仅要自己装机装系统，还得配置各种服务，其他方案上一键的 Samba 服务在自建 Linux 下都要配置一会儿。不过纯 Linux 的自由度是最高的，也能选用自己最熟悉的发行版本；</li>
+<li>Windows server：不推荐，理由和黑群晖相同，除非你愿意出钱<a href="https://www.microsoft.com/zh-cn/windows-server/pricing">买 Windows server 授权</a>（$501）</li>
+<li>路由器插硬盘：这种方式适合对数据安全性要求低且功能要求更低的用。因为几乎只支持上传下载，而且可定制的功能还特别少，不过好在成本最低。如果只是插上去用其他设备看个电影什么的，路由器插硬盘的方案还是可以试试的</li>
+</ol>
+<p>综合下来最后我选择了自建 openmediavault，因为群晖给我的很多功能我都用不上，比如说在线 Office 和 Video Station 等，反倒是性能太弱有点接受不了；TrueNAS 的话毕竟是 BSD 我没什么把握在出问题的时候可以修复它；纯 Linux 太折腾了，不想花那么多时间在上面。</p>
+<a id="more"></a>
+
+<h1 id="0X01-硬件方案"><a href="#0X01-硬件方案" class="headerlink" title="0X01 硬件方案"></a>0X01 硬件方案</h1><p>硬件我是先选的机箱，需要小一点还得能塞进去三块硬盘；CPU 选便宜点的就行，再弱也不至于是群晖那种；内存是从朋友那儿搞来的；电源选了个大牌子的普通电源，功率比较小的也没问题；主要是硬盘，选了三块 PMR 的 8T 企业级硬盘（非氦气）</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>型号</th>
+<th>价格</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CPU</td>
+<td>奔腾 G6400 2C4T</td>
+<td>629</td>
+</tr>
+<tr>
+<td>内存</td>
+<td>铭瑄 DDR4 8G X 2</td>
+<td></td>
+</tr>
+<tr>
+<td>散热</td>
+<td>ID-COOLING IS-30</td>
+<td>89</td>
+</tr>
+<tr>
+<td>主板</td>
+<td>七彩虹 H410M-M.2 PRO V20</td>
+<td>459</td>
+</tr>
+<tr>
+<td>电源</td>
+<td>振华 铜皇 450W 铜牌</td>
+<td>259</td>
+</tr>
+<tr>
+<td>机箱</td>
+<td>先马趣造 i’m + 防尘罩</td>
+<td>348</td>
+</tr>
+<tr>
+<td>系统盘</td>
+<td>铠侠 m.2 NVMe 256G</td>
+<td>249</td>
+</tr>
+<tr>
+<td>数据盘</td>
+<td>西部数据 PMR 7200rpm HUS72 8T 256M   X 3</td>
+<td>2700</td>
+</tr>
+</tbody></table>
+<p>其中还有在买了之后京东保价了的，最后算下来花了差不多 4500 块钱。转过去看了一下群晖的 DS420（四盘位2020年的型号）空机器就已经这个价格了，性能还远不如我这个，所以性价比来说还是很高了。不过这里还是要提示一下，自己组装需要一定的计算机专业知识和技能，否则就算装机装好了后面的软件也够头痛的。</p>
+<blockquote>
+<p><strong>震惊！！！震惊！！！震惊！！！</strong>我 900 一块买的硬盘现在淘宝已经快 3000 了，一块顶我前两周的三块了，矿老板牛批！！！</p>
+</blockquote>
+<h1 id="0X02-软件方案"><a href="#0X02-软件方案" class="headerlink" title="0X02 软件方案"></a>0X02 软件方案</h1><p>软件上我选择了 openmediavault 方案，因为基于 Debian 还算比较熟悉。三块磁盘组了 RAID-5 阵列，虽然 RAID-5 没有那么靠谱，但是三块企业盘组 RAID-5 还是可以的。RAID-5 是磁盘越大越多越不靠谱，我这种三盘还行。然后远程访问是用的 Samba 协议，macOS 自己的 AFP 已经放弃且全面转到 Samba 了；电视手机和 iPad 都可以轻松访问，macOS 的 Time Machine 也可以直接用，很方便。</p>
+<blockquote>
+<p>RAID-5 最少需要三块盘（最好是容量相同的），拿其中一块的容量用来做奇偶校验，也就意味着 n 盘的 RAID-5 存储空间有 n-1 那么多。安全性的话是允许坏一块盘，如果坏两块的话，那数据就没了</p>
+</blockquote>
+<p>扩展的功能，比如系统监控我用的是<a href="https://learn.netdata.cloud/docs/agent/packaging/docker#host-editable-configuration">NetData</a>，下载用了 <a href="https://github.com/wahyd4/aria2-ariang-x-docker-compose">AriaNg</a> 和 <a href="https://hub.docker.com/r/linuxserver/transmission">Transmission</a>，照片库用的是<a href="https://docs.photoprism.org/getting-started/docker-compose/">PhotoPrism</a>，然后所有服务均使用 Docker 进行部署。其实各种服务可选的有很多，可以自己找适合自己的来部署。一般常见的就是需要部署一个文件管理器、一个下载工具、一个照片库和一个电影库，如果还有其他需要的话可以在 GitHub 或者其他平台找找看，比如也可以自己在家里搭一个 Gitlab/Gogs 或者虚拟化平台之类的方便开发测试。</p>
+<p>其中电影库还没考虑好用什么方案，Plex不太方便、Radarr又不太好用、Kodi又需要给客户端全装一遍。</p>
+<h1 id="0X03-数据迁移"><a href="#0X03-数据迁移" class="headerlink" title="0X03 数据迁移"></a>0X03 数据迁移</h1><p>数据迁移方案其实很简单，新 NAS 装好后开个 Samba 然后在老群晖里挂载一下，然后登录到群晖的管理界面上复制粘贴就行了。唯一需要注意的是，复制的时候硬盘疯狂读写有点吵，可以选择出门前复制，玩一天回来就搞定了。</p>
+<p>或者不方便挂载后复制粘贴的话，使用 scp/rsync 之类的也没问题。</p>
+<h1 id="0X04-综合体验"><a href="#0X04-综合体验" class="headerlink" title="0X04 综合体验"></a>0X04 综合体验</h1><p>现在用了一周多的时间了，大面上体验还算不错。现在内网访问时候的传输速度在 120～140mb/s 的水平，不管是备份恢复数据还是直接看存在里面的高清电影（4k 50～70G）都没有任何问题，一般只有在拖动进度条或者刚刚打开电影的一瞬间会卡一秒钟的样子，毕竟还是需要缓存一下。</p>
+<p>先说说小问题：</p>
+<ol>
+<li>管理界面真的不好看，如果说群晖的 DSM 是 Windows 10 的话那 openmediavault 的管理洁面就像是 Windows 2000；</li>
+<li>初次配置太麻烦了，毕竟很多服务都要自己搞，没有一些专业知识储备的话一整个周末都可能弄不好；</li>
+<li>7200 转的企业盘跟 NAS 专用的红盘确实比不了，声音比较大，不过不读写的时候还是很安静的；</li>
+<li>体积大，虽然先马趣造已经算是不错的小机箱了，但是跟 4 盘的群晖比还是大了很多；</li>
+</ol>
+<p>再来说说优点：</p>
+<ol>
+<li>性能充足，即使是我一次上传上万张照片，后台用 tensorflow 做分类，CPU 都没有爆满，跟不说那双通道 16G 内存了；</li>
+<li>自由度高，64bit X84 4C4T 的CPU配合 16G 内存可以运行绝大多数常见服务，需要什么服务用 docker pull/start 一波就有了；</li>
+<li>扩展性起飞，如果你不在乎机箱大小的话，完全可以配个 4 条内存 8 个盘位；</li>
+<li>便宜、便宜、便宜</li>
+</ol>
+<h1 id="0X05-注意点"><a href="#0X05-注意点" class="headerlink" title="0X05 注意点"></a>0X05 注意点</h1><p>用了这段时间下来，总结了几个点需要注意的</p>
+<ol>
+<li>NAS 新手且没有什么计算机专业知识储备的，<strong>不建议自建、不建议自建、不建议自建</strong>。除非你只是玩玩，了解一下，否则万一不小心数据搞没了就是天大的麻烦。<strong>数据无价、数据无价、数据无价</strong></li>
+<li>自建 NAS 是需要一定硬件和软件动手能力的，而且也会消耗比较长的时间，如果觉得有兴趣再考虑这种方案，否则建议用现成的群晖或者威联通这种</li>
+<li>内网穿透可以考虑用 frp</li>
+<li>自建 NAS 要善用 docker，也不是说多吹捧 docker，只是说在你服务崩了一个的时候不至于牵连到系统</li>
+<li>NAS 即使有了 RAID 也还是建议将最重要的数据有额外备份，<strong>冗余不等于备份、冗余不等于备份、冗余不等于备份</strong></li>
+</ol>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> NAS </tag>
+            
+            <tag> Storage </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[地址解析协议 ARP]]></title>
       <url>/2021/01/16/arp/</url>
       <content type="html"><![CDATA[<h1 id="0X00-什么是-ARP"><a href="#0X00-什么是-ARP" class="headerlink" title="0X00 什么是 ARP"></a>0X00 什么是 ARP</h1><p>首先纠正一种说法，<code>ARP</code>就是“地址解析协议”，所以严格来说不应该说“ARP 协议”，因为<code>ARP Address Resolution Protocol</code>就已经包含了<code>Procotol</code>了，说“ARP 协议”就相当于是“地址解析协议协议”，很鬼畜。</p>

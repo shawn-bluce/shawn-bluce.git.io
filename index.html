@@ -193,14 +193,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">116</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">148</span>
+        <span class="site-state-item-count">149</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -287,6 +287,94 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2021/04/19/nas/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/19/nas/" class="post-title-link" itemprop="url">我的家用 NAS 方案</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-04-19 20:47:03 / 修改时间：20:50:09" itemprop="dateCreated datePublished" datetime="2021-04-19T20:47:03+08:00">2021-04-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="0X00-背景"><a href="#0X00-背景" class="headerlink" title="0X00 背景"></a>0X00 背景</h1><p>本来家里有一台群晖的 DS118 单盘位机器装了一块 4TB 红盘，用了三年后存储空间已经告急了。再加上买了相机，有很多照片需要存储；还有两台 MacBook 的 Time Machine 需要备份，而且还有不少下载的电影时不时想要回顾一下，空间就非常紧张了。虽然这台群晖的体验确实是挺好的，不过因为我这款性能太弱了，每次上传照片的时候创建索引都会卡死很久，期间几乎所有操作都是无效的，而且因为是单盘位既没有数据冗余也不能扩展空间，就想着是时候给家里的 NAS 升个级了。毕竟再过不了多久这块磁盘也就被塞满了，到时候再研究迁移就会导致中间断层一段时间，还是不太好。</p>
+<p>一般来说自己家里的 NAS 有几种方案，这些方案各有其优劣，都有适合和不适合的群体，可以根据自己的实际情况进行选择。</p>
+<blockquote>
+<p>上下文提到的 FreeNAS 同时表示 FreeNAS 和 TrueNAS</p>
+</blockquote>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.synology.com/">群晖</a>：简单易用、几乎不需要任何计算机专业知识、体积小功耗还低、<strong>软件套件强大、软套件强大、软件套件强大</strong>，但是比较贵。群晖就有点像是电脑届的苹果：你花了更多的钱不需要付出什么额外的东西就能获得 80 分的使用体验，但是如果你对它不满意想要改造一下以便获取 90 分乃至 100 分的体验，那是很难的。就比如你想给群晖升级硬件配置，几乎是不可能的（有些机型允许升级内存）。系统虽然提供了 ssh 连接，但是由于定制化过高也导致我们不敢进去改一些配置；</li>
+<li>黑群晖：<strong>不推荐</strong>，没有别的理由，只是因为盗版；</li>
+<li><a target="_blank" rel="noopener" href="https://www.qnap.com/zh-cn/">威联通</a>等：比群晖便宜，易用性可能比群晖弱一点，不过也很适合不怎么具备专业知识的用户。如果想省心还想省钱，可以考虑用威联通之类的来替换群晖；</li>
+<li>自建 <a target="_blank" rel="noopener" href="https://www.truenas.com/">TrueNAS</a>：需要自己购买硬件攒机，需要自己安装操作系统进行配置，各种基础存储以外的功能都需要自己手动安装配置。所以不适合没有计算机专业知识储备的同学（当然你也可以先在虚拟机里尝试一下）。而且需要注意的是 FreeNAS 基于 FreeBSD，<strong>并不是Linux、并不是Linux、并不是Linux</strong>，所以即使有一些专业知识储备的同学也要注意到这一点。不过正式因为 FreeNAS 基于 FreeBSD 所以也就带来了完整且原生的 ZFS 支持。硬件方面毕竟是自己攒机装系统，性价比什么的当然就很高了；</li>
+<li>自建 <a target="_blank" rel="noopener" href="https://www.openmediavault.org/">openmediavault</a>：同样需要自己攒机装系统，所以性价比依旧很高。但是 OMV(openmediavault) 是基于 Debian 的，所以普适性更强一些。虽然系统性能上貌似不如 FreeNAS 不过用起来也还不错，因为我自己对 Linux 比较熟悉就也选择了这个方案；</li>
+<li>自建纯 Linux：这个自由度是最高的，但是也是最折腾的。不仅要自己装机装系统，还得配置各种服务，其他方案上一键的 Samba 服务在自建 Linux 下都要配置一会儿。不过纯 Linux 的自由度是最高的，也能选用自己最熟悉的发行版本；</li>
+<li>Windows server：不推荐，理由和黑群晖相同，除非你愿意出钱<a target="_blank" rel="noopener" href="https://www.microsoft.com/zh-cn/windows-server/pricing">买 Windows server 授权</a>（$501）</li>
+<li>路由器插硬盘：这种方式适合对数据安全性要求低且功能要求更低的用。因为几乎只支持上传下载，而且可定制的功能还特别少，不过好在成本最低。如果只是插上去用其他设备看个电影什么的，路由器插硬盘的方案还是可以试试的</li>
+</ol>
+<p>综合下来最后我选择了自建 openmediavault，因为群晖给我的很多功能我都用不上，比如说在线 Office 和 Video Station 等，反倒是性能太弱有点接受不了；TrueNAS 的话毕竟是 BSD 我没什么把握在出问题的时候可以修复它；纯 Linux 太折腾了，不想花那么多时间在上面。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/19/nas/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -598,93 +686,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/11/18/csrf/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/11/16/mysql-query-exec-basis/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/16/mysql-query-exec-basis/" class="post-title-link" itemprop="url">MySQL 查询执行内幕-基础篇</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-11-16 21:03:48 / 修改时间：22:08:06" itemprop="dateCreated datePublished" datetime="2020-11-16T21:03:48+08:00">2020-11-16</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>这篇博文概述了一次查询从一条 SQL 到拿到数据的过程，是掌握了基础的 CRUD 后想要进阶 MySQL 的一条必经路（当然我是说这个只知识是必经路，并不是我这篇文章）。如果有兴趣的话就继续看下去吧~</p>
-<p>我们首先看一下下面这张图，其实并不复杂。我们很多人都已经知道了其中的一部分，比如缓存、存储引擎、数据这些。</p>
-<p><img src="https://blog-1251664340.cos.ap-chengdu.myqcloud.com/mysql_query_exec_basis.jpeg"></p>
-<blockquote>
-<p>图源自：高性能 MySQL</p>
-</blockquote>
-<p>我们先来看一下粗略的流程</p>
-<ol>
-<li>首先客户端发送一条查询给服务器；</li>
-<li>服务器检查缓存，如果命中缓存则直接返回；否则继续执行；</li>
-<li>服务器解析 SQL、预处理、由优化器生成执行计划；</li>
-<li>MySQL 根据执行计划，调用存储引擎 API 执行查询；</li>
-<li>将结果返回给客户端；</li>
-</ol>
-<p>虽然每一条都比上面描述的、比我们想象的要复杂得多。但是因为这里只是基础篇，所以我们只是了解一下基础流程和原理就好，如果需要深入了解某部分的细节的话，可以查阅更详细更深层的资料。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/16/mysql-query-exec-basis/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
