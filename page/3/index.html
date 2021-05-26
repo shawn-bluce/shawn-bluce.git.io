@@ -193,14 +193,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">118</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">149</span>
+        <span class="site-state-item-count">151</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -287,6 +287,94 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/08/30/mysql-isolation-level/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/30/mysql-isolation-level/" class="post-title-link" itemprop="url">MySQL中的四种隔离等级</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-08-30 10:01:27 / 修改时间：15:25:19" itemprop="dateCreated datePublished" datetime="2020-08-30T10:01:27+08:00">2020-08-30</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="0X00-What’s-this"><a href="#0X00-What’s-this" class="headerlink" title="0X00 What’s this"></a>0X00 What’s this</h1><p>我们知道 MySQL 中存在“事务”这么个事物（我是故意拗口的，哈哈哈哈哈哈哈）；我们也知道事务“一荣俱荣，一损俱损”（要么事物内所有查询均生效，要么均不生效）。那么现在问题来了，银行数据库中有两个事务在同时进行，我们来看一下这两个事务</p>
+<blockquote>
+<p>一条 SQL 就是一个查询，不一定是 <code>SELECT xxx</code> 才叫查询。</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 事务 A    shawn 转账给 bluce 100 块钱</span></span><br><span class="line"><span class="keyword">BEGIN</span>;</span><br><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">account</span> <span class="keyword">SET</span> money = money - <span class="number">100</span> <span class="keyword">WHERE</span> username = <span class="string">&#x27;shawn&#x27;</span>;    <span class="comment">-- 这行代码标记为  A-1</span></span><br><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">account</span> <span class="keyword">SET</span> money = money + <span class="number">100</span> <span class="keyword">WHERE</span> username = <span class="string">&#x27;bluce&#x27;</span>;     <span class="comment">-- 这行代码标记为  A-2</span></span><br><span class="line"><span class="keyword">COMMIT</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 事务 B</span></span><br><span class="line"><span class="keyword">BEGIN</span>;</span><br><span class="line"><span class="keyword">SELECT</span> money <span class="keyword">FROM</span> <span class="keyword">account</span> <span class="keyword">WHERE</span> username = <span class="string">&#x27;shawn&#x27;</span>;    <span class="comment">-- 这行代码标记为 B-1</span></span><br><span class="line"><span class="keyword">SELECT</span> money <span class="keyword">FROM</span> <span class="keyword">account</span> <span class="keyword">WHERE</span> username = <span class="string">&#x27;bluce&#x27;</span>;     <span class="comment">-- 这行代码标记为 B-2</span></span><br><span class="line"><span class="keyword">COMMIT</span>;</span><br></pre></td></tr></table></figure>
+
+<p>现在有这么一个情况：shawn 和 bluce 两人账上都有 100 块钱，此时事务 A 和 B 同时开始执行，那么事务 B 所查询到的两人的账户余额究竟是多少呢？这个问题并没有一个确切的结果，因为 B 在查询的时候，转账正在进行中。不过要回答这个问题也不是做不到，就需要引入标题中提到的“隔离等级”这个概念了。</p>
+<p>我们在 MySQL 中使用这四种隔离等级：READ UNCOMMITTED/READ COMMITTED/REPEATABLE READ/SERIALIZABLE。隔离等级的不同就意味着在同一个时间节点下查询到的内容可能不同，数据的可靠性也会变得不同。接下来我们来简单了解一下这四种隔离等级，并且通过一个测试数据库来验证一下。</p>
+<h1 id="0X01-How-to-try-it"><a href="#0X01-How-to-try-it" class="headerlink" title="0X01 How to try it"></a>0X01 How to try it</h1><p>首先要建一个数据库来做测试，表结构和两条基础数据长这样，可以通过随便什么方法把表先建好。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`account`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`username`</span> <span class="built_in">varchar</span>(<span class="number">10</span>),</span><br><span class="line">  <span class="string">`money`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="number">0</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8mb4 <span class="keyword">COLLATE</span>=utf8mb4_unicode_ci;</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`account`</span> <span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="string">&#x27;shawn&#x27;</span>, <span class="number">100</span>),(<span class="number">2</span>, <span class="string">&#x27;bluce&#x27;</span>, <span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+
+<p>然后我们打开两个 MySQL 的终端连接（一定是两个），其中一个用来执行事务 A，一个用来修改隔离等级然后观察结果。</p>
+<p>修改隔离等级的时候，可以选择“全局”或者“会话”两种级别，我们在测试阶段就只需要修改“会话”级就可以了。用的是<code>SET session transaction isolation level read committed;</code>这样的方法，其中最后的<code>read committed</code>就是其中一个隔离等级。</p>
+<blockquote>
+<p>注意在会话级别修改隔离等级应该是在你 select 去验证的会话里执行，而非执行事务的会话。换个说法就是“隔离等级”是针对事务外的，而非针对事务。</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/30/mysql-isolation-level/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -605,86 +693,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/07/05/drf-permission/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/07/04/cas-sso/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/04/cas-sso/" class="post-title-link" itemprop="url">SSO 与 CAS</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-07-04 14:51:46 / 修改时间：15:49:46" itemprop="dateCreated datePublished" datetime="2020-07-04T14:51:46+08:00">2020-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="0X00-网站怎么登陆"><a href="#0X00-网站怎么登陆" class="headerlink" title="0X00 网站怎么登陆"></a>0X00 网站怎么登陆</h1><p>回忆一下你用过的网站们，一般都是怎么登陆的？ “就输入用户名密码登陆呗，要么就扫码登录，要么手机验证码登录，还能有啥”。确实没啥，咱们平时用到的登录方式也就都是这样的，而且这些其实从原理上来说都是 <strong>证明你是你</strong> 的手段，用户名密码是通过“密码只有你自己知道”为前提的，扫码和验证码是以“手机一定在你自己手上，并且只有你自己能解锁”为前提的。所以其实用户名密码并不是登录的唯一方法，理论上能证明你是你的一切方法都可以用来做授权认证，所以我们可以看到除了密码，出现了扫码、短信邮箱验证码、指纹、人脸、声纹、虹膜巴拉巴拉的。</p>
-<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/ab-blog-2fa2.webp" alt="auth"></p>
-<p>上面这些都是稳定靠谱的登录方式，我们来想另一个问题，你们有一个网站选用了用户名密码的方式登录，你和用户开开心心登录。后来你上线了另一个网站，你觉得用户该怎么登陆这个新网站呢？“新网站就再注册一次呀！”好的，用户又注册了一次。随着你们公司业务逐渐壮大，上线了 100 个网站，那用户要注册一百次吗？万一自己常用的用户名被占用了呢，岂不是 100 个网站可能会用 100 套不同的用户名密码？那用户可能就要骂娘了呦。</p>
-<p>聪明的你可能会想到，既然现在这么流行微服务，我们把登录做一个微服务，所有系统的登陆都用这一套不就好了？</p>
-<h1 id="0X01-这就是-SSO"><a href="#0X01-这就是-SSO" class="headerlink" title="0X01 这就是 SSO"></a>0X01 这就是 SSO</h1><p>那有一个好消息和一个坏消息，坏消息是，你以为的这个天才想法就是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%96%AE%E4%B8%80%E7%99%BB%E5%85%A5"> SSO（Single Sign On）</a>单点登录，早就被人想到而且实现了很多遍了；好消息是，轮子很多，完全不用自己造，挑一个拿来用就好。</p>
-<blockquote>
-<p>单点登录（英语：Single sign-on，缩写为 SSO），又译为单一签入，一种对于许多相互关连，但是又是各自独立的软件系统，提供访问控制的属性。当拥有这项属性时，当用户登录时，就可以获取所有系统的访问权限，不用对每个单一系统都逐一登录。这项功能通常是以轻型目录访问协议（LDAP）来实现，在服务器上会将用户信息存储到LDAP数据库中。相同的，单一退出（single sign-off）就是指，只需要单一的退出动作，就可以结束对于多个系统的访问权限。  –维基百科</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/07/04/cas-sso/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

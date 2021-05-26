@@ -193,14 +193,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">118</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">149</span>
+        <span class="site-state-item-count">151</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -287,6 +287,86 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/07/04/cas-sso/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/04/cas-sso/" class="post-title-link" itemprop="url">SSO 与 CAS</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-07-04 14:51:46 / 修改时间：15:49:46" itemprop="dateCreated datePublished" datetime="2020-07-04T14:51:46+08:00">2020-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="0X00-网站怎么登陆"><a href="#0X00-网站怎么登陆" class="headerlink" title="0X00 网站怎么登陆"></a>0X00 网站怎么登陆</h1><p>回忆一下你用过的网站们，一般都是怎么登陆的？ “就输入用户名密码登陆呗，要么就扫码登录，要么手机验证码登录，还能有啥”。确实没啥，咱们平时用到的登录方式也就都是这样的，而且这些其实从原理上来说都是 <strong>证明你是你</strong> 的手段，用户名密码是通过“密码只有你自己知道”为前提的，扫码和验证码是以“手机一定在你自己手上，并且只有你自己能解锁”为前提的。所以其实用户名密码并不是登录的唯一方法，理论上能证明你是你的一切方法都可以用来做授权认证，所以我们可以看到除了密码，出现了扫码、短信邮箱验证码、指纹、人脸、声纹、虹膜巴拉巴拉的。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/ab-blog-2fa2.webp" alt="auth"></p>
+<p>上面这些都是稳定靠谱的登录方式，我们来想另一个问题，你们有一个网站选用了用户名密码的方式登录，你和用户开开心心登录。后来你上线了另一个网站，你觉得用户该怎么登陆这个新网站呢？“新网站就再注册一次呀！”好的，用户又注册了一次。随着你们公司业务逐渐壮大，上线了 100 个网站，那用户要注册一百次吗？万一自己常用的用户名被占用了呢，岂不是 100 个网站可能会用 100 套不同的用户名密码？那用户可能就要骂娘了呦。</p>
+<p>聪明的你可能会想到，既然现在这么流行微服务，我们把登录做一个微服务，所有系统的登陆都用这一套不就好了？</p>
+<h1 id="0X01-这就是-SSO"><a href="#0X01-这就是-SSO" class="headerlink" title="0X01 这就是 SSO"></a>0X01 这就是 SSO</h1><p>那有一个好消息和一个坏消息，坏消息是，你以为的这个天才想法就是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%96%AE%E4%B8%80%E7%99%BB%E5%85%A5"> SSO（Single Sign On）</a>单点登录，早就被人想到而且实现了很多遍了；好消息是，轮子很多，完全不用自己造，挑一个拿来用就好。</p>
+<blockquote>
+<p>单点登录（英语：Single sign-on，缩写为 SSO），又译为单一签入，一种对于许多相互关连，但是又是各自独立的软件系统，提供访问控制的属性。当拥有这项属性时，当用户登录时，就可以获取所有系统的访问权限，不用对每个单一系统都逐一登录。这项功能通常是以轻型目录访问协议（LDAP）来实现，在服务器上会将用户信息存储到LDAP数据库中。相同的，单一退出（single sign-off）就是指，只需要单一的退出动作，就可以结束对于多个系统的访问权限。  –维基百科</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/04/cas-sso/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -588,97 +668,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/05/25/python-filter-map-reduce/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/05/14/self-control-and-target/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/14/self-control-and-target/" class="post-title-link" itemprop="url">自控&目标</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-05-14 23:43:42" itemprop="dateCreated datePublished" datetime="2020-05-14T23:43:42+08:00">2020-05-14</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-05-19 23:35:11" itemprop="dateModified" datetime="2020-05-19T23:35:11+08:00">2020-05-19</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="0X00-GTD"><a href="#0X00-GTD" class="headerlink" title="0X00 GTD"></a>0X00 GTD</h1><blockquote>
-<p>   <strong>尽管去做</strong>（英语：<strong>Getting Things Done</strong> / <strong>GTD</strong>），是一种行为管理的方法，也是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=%E6%88%B4%E7%BB%B4%C2%B7%E8%89%BE%E4%BC%A6&action=edit&redlink=1">戴维·艾伦</a>写的一本书的书名。</p>
-<p>  GTD的主要原则在于一个人需要通过记录的方式把头脑中的各种任务移出来。通过这样的方式，头脑可以不用塞满各种需要完成的事情，而集中精力在正在完成的事情。</p>
-<p>  ​                                                                                                     –维基百科</p>
-</blockquote>
-<p>GTD说白了就是把自己要做的事项从脑子里拿出来，写到纸上或者记到什么鬼地方，我最喜欢的就是”滴答清单”了。</p>
-<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200514225226_mini.png"></p>
-<p>最早的时候我用的是Google日历，在学校里的时候这样用了一两年还不错。后来大四出来实习，那段时间工作哪儿哪儿都不顺利，也就没心情安排自己的生活和学习了，所以实习的那一年基本就是下班了就趴在床上玩手机，什么都没干成。不只是没学习，而是没玩游戏没看电影，实打实的什么都没干成。后面又重拾了GTD，把自己安排的明明白白的，对我来说效果还是立竿见影的。我安排自己不只是学习，也包括社交和娱乐，约好什么时间和谁在哪儿吃饭或者干嘛的；自己给自己规定什么时间玩游戏，给自己规定什么时间看电影。</p>
-<p>这样一套流程下来，有两个明显的好处：自己的时间利用率极大的提升了，不会出现坐在桌子前面考虑接下来要干什么的事情；另一个就是方便自己回顾生活，毕竟不写日记的话自己也搞不清楚哪天哪天干了什么事儿了。这里给大家看一下我滴答清单里的任务分类：</p>
-<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200514230004_mini.png"></p>
-<p>这里主要是学习类、个人日常生活类、工作和年度规划。除了每年年底会对新一年进行规划以外，还会在每个月对下个月进行规划。不过正所谓”取法其上，仅得其中；取法其中，仅得其下”，所以也不要因为自己没有完成月内所有计划或者年度计划而自我否定，只要在没有突发事件的情况下都按部就班完成了自己的任务安排，那损失的那一点点跟全局比起来都是小问题了。</p>
-<p>安排时间的时候有个问题需要注意：给自己一定的缓冲时间，比如整整一周不要尝试将周一至周五的晚上都安排上学习，然后周六周日又安排三四部电影和游戏时间。因为很大可能你周五晚上下班是要跟朋友约出去吃吃喝喝的，很大可能周末会被叫出去玩或者自己睡过了之类的。而且即使没有这些外在因素，也不应该给自己安排的满满当当的。我自己的建议是这样：周一到周四的晚上安排三次学习，空出来一天用来缓冲；周五晚上不安排，即使没有约也可以自己给自己放个假；周六周日给自己安排一天半的时间，而且然后周六晚上不安排学习，可以的话给周日晚上安排一波学习。</p>
-<p>仅从我自己的角度来说，这类GTD方案让我非常受用，不仅时间变多了，也更有节奏了。自己知道周一到周四晚上不该玩游戏，周末又可以玩一整天。时间拍起来之后的生活里我玩到了很多以前觉得没时间玩的优秀游戏，比如<em>战神</em> <em>塞尔达</em>  <em>GTA5</em>  <em>和一众优秀游戏</em>，也看了很多以前觉得没时间看的豆瓣Top250电影。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/14/self-control-and-target/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

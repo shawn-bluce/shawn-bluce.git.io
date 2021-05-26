@@ -193,14 +193,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">118</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">149</span>
+        <span class="site-state-item-count">151</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -287,6 +287,92 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2019/09/25/dockerfile-add-vs-copy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/25/dockerfile-add-vs-copy/" class="post-title-link" itemprop="url">Dockerfile中的COPY与ADD指令</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-09-25 22:08:18" itemprop="dateCreated datePublished" datetime="2019-09-25T22:08:18+08:00">2019-09-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2019-09-26 01:13:04" itemprop="dateModified" datetime="2019-09-26T01:13:04+08:00">2019-09-26</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="0X00-就算只有一节我也要写标题"><a href="#0X00-就算只有一节我也要写标题" class="headerlink" title="0X00 就算只有一节我也要写标题"></a>0X00 就算只有一节我也要写标题</h1><p>众所周知Dockerfile是构建Docker镜像的优良方式，而使用Dockerfile构建镜像最重要的就是为数不多的几个命令，而本次的主题<code>COPY</code>和<code>ADD</code>就是其中两个。我们知道这两个命令都是将文件搞到Docker镜像里用的，那究竟有没有区别，有什么区别呢？</p>
+<p>首先我们看一下当前这个目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">λ  ~&#x2F;Workstadion&#x2F;learn_docker  ls</span><br><span class="line">Dockerfile  excited.tar</span><br></pre></td></tr></table></figure>
+
+<p>我们有着么一个Dockerfile，可以看到是基于<code>fedora</code>的一个镜像，并且将目录下的<code>excited.tar</code>放进了创建好的<code>shawn</code>目录中</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> fedora</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir shawn</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> shawn</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> excited.tar .</span></span><br></pre></td></tr></table></figure>
+<p>我们可以看到工作目录下已经存在了一个<code>excited.tar</code>了，也就意味着我们成功将这个文件搞进去了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">λ  ~&#x2F;Workstadion&#x2F;learn_docker  docker build . -t wtf ; docker rm learn_docker; docker run --name learn_docker -it wtf bash</span><br><span class="line">Sending build context to Docker daemon  23.04kB</span><br><span class="line">Step 1&#x2F;4 : FROM fedora</span><br><span class="line"> ---&gt; e9ed59d2baf7</span><br><span class="line">Step 2&#x2F;4 : RUN mkdir shawn</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 5014855b8533</span><br><span class="line">Step 3&#x2F;4 : WORKDIR shawn</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 82f9d06a4d3c</span><br><span class="line">Step 4&#x2F;4 : COPY excited.tar .</span><br><span class="line"> ---&gt; 1bc293d81b33</span><br><span class="line">Successfully built 1bc293d81b33</span><br><span class="line">Successfully tagged wtf:latest</span><br><span class="line">learn_docker</span><br><span class="line">[root@f6a4f34ed504 shawn]# ls -l</span><br><span class="line">total 20</span><br><span class="line">-rw-r--r-- 1 root root 20480 Sep 25 14:15 excited.tar</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/09/25/dockerfile-add-vs-copy/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -602,88 +688,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/08/22/python-decorator/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2019/08/20/iterator-generator/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/08/20/iterator-generator/" class="post-title-link" itemprop="url">Python中的可迭代对象、迭代器与生成器</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-08-20 22:11:25" itemprop="dateCreated datePublished" datetime="2019-08-20T22:11:25+08:00">2019-08-20</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2019-09-22 23:28:09" itemprop="dateModified" datetime="2019-09-22T23:28:09+08:00">2019-09-22</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="0X00-什么是可迭代对象"><a href="#0X00-什么是可迭代对象" class="headerlink" title="0X00 什么是可迭代对象"></a>0X00 什么是可迭代对象</h1><p>我们平时用到的<code>list/set/tuples</code>是最常见的可迭代对象，简单判断就是说当可以<code>for item in this_obj</code>的时候<code>this_obj</code>就是可迭代对象。所以不只是<code>list/set/tuples</code>，打开的文件或是Django中的<code>queryset</code>也都是可迭代对象。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: user_list = iter([<span class="string">&#x27;shawn&#x27;</span>, <span class="string">&#x27;danny&#x27;</span>, <span class="string">&#x27;jenny&#x27;</span>, <span class="string">&#x27;liming&#x27;</span>])</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: next(user_list)</span><br><span class="line">Out[<span class="number">2</span>]: <span class="string">&#x27;shawn&#x27;</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: next(user_list)</span><br><span class="line">Out[<span class="number">3</span>]: <span class="string">&#x27;danny&#x27;</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: next(user_list)</span><br><span class="line">Out[<span class="number">4</span>]: <span class="string">&#x27;jenny&#x27;</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: next(user_list)</span><br><span class="line">Out[<span class="number">5</span>]: <span class="string">&#x27;liming&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>使用<code>iter()</code>可以将列表变为一个迭代器，然后使用<code>next</code>方法访问下一个元素。实际上<code>iter(this_obj)</code>方法和<code>next(this_obj)</code>方法分别调用的是<code>this_obj.__iter__()</code>和<code>this_obj.__next__()</code>，所以我们如果想要自己实现迭代器的话就需要实现这两个方法。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/08/20/iterator-generator/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

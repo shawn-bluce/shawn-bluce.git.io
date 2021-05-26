@@ -193,14 +193,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">118</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">149</span>
+        <span class="site-state-item-count">151</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -287,6 +287,95 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2016/09/14/python-oop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/09/14/python-oop/" class="post-title-link" itemprop="url">Python之面向对象</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-09-14 21:53:00" itemprop="dateCreated datePublished" datetime="2016-09-14T21:53:00+08:00">2016-09-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2018-08-21 15:34:22" itemprop="dateModified" datetime="2018-08-21T15:34:22+08:00">2018-08-21</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="0X00-创建一个类"><a href="#0X00-创建一个类" class="headerlink" title="0X00 创建一个类"></a>0X00 创建一个类</h1><p>Python也是一个和C++、Java一样的面向对象编程语言，所以Python里也有类和对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span>   <span class="comment">#这是一个类</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sayHello</span>(<span class="params">self</span>):</span>     <span class="comment">#这是一个方法</span></span><br><span class="line">        <span class="keyword">print</span> <span class="string">&#x27;hello,world&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setName</span>(<span class="params">self, inputName</span>):</span></span><br><span class="line">        self.name = inputName</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getName</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.getName()</span><br></pre></td></tr></table></figure>
+<p>在类中创建的方法使用def关键字定义，每个方法有一个或以上的参数，selft就是实例化的对象自己。需要返回值就return一个，不需要就可以不写return</p>
+<blockquote>
+<p>Python的类和Java的类还是有点区别，Java的类里主要写的是属性和方法，Python里不写属性，因为Java的变量需要定义而Python的变量并不需要定义，最多也就是在前面个各个属性一个变量名并赋初值</p>
+</blockquote>
+<h1 id="0X01-实例化一个对象"><a href="#0X01-实例化一个对象" class="headerlink" title="0X01 实例化一个对象"></a>0X01 实例化一个对象</h1><p>类是一个很抽象的概念，可以由类实例化好多个对象出来。Java中我们习惯说成 new一个对象，而Python中并不需要new</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xiaoming = Person() <span class="comment">#实例化了一个类</span></span><br><span class="line">xiaoming.setName(<span class="string">&#x27;xiaoming&#x27;</span>)  <span class="comment">#调用一个方法</span></span><br><span class="line"><span class="keyword">print</span> xiaoming.getName()</span><br><span class="line">xiaoming.sayHello()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此段代码接着上面的类声明</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/09/14/python-oop/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -594,85 +683,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2016/07/23/shadowsocks-build/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2016/07/17/java-md5-base64/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/07/17/java-md5-base64/" class="post-title-link" itemprop="url">Java使用MD5和BASE64</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2016-07-17 23:00:00" itemprop="dateCreated datePublished" datetime="2016-07-17T23:00:00+08:00">2016-07-17</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2019-09-22 23:30:15" itemprop="dateModified" datetime="2019-09-22T23:30:15+08:00">2019-09-22</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="0X00-简介"><a href="#0X00-简介" class="headerlink" title="0X00 简介"></a>0X00 简介</h1><p>最近经常要在代码中使用到BASE64编码和MD5，所以把笔记贴在这里方便自己查找。<br>在配置postfix邮件服务器的时候发现，收到的邮件正文都是使用BASE64编码过的，所以才了解了一下这种编码。<br>MD5不算加密算法，但是可以用作摘要计算。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/07/17/java-md5-base64/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
