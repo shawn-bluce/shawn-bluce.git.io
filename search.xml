@@ -54,7 +54,7 @@
 <h1 id="0X06-删除文件引发的权限问题"><a href="#0X06-删除文件引发的权限问题" class="headerlink" title="0X06 删除文件引发的权限问题"></a>0X06 删除文件引发的权限问题</h1><p>接下来就到了一个相对来说有趣的地方了，首先我们来带入一个场景，看看这个</p>
 <p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/delete_fail_1.png"></p>
 <p>为什么这个文件我已经是所有人了，且权限已经是 777 了还是不能删除呢？这就涉及到了一个子问题“目录是什么”。</p>
-<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/what_is_dir.tiff"></p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/what_is_dir.png"></p>
 <p>都说 Linux 万物皆文件，其实目录也是一个文件，只不过相对特殊一点而已。这个文件里主要存储了 <code>inode</code> 和 <code>filename</code>，所以我们对一个目录里的文件进行改名和删除的时候需要和创建一样的 <code>w</code> 权限。只有拥有了对一个目录的 <code>rwx</code> 权限才可以进入到目录里并且删除一个文件。所以上面这张截图里不能删除文件的原因是<em>当前用户并没有当前目录的写入权限，所以不能删掉这个文件</em>。<br><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/delete_fail_2.png"></p>
 <p>如果给用户添加一个对目录的写入权限，那就可以删掉这个文件了。<br><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/delete_fail_3.png"></p>
 <p>接下来再看下一个例子，我们可以看到这个目录下有两个文件，我已经可以删除其中一个了，那为什么不能删除另一个权限完全一样的文件呢？</p>
