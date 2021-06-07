@@ -193,14 +193,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">119</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">151</span>
+        <span class="site-state-item-count">152</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -287,6 +287,97 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2018/03/14/dnf-proxy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/03/14/dnf-proxy/" class="post-title-link" itemprop="url">Fedora中dnf命令使用Socks5代理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-03-14 23:59:46" itemprop="dateCreated datePublished" datetime="2018-03-14T23:59:46+08:00">2018-03-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2019-09-22 23:26:36" itemprop="dateModified" datetime="2019-09-22T23:26:36+08:00">2019-09-22</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在Linux下安装软件通常会使用包管理工具自动处理依赖问题，在Fedora下一般使用<code>dnf</code>包管理工具。一般我们会给自己的源设置为国内的镜像源，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn</span><br><span class="line">https:&#x2F;&#x2F;mirrors.ustc.edu.cn</span><br><span class="line">https:&#x2F;&#x2F;mirrors.163.com</span><br></pre></td></tr></table></figure>
+
+<p>但是有的时候还是避免不了从国外源下载数据，这种情况下经常出现速度巨慢无比甚至会断开的情况。这种时候我们可以给<code>dnf</code>设置通过代理连接网络，这样一来下载速度就会快得多了。</p>
+<p><code>sudo vim /etc/dnf/dnf.conf</code>编辑<code>dnf</code>的配置文件，添加如下配置，保存后再执行<code>dnf</code>命令就可以使用代理的方式连接了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">proxy&#x3D;socks5:&#x2F;&#x2F;127.0.0.1:1080</span><br><span class="line">proxy_username&#x3D;shawn</span><br><span class="line">proxy_password&#x3D;shawn</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的几点：</p>
+<ol>
+<li>本示例只是针对我自己的电脑，如果你自己的Shadowsocks配置跟我的不同，请根据自己的配置自行修改（没有密码的可以不写后两项）</li>
+<li>示例中使用了<code>socks4://</code>的协议，如果自己有其他方式的代理也可以使用，比如<code>http://</code>等</li>
+<li>当不再使用的时候记得将配置注释掉，以防连接国内源也使用代理</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/03/14/dnf-proxy/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -580,86 +671,6 @@
 <p>下次再运行<code>python a.py</code>的时候解释器会检查<code>b.py</code>与<code>b.pyc</code>的修改时间，如果一致就代表源码没有修改过，那么就可以直接调用<code>b.pyc</code>来更快的执行程序，如果时间不同那就证明<code>b.py</code>被修改过，则会重新编译<code>b.py</code>．</p>
 <p>其中<code>pyc</code>文件的主要作用是用来加快程序执行速度的，虽然编译出来的<code>pyc</code>是二进制文件，不能看到内部的内容，但是还是不要把这种方式作为保护源码的方法．因为这种<code>pyc</code>文件是可以轻易被反编译的，有很多开源库可以轻松的反编译<code>pyc</code>文件，甚至都有web程序来反编译<code>pyc</code>文件，比如这个<a target="_blank" rel="noopener" href="https://tool.lu/pyc/">tool.lu</a>就可以通过上传文件<code>pyc</code>文件的方式反编译．</p>
 
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2017/12/23/django-uwsgi-supervisor/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/12/23/django-uwsgi-supervisor/" class="post-title-link" itemprop="url">使用uwsgi和supervisor部署Django程序</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-12-23 18:05:54" itemprop="dateCreated datePublished" datetime="2017-12-23T18:05:54+08:00">2017-12-23</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2019-09-22 23:26:29" itemprop="dateModified" datetime="2019-09-22T23:26:29+08:00">2019-09-22</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="0X00-使用uwsgi启动Django"><a href="#0X00-使用uwsgi启动Django" class="headerlink" title="0X00 使用uwsgi启动Django"></a>0X00 使用uwsgi启动Django</h1><p>首先安装uwsgi，<code>pip install uwsgi</code>就可以装好．然后找到Django生成的<code>wsgi.py</code>文件，这文件通常实在与项目名同名的app目录下的，比如我的项目名为<code>django_test</code>那么这个文件应该就在<code>django_test/wsgi.py</code>．然后执行<code>uwsgi --http 0.0.0.0:8080 --wsgi-file django_test/wssgi.py</code>就可以用uwsgi启动你的Django项目了.<br>Django自带的<code>python manage.py runserver</code>用于调试还是可以的，不过如果用于生产环境的不论是安全性还是性能都不足以满足生产环境的需要.</p>
-<h1 id="0X01-使用supervisor维持服务在线"><a href="#0X01-使用supervisor维持服务在线" class="headerlink" title="0X01 使用supervisor维持服务在线"></a>0X01 使用supervisor维持服务在线</h1><p>我们知道由于Linux系统的进程管理机制，导致在bash里启动的程序如果退出bash就会自动被kill掉．所以我们需要一个能让进程一直活下去的方法，其中<code>nohup</code>是我们常用的方法，不过这种方法也只是能让进程活在后台罢了，平时跑个脚本或是其他小程序还可以，如果是部署一个服务的话就不合适了．这里我们选用<code>supervisor</code>来维持服务．</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/12/23/django-uwsgi-supervisor/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
       
     </div>
 

@@ -193,14 +193,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">119</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">151</span>
+        <span class="site-state-item-count">152</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -287,6 +287,90 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/07/05/drf-permission/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/05/drf-permission/" class="post-title-link" itemprop="url">如何在 Django 与 DRF 中优雅地校验权限</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-07-05 13:24:07 / 修改时间：17:50:24" itemprop="dateCreated datePublished" datetime="2020-07-05T13:24:07+08:00">2020-07-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="0X00-Django-中的权限结构、定义"><a href="#0X00-Django-中的权限结构、定义" class="headerlink" title="0X00 Django 中的权限结构、定义"></a>0X00 Django 中的权限结构、定义</h1><p>我们知道在创建了一个 Django 项目之后，默认就有两个公开可用的 model：User 和 Group，这两个 model 的一项功能就是用来做权限管理的。系统中会有很多项权限，单个 user 可以配置拥有哪些权限，也可以将权限配置给 group。然后校验单个权限的时候其实就是将 user 本身的权限，和 user 所在的所有组的权限做一个并集，看本次操作的权限是否在这个并集里。在，那就校验通过；不在，那就只有 HTTP 403 了。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/20200705173202.png"></p>
+<blockquote>
+<p>HTTP 401 和 HTTP 403 的区别：401 的描述是 Forbidden，而 401 是 Unauthorized，前者是没有权限，而后者干脆没通过认证。举个例子，你想查看公司财务的详细报表，财务经理一看你就是个一线小程序员，就给你一个 401，告诉你这不是你可以看的东西。如果你想看别的公司财务的详细报表，别人公司财务经理一看你根本不是他们公司的人，就直接给你了个 401 了。（俗话说十个比喻九个不准，我这个比喻当然也并不非常准确，不过对于分不清 401 和 403 的同学而言应该也问题不大🤣）</p>
+</blockquote>
+<p>Django 自己对每一个 model 都创建了 create，update，delete 的权限，我们可以直接拿来用，也可以自己添加新权限。Django 自己是针对各个 model 做的权限，所以最简单的权限建立是在 model 层进行的。就比如下面这种，如果我想要为 Student 这个 model 建立相关的权限，就可以通过修改 <code>Meta</code> 类里的 <code>permissions</code> 来实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>(<span class="params">models.Model</span>):</span></span><br><span class="line">  	user = models.OneToOneField(<span class="string">&#x27;django.contrib.auth.models.User&#x27;</span>)</span><br><span class="line">  	name = models.CharField() <span class="comment"># 纯展示，就不详细定义了</span></span><br><span class="line">    birthday = models.DatetimeField()</span><br><span class="line">    phone = models.CharField()</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">				verbose_name = <span class="string">&#x27;学生&#x27;</span></span><br><span class="line">        verbose_name_plural = verbose_name</span><br><span class="line">        permissions = (</span><br><span class="line">        		<span class="comment"># (&#x27;权限名&#x27;, &#x27;权限描述&#x27;),</span></span><br><span class="line">          	(<span class="string">&#x27;check_classmate_score&#x27;</span>, <span class="string">&#x27;查看同班同学的成绩&#x27;</span>),</span><br><span class="line">          	(<span class="string">&#x27;send_class_notify&#x27;</span>, <span class="string">&#x27;发送班级通知&#x27;</span>),</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+
+<p>不过这里也看到了，每次对权限进行 CUD 的时候都是在改 model 的，所以每次改动完 model 记得都要进行一次<code>migrate</code>操作才行。不过不用担心性能问题，这个 migrate 只对 Permission 表进行 CUD 操作，而并非改表，所以非常快就搞定了。注意的一点是，不管你把这些 permissions 写在哪个 model 下，最终他们创建好的数据都还是在 Permission 表里，也就是数据库（我这里用的是 MySQL）里的<code>auth_permission</code>表了，这个表结构和数据是下面这样的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+-----------------+--------------+------+-----+---------+----------------+</span><br><span class="line">| Field           | Type         | Null | Key | Default | Extra          |</span><br><span class="line">+-----------------+--------------+------+-----+---------+----------------+</span><br><span class="line">| id              | int(11)      | NO   | PRI | &lt;null&gt;  | auto_increment |</span><br><span class="line">| name            | varchar(255) | NO   |     | &lt;null&gt;  |                |</span><br><span class="line">| content_type_id | int(11)      | NO   | MUL | &lt;null&gt;  |                |</span><br><span class="line">| codename        | varchar(100) | NO   |     | &lt;null&gt;  |                |</span><br><span class="line">+-----------------+--------------+------+-----+---------+----------------+</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">+-----+------------------------------------+-----------------+-------------------------------+</span><br><span class="line">| id  | name                               | content_type_id | codename                      |</span><br><span class="line">+-----+------------------------------------+-----------------+-------------------------------+</span><br><span class="line">| 1   | Can add log entry                  | 1               | add_logentry                  |</span><br><span class="line">| 2   | Can change log entry               | 1               | change_logentry               |</span><br><span class="line">| 3   | Can delete log entry               | 1               | delete_logentry               |</span><br><span class="line">| 4   | Can add group                      | 2               | add_group                     |</span><br><span class="line">| 5   | Can change group                   | 2               | change_group                  |</span><br><span class="line">| 6   | Can delete group                   | 2               | delete_group                  |</span><br><span class="line">| 7   | Can add permission                 | 3               | add_permission                |</span><br><span class="line">| 8   | Can change permission              | 3               | change_permission             |</span><br><span class="line">| 9   | Can delete permission              | 3               | delete_permission             |</span><br><span class="line">| 10  | Can add user                       | 4               | add_user                      |</span><br><span class="line">| 11  | Can change user                    | 4               | change_user                   |</span><br><span class="line">| 12  | Can delete user                    | 4               | delete_user                   |</span><br><span class="line">+-----+------------------------------------+-----------------+-------------------------------+</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/05/drf-permission/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -573,101 +657,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/06/06/django-fast-2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/05/25/python-filter-map-reduce/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/25/python-filter-map-reduce/" class="post-title-link" itemprop="url">Python中的filter与map/reduce方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-05-25 22:42:18" itemprop="dateCreated datePublished" datetime="2020-05-25T22:42:18+08:00">2020-05-25</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-05-26 00:05:52" itemprop="dateModified" datetime="2020-05-26T00:05:52+08:00">2020-05-26</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="0X00-前言-amp-Pythonic"><a href="#0X00-前言-amp-Pythonic" class="headerlink" title="0X00 前言 &amp; Pythonic"></a>0X00 前言 &amp; Pythonic</h1><p>Python管<code>filter/map/reduce</code>这些叫高阶函数，听起来有点高级有点难搞的意思，实际上是贼简单的东西。下面通过几个简单的例子来帮助大家了解一下<code>filter/map/reduce</code>这三个高阶函数的简单用法。</p>
-<p>事先声明，这三个函数都是扩展性质的东西，从来不用这三个函数也可以正常的编写程序，没有什么功能是没了这三个函数就写不出来的。只不过是这三个函数的出现能让之前很丑陋的代码变得精简易读了而已。</p>
-<p>这三个函数非常适合搭配<code>lambda</code>来使用，编写非常Pythonic的代码，具体什么是Pythonic其实很难定义，其实就是把Python编程一个形容词了，比如你看到一个人“穿了运动鞋牛仔裤帽衫双肩包黑框眼镜电子表”就会说他“太程序员了”，大概就是这么个意思。总结来说呢就是 <strong>非常具有Python特色的Python代码</strong>。比如下面这段代码明显就不Pythonic</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(len(name_list)):</span><br><span class="line">    print(name_list[index])</span><br></pre></td></tr></table></figure>
-
-
-
-<p>而这种代码就是Pythonic的写法</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> name_list:</span><br><span class="line">    print(name)</span><br></pre></td></tr></table></figure>
-
-
-
-<p>尤其是结合了<code>lambda</code>之后，就能写出更Pythonic的代码了，例如</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_boy</span>(<span class="params">student</span>):</span></span><br><span class="line">    <span class="keyword">if</span> student.gender == <span class="string">&#x27;M&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
-
-<p>就可以直接用<code>lambda</code>改写成这个样子</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">is_boy = <span class="keyword">lambda</span> studnet: student.gender == <span class="string">&#x27;M&#x27;</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/25/python-filter-map-reduce/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

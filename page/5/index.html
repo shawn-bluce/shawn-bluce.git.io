@@ -193,14 +193,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">119</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">151</span>
+        <span class="site-state-item-count">152</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -287,6 +287,101 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/05/25/python-filter-map-reduce/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/25/python-filter-map-reduce/" class="post-title-link" itemprop="url">Python中的filter与map/reduce方法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-25 22:42:18" itemprop="dateCreated datePublished" datetime="2020-05-25T22:42:18+08:00">2020-05-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-05-26 00:05:52" itemprop="dateModified" datetime="2020-05-26T00:05:52+08:00">2020-05-26</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="0X00-前言-amp-Pythonic"><a href="#0X00-前言-amp-Pythonic" class="headerlink" title="0X00 前言 &amp; Pythonic"></a>0X00 前言 &amp; Pythonic</h1><p>Python管<code>filter/map/reduce</code>这些叫高阶函数，听起来有点高级有点难搞的意思，实际上是贼简单的东西。下面通过几个简单的例子来帮助大家了解一下<code>filter/map/reduce</code>这三个高阶函数的简单用法。</p>
+<p>事先声明，这三个函数都是扩展性质的东西，从来不用这三个函数也可以正常的编写程序，没有什么功能是没了这三个函数就写不出来的。只不过是这三个函数的出现能让之前很丑陋的代码变得精简易读了而已。</p>
+<p>这三个函数非常适合搭配<code>lambda</code>来使用，编写非常Pythonic的代码，具体什么是Pythonic其实很难定义，其实就是把Python编程一个形容词了，比如你看到一个人“穿了运动鞋牛仔裤帽衫双肩包黑框眼镜电子表”就会说他“太程序员了”，大概就是这么个意思。总结来说呢就是 <strong>非常具有Python特色的Python代码</strong>。比如下面这段代码明显就不Pythonic</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(len(name_list)):</span><br><span class="line">    print(name_list[index])</span><br></pre></td></tr></table></figure>
+
+
+
+<p>而这种代码就是Pythonic的写法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> name_list:</span><br><span class="line">    print(name)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>尤其是结合了<code>lambda</code>之后，就能写出更Pythonic的代码了，例如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_boy</span>(<span class="params">student</span>):</span></span><br><span class="line">    <span class="keyword">if</span> student.gender == <span class="string">&#x27;M&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>就可以直接用<code>lambda</code>改写成这个样子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">is_boy = <span class="keyword">lambda</span> studnet: student.gender == <span class="string">&#x27;M&#x27;</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/25/python-filter-map-reduce/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -599,85 +694,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/04/23/linux-permission/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2020/04/19/terminal/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
-      <meta itemprop="name" content="Shawn">
-      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn's Blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/19/terminal/" class="post-title-link" itemprop="url">如何让自己的Linux/macOS终端更好用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-04-19 01:19:18" itemprop="dateCreated datePublished" datetime="2020-04-19T01:19:18+08:00">2020-04-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-04-23 23:24:38" itemprop="dateModified" datetime="2020-04-23T23:24:38+08:00">2020-04-23</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="0X00-视频在这里-下面是配置文件"><a href="#0X00-视频在这里-下面是配置文件" class="headerlink" title="0X00 视频在这里 下面是配置文件"></a>0X00 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1JA411b7dp/">视频在这里</a> 下面是配置文件</h1><p>这篇博客要配合<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1JA411b7dp/">发在bilibili的视频</a>来看，这个文件是在<code>~/.zshrc</code>的。大家有问题直接在视频下面留言或者直接给我私信好了～</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/04/19/terminal/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

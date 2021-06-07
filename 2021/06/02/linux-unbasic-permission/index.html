@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.just666.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":true,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="0X00 前言首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 user&#x2F;group&#x2F;other 和 rwx 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。 另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些小知">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 中不那么基础的权限 Rwx&#x2F;acl&#x2F;suid&#x2F;sgid&#x2F;sbit&#x2F;lsattr&#x2F;setattr">
+<meta property="og:url" content="https://blog.just666.com/2021/06/02/linux-unbasic-permission/index.html">
+<meta property="og:site_name" content="Shawn&#39;s Blog">
+<meta property="og:description" content="0X00 前言首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 user&#x2F;group&#x2F;other 和 rwx 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。 另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些小知">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id_2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/acl.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/create_file_c.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/create_file_result.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/suid_example.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/sbit_example.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/umask.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/delete_fail_1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/what_is_dir.tiff">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/delete_fail_2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/delete_fail_3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/delete_fail_4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/chattr_1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/chattr_2.png">
+<meta property="article:published_time" content="2021-06-02T13:05:47.000Z">
+<meta property="article:modified_time" content="2021-06-07T14:37:27.875Z">
+<meta property="article:author" content="Shawn">
+<meta property="article:tag" content="Linux Permission ACL suid sgid sbit lsattr setattr">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id.png">
+
+
+<link rel="canonical" href="https://blog.just666.com/2021/06/02/linux-unbasic-permission/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux 中不那么基础的权限 Rwx/acl/suid/sgid/sbit/lsattr/setattr | Shawn's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Shawn's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个伪程序员的伪技术博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-%E5%89%8D%E8%A8%80"><span class="nav-text">0X00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-root-%E7%A9%B6%E7%AB%9F%E6%98%AF%E8%B0%81"><span class="nav-text">0X01 root 究竟是谁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-%E4%B8%80%E5%88%86%E9%92%9F%E5%B8%A6%E8%BF%87%E7%9A%84-rwx"><span class="nav-text">0X02 一分钟带过的 rwx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-%E5%9F%BA%E7%A1%80-rwx-%E4%B9%8B%E5%90%8E%E7%9A%84%E4%B8%80%E7%BA%A7%EF%BC%9AACL"><span class="nav-text">0X03 基础 rwx 之后的一级：ACL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-suid-sgid-%E5%92%8C-sbit"><span class="nav-text">0X04 suid sgid 和 sbit</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-umask-%E9%BB%98%E8%AE%A4%E6%9D%83%E9%99%90"><span class="nav-text">0X05 umask 默认权限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E5%BC%95%E5%8F%91%E7%9A%84%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98"><span class="nav-text">0X06 删除文件引发的权限问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X07-%E5%B0%BE%E5%B7%B4"><span class="nav-text">0X07 尾巴</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X08-%E5%B0%BE%E5%B7%B4%E7%9A%84%E5%B0%BE%E5%B7%B4"><span class="nav-text">0X08 尾巴的尾巴</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shawn"
+      src="/uploads/naruto.png">
+  <p class="site-author-name" itemprop="name">Shawn</p>
+  <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">152</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/shawn-bluce" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;shawn-bluce" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:shawnbluce@gmail.com" title="E-Mail → mailto:shawnbluce@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/15387917" title="B-Site → https:&#x2F;&#x2F;space.bilibili.com&#x2F;15387917" rel="noopener" target="_blank"><i class="fa fa-video fa-fw"></i>B-Site</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/8969875/shawn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;8969875&#x2F;shawn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zezeshe.com/" title="https:&#x2F;&#x2F;zezeshe.com&#x2F;" rel="noopener" target="_blank">Jrotty</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/303donatello" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;303donatello" rel="noopener" target="_blank">303Donatello</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://lixianhua.com/" title="http:&#x2F;&#x2F;lixianhua.com&#x2F;" rel="noopener" target="_blank">绛木子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://duuge.com/" title="http:&#x2F;&#x2F;duuge.com&#x2F;" rel="noopener" target="_blank">杜哥</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://hubojing.github.io/" title="http:&#x2F;&#x2F;hubojing.github.io&#x2F;" rel="noopener" target="_blank">胡博靖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/Ypersistence" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;Ypersistence" rel="noopener" target="_blank">威大爷</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://wenqy.com/" title="http:&#x2F;&#x2F;wenqy.com&#x2F;" rel="noopener" target="_blank">小温之家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.rumoss.cn/" title="http:&#x2F;&#x2F;www.rumoss.cn&#x2F;" rel="noopener" target="_blank">濡沫杂记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.csdn.net/shouldnotappearcalm" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;shouldnotappearcalm" rel="noopener" target="_blank">不应有的淡定的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://hiwannz.com/" title="https:&#x2F;&#x2F;hiwannz.com" rel="noopener" target="_blank">见字如面</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/shawn-bluce" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2021/06/02/linux-unbasic-permission/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="name" content="Shawn">
+      <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn's Blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux 中不那么基础的权限 Rwx/acl/suid/sgid/sbit/lsattr/setattr
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-02 21:05:47" itemprop="dateCreated datePublished" datetime="2021-06-02T21:05:47+08:00">2021-06-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-06-07 22:37:27" itemprop="dateModified" datetime="2021-06-07T22:37:27+08:00">2021-06-07</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 <code>user/group/other</code> 和 <code>rwx</code> 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。</p>
+<p>另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些小知识点，不过也没什么，毕竟这些知识点的使用率真的很低。</p>
+<p>如果你看完了这篇博客有那么一点点收获，那我也算是完成目标了；如果你看完后发现所有的内容都是你以前就知道的，那我只能说你对 Linux 权限这部分的掌握超过了大多数人。因为我确实给周围好多人分享过这些内容，从刚实习的朋友到比我工作经历多很多综合实力也强很多的人，几乎没有谁是完全了解这些内容的。（所以说虽然这篇博客并不难，并不是什么高深的知识，但是我比较有信息让你从中获得那么一点点的收获）</p>
+<blockquote>
+<p>本博客不涉及某个命令的具体用法，只起到一个让你“知道自己哪里不知道”的作用。如果想要仔细了解某个命令或者某个机制，可以自行搜索相关资料。</p>
+</blockquote>
+<a id="more"></a>
+
+<h1 id="0X01-root-究竟是谁"><a href="#0X01-root-究竟是谁" class="headerlink" title="0X01 root 究竟是谁"></a>0X01 root 究竟是谁</h1><p>“root是谁？”这个问题听起来很蠢，但是实际上好多人并没有思考过这个问题。我们都知道 Linux 中有一个叫做 <code>uid</code> 的东西，其实 root 用户指的就是 <strong>uid为0的用户</strong>，而非用户名为root的用户，我们可以通过 <code>id</code> 命令来查看用户的 uid。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id.png"></p>
+<p>而且值得注意的一点是 <strong>uid 是会被回收利用的</strong>。也就是说你创建了一个用户，系统分配了 1002 这个 uid 后，如果删掉这个用户紧接着再创建一个新用户是会敷用 1002 这个 uid 的。假设你删掉了系统中的一个老用户，又创建了个新的用户，那么万一 uid 是重复的就有可能导致这个新用户拥有之前老用户的权限，这是一种很危险的操作。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id_2.png"></p>
+<h1 id="0X02-一分钟带过的-rwx"><a href="#0X02-一分钟带过的-rwx" class="headerlink" title="0X02 一分钟带过的 rwx"></a>0X02 一分钟带过的 rwx</h1><p>然后进入正题，也就是真正意义上的权限：<code>rwx/ugo</code> 机制。不过这里就不细说了，假设你已经掌握了基础的这套权限机制。如果你之前不知道 <code>rwx</code> 是三个二进制位，从而用 <code>111/101/110</code> 来表示的 <code>rwx/r-x/rw-</code> 的话现在也知道了。</p>
+<h1 id="0X03-基础-rwx-之后的一级：ACL"><a href="#0X03-基础-rwx-之后的一级：ACL" class="headerlink" title="0X03 基础 rwx 之后的一级：ACL"></a>0X03 基础 rwx 之后的一级：ACL</h1><p>我们会发现基础的 rwx/ugo 权限机制只能将权限分配给三种人：文件所属用户、文件所属组、其他。如果你想专门指定给某个用户某个权限的话，是做不到的。那么 ACL 就是来解决这个问题的。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/acl.png"></p>
+<p>用于操作 ACL 的命令有两个 <code>getfacl/setfacl</code>，分别用来读取和设置 ACL 权限。其中 <code>getfacl</code> 可以比 ls -l 看到更详细的权限信息。而且你可能注意到权限位最后的 <code>+</code> 了，这里是加号的时候 <code>ls -l</code> 出来的权限位和我们平时看的就不一样了，想要看的清晰些最好就使用 <code>getfacl</code>。</p>
+<blockquote>
+<p>这里具体的展示方式各个发行版本可能会有所不同，有些在没有设置 acl 的时候后面什么都没有，有些则会留一个 <code>.</code> 在那里。而且 acl 在某些发行版上还需要额外安装，默认是不带的。所以需要具体发行版本具体分析。</p>
+</blockquote>
+<h1 id="0X04-suid-sgid-和-sbit"><a href="#0X04-suid-sgid-和-sbit" class="headerlink" title="0X04 suid sgid 和 sbit"></a>0X04 suid sgid 和 sbit</h1><p><code>suid</code> 和 <code>sgid</code> 之前先来看一下这一小段代码，这段 C 代码的唯一功能就是在 <code>/root</code> 下创建一个文件。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/create_file_c.png"></p>
+<p>然后将这段代码编译成二进制程序，再给它赋予相应的用户和权限</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/create_file_result.png"></p>
+<p>这里就看到了一个“奇怪的现象”：这个二进制程序会在 <code>/root</code> 创建一个文件，但是执行这个二进制程序的用户并没有向 <code>/root</code> 写入文件的权限（第三行可以看到有一个红色的 <code>[1]</code> ，是指的上一条命令的返回值），那是怎么成功的呢？就是因为上面的两行命令：<code>sudo chown root.root create_file_2_root</code> 和 <code>sudo chmod +s create_file_2_root</code>。</p>
+<p>这两条命令分别是：将文件分配给 <code>root</code> 用户；为文件设置 <code>suid</code>。那么这个 <code>suid</code> 究竟是做什么用的呢？ <strong>设置了 <code>suid</code> 的程序，在执行过程中会临时变更为文件所属人的用户状态。</strong>也就是说上面的 <code>create_file_2_root</code> 命令在执行过程中是 root 用户的身份，既然是 root  用户那向 <code>/root</code> 写入个文件也就没什么大不了的了。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/suid_example.png"></p>
+<p>所以 <code>suid</code> 的意思就是 <code>set uid ID upon execution</code>，那么 <code>sgid</code> 也就显而易见的是 <code>set group ID upon execution</code> 了。</p>
+<p>唯一需要注意的就是，设置 <code>s</code> 权限的时候，需要已经拥有 <code>x</code> 权限。如果没有设置 <code>x</code> 就直接给了 <code>s</code> 权限，则在 <code>ls</code> 的时候会发现 <code>S</code> 会变成大写的标识，表示当前没有执行权限。</p>
+<blockquote>
+<p>其中 <code>suid</code> 只能使用在二进制可执行程序上；<br><code>sgid</code> 不只是二进制程序，也可以用在目录上；<br>设置了 <code>sgid</code> 后，用户在此目录下的有效用户组将变成该目录的用户组；<br>设置了 <code>sgid</code> 后，若用户在此目录下拥有 w 权限，则用户所创建的新文件的用户组与该目录的用户组相同（默认情况下自己创建的文件所属人和组都是自己，如果与目录相同就自然会有风险）</p>
+</blockquote>
+<p>还有一个跟 <code>suid/sgid</code> 不是很很相关，但是又比较相关（诡异的描述 hhhhh）的<code>sbit</code> 叫做 <code> the  restricted  deletion  flag  or  sticky  bit</code>，也就是用来标记限制删除的 bit。一旦文件被设置了 <code>sbit</code> 后就只有文件所属人和 root 才有办法删除了。好多发行版本的默认情况下 <code>/tmp</code> 这个目录就被设置了 <code>sbit</code>，因为你肯定不想你自己创建的临时文件被其他人删掉嘛。</p>
+<p>当然，<code>suid/sgid/sbit</code> 都可以通过 <code>getfacl</code> 命令查看到。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/sbit_example.png"></p>
+<blockquote>
+<p>补充一句，这个只能为目录设置，为普通文件设置暂时没有任何意义和用处。</p>
+</blockquote>
+<h1 id="0X05-umask-默认权限"><a href="#0X05-umask-默认权限" class="headerlink" title="0X05 umask 默认权限"></a>0X05 umask 默认权限</h1><p>umask 是配置在用户上的，用于指定用户创建的文件/目录的默认权限的功能。也就是说每个用户可以有自己的 umask，用来指导自己创建的新文件、新目录所具有的权限。</p>
+<p><code>新文件默认权限 = 类型最大权限 (666/777) - umask（按位减而非按数字减）</code></p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/umask.png"></p>
+<blockquote>
+<p>最大权限问题其实我们可以简单理解成：文件为 666，目录为 777，因为目录默认必须有 <code>x</code> 所以比文件多 <code>1</code>。</p>
+</blockquote>
+<p>具体算法可以按照如下来尝试计算，<strong>但是我总觉得自己哪里搞得不对，不过又怎么算都是对的，这里我对自己的正确性持保留意见，如果发现什么不对劲的地方可以随时联系我改正</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">umask 0022：</span><br><span class="line">    文件：</span><br><span class="line">        r w - r w - r w -   666</span><br><span class="line">        - - - - w - - w -   022</span><br><span class="line">———————————————————————————————</span><br><span class="line">        r w - r - - r - -   644</span><br><span class="line"></span><br><span class="line">    目录：</span><br><span class="line">        r w x r w x r w x   777</span><br><span class="line">        - - - - w - - w -   022</span><br><span class="line">———————————————————————————————</span><br><span class="line">        r w x r - x r - x   755</span><br><span class="line">        </span><br></pre></td></tr></table></figure>
+
+<h1 id="0X06-删除文件引发的权限问题"><a href="#0X06-删除文件引发的权限问题" class="headerlink" title="0X06 删除文件引发的权限问题"></a>0X06 删除文件引发的权限问题</h1><p>接下来就到了一个相对来说有趣的地方了，首先我们来带入一个场景，看看这个</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/delete_fail_1.png"></p>
+<p>为什么这个文件我已经是所有人了，且权限已经是 777 了还是不能删除呢？这就涉及到了一个子问题“目录是什么”。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/what_is_dir.tiff"></p>
+<p>都说 Linux 万物皆文件，其实目录也是一个文件，只不过相对特殊一点而已。这个文件里主要存储了 <code>inode</code> 和 <code>filename</code>，所以我们对一个目录里的文件进行改名和删除的时候需要和创建一样的 <code>w</code> 权限。只有拥有了对一个目录的 <code>rwx</code> 权限才可以进入到目录里并且删除一个文件。所以上面这张截图里不能删除文件的原因是<em>当前用户并没有当前目录的写入权限，所以不能删掉这个文件</em>。<br><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/delete_fail_2.png"></p>
+<p>如果给用户添加一个对目录的写入权限，那就可以删掉这个文件了。<br><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/delete_fail_3.png"></p>
+<p>接下来再看下一个例子，我们可以看到这个目录下有两个文件，我已经可以删除其中一个了，那为什么不能删除另一个权限完全一样的文件呢？</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/delete_fail_4.png"></p>
+<p>答案在 <code>setattr</code> 这里。</p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/chattr_1.png"></p>
+<p>Linux 中还有一个 <code>attr</code> 的东西，故名思义就是文件的属性了。我们可以给文件设置多个属性，例如下面的这些：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">A：文件或目录的 atime (access time)不可被修改(modified), 可以有效预防磁盘I&#x2F;O错误的发生；</span><br><span class="line">S：硬盘I&#x2F;O同步选项，功能类似sync；</span><br><span class="line">a：即append，设定该参数后，只能向文件中添加数据，而不能删除；</span><br><span class="line">c：即compresse，设定文件是否经压缩后再存储。读取时需要经过自动解压操作；</span><br><span class="line">d：即no dump，设定文件不能成为dump程序的备份目标；</span><br><span class="line">i：设定文件不能被删除、改名、设定链接关系，同时不能写入或新增内容；</span><br><span class="line">j：即journal，设定此参数使得当通过mount参数：data&#x3D;ordered 或者 data&#x3D;writeback 挂 载的文件系统，文件在写入时会先被记录(在journal中)。如果filesystem被设定参数为 data&#x3D;journal，则该参数自动失效；</span><br><span class="line">s：保密性地删除文件或目录，即硬盘空间被全部收回；</span><br><span class="line">u：与s相反，当设定为u时，数据内容其实还存在磁盘中，可以用于undeletion。</span><br></pre></td></tr></table></figure>
+
+<p>其实还不止这些，但是我们通常会用到的也就这两个：<code>a</code> 和 <code>i</code>。其中被设置了 <code>a</code> 的文件只能被追加新内容，不能被删除或者复写已经存在的内容；而被设置了 <code>i</code> 的文件则不允许被删除，即使是天王老子来了也不允许被删除（除非你把它的 <code>i</code> 属性彻底）。所以说 <code>a</code> 属性通常会用在重要的日志上，从而保证日志不会被复写；<code>i</code> 属性通常会用在一些极其重要的文件上，防止被误删。而且由于这些属性的特殊性和强大的“拒绝改动性”（我乱取的名字），有一部分属性就只有 root 用户才能设置和删除，比如刚刚提到的 <code>a/i</code> 两个属性就是只有 root 才能操作，如果允许所有用户操作的话，一个用户在机器上创建了一个 10T 的文件又给了 <code>i</code> 属性，10T 的空间就被白白浪费掉了。 </p>
+<p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/chattr_2.png"></p>
+<h1 id="0X07-尾巴"><a href="#0X07-尾巴" class="headerlink" title="0X07 尾巴"></a>0X07 尾巴</h1><p>这些内容呢都算不上“复杂”或者“困难”或者“高深”，只是有很多人“不知道自己不知道”，所以我来分享一下我自己对这些内容的一些了解。主要目的也不是让读者一下就明白这些工具或者这些机制是怎么用的，是什么原理，而是<strong>让读者知道自己不知道什么</strong>。从而遇到问题的时候有个解决的思路，想要了解更深入的权限的时候记得还有一个什么<code>ACL/attr/suid/sgid/sbit</code> 的东西可以用，如果让一位读者达到这个目的我就算完成任务了～</p>
+<h1 id="0X08-尾巴的尾巴"><a href="#0X08-尾巴的尾巴" class="headerlink" title="0X08 尾巴的尾巴"></a>0X08 尾巴的尾巴</h1><p>其实还有一个有关 “权限” 的机制叫做 <code>SELinux</code>，相信不少人尤其是用过 CentOS/RHEL 的会听说过这东西，不过多数人也仅限于知道有这么个东西，装好系统第一时间关掉它。其实它的功能很强大，但是我了解的也非常非常少，少到甚至不足以写一个小结专门介绍，所以就只有放在尾巴的尾巴里。至于为什么我几乎完全不懂还要写在这儿的唯一理由就是<strong>让读者知道自己不知道什么</strong>。</p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>这篇文章对你有帮助吗？</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.08.png" alt="Shawn 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/iShot2020-05-1923.25.37.png" alt="Shawn 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Shawn
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.just666.com/2021/06/02/linux-unbasic-permission/" title="Linux 中不那么基础的权限 Rwx&#x2F;acl&#x2F;suid&#x2F;sgid&#x2F;sbit&#x2F;lsattr&#x2F;setattr">https://blog.just666.com/2021/06/02/linux-unbasic-permission/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Linux-Permission-ACL-suid-sgid-sbit-lsattr-setattr/" rel="tag"># Linux Permission ACL suid sgid sbit lsattr setattr</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/26/python-function-feature/" rel="prev" title="Python 中函数的特性">
+                  <i class="fa fa-chevron-left"></i> Python 中函数的特性
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shawn </br> 月亮很圆，圆也没用，没用也圆</span>
+</div>
+
+<div>
+<script type="text/javascript">
+    document.write(unescape("%3Cspan id='cnzz_stat_icon_1279322050'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1279322050%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/animejs/1.0/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '79f0f80e1019d9521c50',
+      clientSecret: '8f463866cba423bfaa63f5162824d03533327b73',
+      repo        : 'shawn-bluce.github.io',
+      owner       : 'shawn-bluce',
+      admin       : ['shawn-bluce'],
+      id          : 'c1a8731beea98dccfe56837f8056ce5e',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>
