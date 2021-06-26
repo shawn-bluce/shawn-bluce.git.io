@@ -21,12 +21,12 @@
     var CONFIG = {"hostname":"blog.just666.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":true,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
-  <meta name="description" content="0X00 前言首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 user&#x2F;group&#x2F;other 和 rwx 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。 另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些小知">
+  <meta name="description" content="- 0X00 前言首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 user&#x2F;group&#x2F;other 和 rwx 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。 另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux 中不那么基础的权限 Rwx&#x2F;acl&#x2F;suid&#x2F;sgid&#x2F;sbit&#x2F;lsattr&#x2F;setattr">
 <meta property="og:url" content="https://blog.just666.com/2021/06/02/linux-unbasic-permission/index.html">
 <meta property="og:site_name" content="Shawn&#39;s Blog">
-<meta property="og:description" content="0X00 前言首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 user&#x2F;group&#x2F;other 和 rwx 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。 另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些小知">
+<meta property="og:description" content="- 0X00 前言首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 user&#x2F;group&#x2F;other 和 rwx 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。 另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id_2.png">
@@ -44,9 +44,16 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/chattr_1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/chattr_2.png">
 <meta property="article:published_time" content="2021-06-02T13:05:47.000Z">
-<meta property="article:modified_time" content="2021-06-07T14:47:50.755Z">
+<meta property="article:modified_time" content="2021-06-26T03:15:11.626Z">
 <meta property="article:author" content="Shawn">
-<meta property="article:tag" content="Linux Permission ACL suid sgid sbit lsattr setattr">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="ACL">
+<meta property="article:tag" content="Permission">
+<meta property="article:tag" content="suid">
+<meta property="article:tag" content="sgid">
+<meta property="article:tag" content="sbit">
+<meta property="article:tag" content="lsattr">
+<meta property="article:tag" content="setattr">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id.png">
 
@@ -220,7 +227,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">152</span>
+        <span class="site-state-item-count">156</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -346,7 +353,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-06-07 22:47:50" itemprop="dateModified" datetime="2021-06-07T22:47:50+08:00">2021-06-07</time>
+        <time title="修改时间：2021-06-26 11:15:11" itemprop="dateModified" datetime="2021-06-26T11:15:11+08:00">2021-06-26</time>
       </span>
 
   
@@ -359,7 +366,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 <code>user/group/other</code> 和 <code>rwx</code> 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。</p>
+        <p>-</p>
+<h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 <code>user/group/other</code> 和 <code>rwx</code> 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。</p>
 <p>另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些小知识点，不过也没什么，毕竟这些知识点的使用率真的很低。</p>
 <p>如果你看完了这篇博客有那么一点点收获，那我也算是完成目标了；如果你看完后发现所有的内容都是你以前就知道的，那我只能说你对 Linux 权限这部分的掌握超过了大多数人。因为我确实给周围好多人分享过这些内容，从刚实习的朋友到比我工作经历多很多综合实力也强很多的人，几乎没有谁是完全了解这些内容的。（所以说虽然这篇博客并不难，并不是什么高深的知识，但是我比较有信息让你从中获得那么一点点的收获）</p>
 <blockquote>
@@ -429,6 +437,24 @@
     
     
       
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2016/11/02/linux-acl/" rel="bookmark">Linux权限控制列表 ACL修改</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/04/23/linux-permission/" rel="bookmark">Linux中诡异的权限（奇怪的权限增加了）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/11/02/better-linux/" rel="bookmark">在Linux桌面下活得舒服</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/05/14/django-fast/" rel="bookmark">如何让Django API再快一点</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2018/03/14/dnf-proxy/" rel="bookmark">Fedora中dnf命令使用Socks5代理</a></div>
+    </li>
+  </ul>
 
 
     <footer class="post-footer">
@@ -468,7 +494,14 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Linux-Permission-ACL-suid-sgid-sbit-lsattr-setattr/" rel="tag"># Linux Permission ACL suid sgid sbit lsattr setattr</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/ACL/" rel="tag"># ACL</a>
+              <a href="/tags/Permission/" rel="tag"># Permission</a>
+              <a href="/tags/suid/" rel="tag"># suid</a>
+              <a href="/tags/sgid/" rel="tag"># sgid</a>
+              <a href="/tags/sbit/" rel="tag"># sbit</a>
+              <a href="/tags/lsattr/" rel="tag"># lsattr</a>
+              <a href="/tags/setattr/" rel="tag"># setattr</a>
           </div>
 
         
