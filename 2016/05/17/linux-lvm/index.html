@@ -2,9 +2,11 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.2.0">
+
+
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
@@ -14,14 +16,11 @@
 
 
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.just666.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":true,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
-  </script>
-
-  <meta name="description" content="0X00 LVM是什么，有什么用LVM的全称是Logical Volume Manager（逻辑卷管理）。是Linux下的一种磁盘分区管理机制，方便给分区（逻辑分区）扩容和压缩。最简单的可以理解成原始的磁盘分区管理是单纯的给每个独立的磁盘进行分区，然后对每个分区进行管理，这样的话每次扩容和压缩空间都会很麻烦。LVM就相当于把所有磁盘的分区都揉到一起，揉成一个大磁盘或者说是大分区，然后从大的中分出小">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.just666.com","root":"/","images":"/images","scheme":"Gemini","version":"8.5.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="0X00 LVM是什么，有什么用LVM的全称是Logical Volume Manager（逻辑卷管理）。是Linux下的一种磁盘分区管理机制，方便给分区（逻辑分区）扩容和压缩。最简单的可以理解成原始的磁盘分区管理是单纯的给每个独立的磁盘进行分区，然后对每个分区进行管理，这样的话每次扩容和压缩空间都会很麻烦。LVM就相当于把所有磁盘的分区都揉到一起，揉成一个大磁盘或者说是大分区，然后从大的中分出小">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux的LVM 逻辑卷管理 分区 划分 重划">
 <meta property="og:url" content="https://blog.just666.com/2016/05/17/linux-lvm/index.html">
@@ -43,69 +42,29 @@
 <link rel="canonical" href="https://blog.just666.com/2016/05/17/linux-lvm/">
 
 
-<script data-pjax class="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
 
-  <title>Linux的LVM 逻辑卷管理 分区 划分 重划 | Shawn's Blog</title>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.just666.com/2016/05/17/linux-lvm/","path":"2016/05/17/linux-lvm/","title":"Linux的LVM 逻辑卷管理 分区 划分 重划"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux的LVM 逻辑卷管理 分区 划分 重划 | Shawn's Blog</title>
   
 
 
 
 
-
-
   <noscript>
-  <style>
-  body { margin-top: 2rem; }
-
-  .use-motion .menu-item,
-  .use-motion .sidebar,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header {
-    visibility: visible;
-  }
-
-  .use-motion .header,
-  .use-motion .site-brand-container .toggle,
-  .use-motion .footer { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle,
-  .use-motion .custom-logo-image {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line {
-    transform: scaleX(1);
-  }
-
-  .search-pop-overlay, .sidebar-nav { display: none; }
-  .sidebar-panel { display: block; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
 
   <main class="main">
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
+    <div class="toggle" aria-label="切换导航栏" role="button">
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
@@ -132,31 +91,11 @@
 
 <nav class="site-nav">
   <ul class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-        <li class="menu-item menu-item-sitemap">
-
-    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
-
-  </li>
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
   </ul>
 </nav>
 
@@ -166,7 +105,7 @@
 </div>
         
   
-  <div class="toggle sidebar-toggle">
+  <div class="toggle sidebar-toggle" role="button">
     <span class="toggle-line"></span>
     <span class="toggle-line"></span>
     <span class="toggle-line"></span>
@@ -184,20 +123,20 @@
         </li>
       </ul>
 
-      <!--noindex-->
-      <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-LVM%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8"><span class="nav-text">0X00 LVM是什么，有什么用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-%E5%9F%BA%E7%A1%80%E6%9C%AF%E8%AF%AD%E8%A7%A3%E9%87%8A"><span class="nav-text">0X01 基础术语解释</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83"><span class="nav-text">0X02 测试环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-%E5%87%86%E5%A4%87%E5%88%86%E5%8C%BA"><span class="nav-text">0X03 准备分区</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-%E5%88%9B%E5%BB%BA%E7%89%A9%E7%90%86%E5%8D%B7-PV"><span class="nav-text">0X04 创建物理卷 PV</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-%E5%87%86%E5%A4%87%E5%8D%B7%E7%BB%84-VG"><span class="nav-text">0X05 准备卷组 VG</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-%E5%88%9B%E5%BB%BA%E9%80%BB%E8%BE%91%E5%8D%B7-LV"><span class="nav-text">0X06 创建逻辑卷 LV</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X07-%E6%89%A9%E5%B1%95LVM%E9%80%BB%E8%BE%91%E5%8D%B7"><span class="nav-text">0X07 扩展LVM逻辑卷</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X08-%E5%8E%8B%E7%BC%A9LVM%E9%80%BB%E8%BE%91%E5%8D%B7"><span class="nav-text">0X08 压缩LVM逻辑卷</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X09-%E6%89%A9%E5%B1%95%E5%8D%B7%E7%BB%84"><span class="nav-text">0X09 扩展卷组</span></a></li></ol></div>
-      </section>
-      <!--/noindex-->
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-LVM%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">0X00 LVM是什么，有什么用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-%E5%9F%BA%E7%A1%80%E6%9C%AF%E8%AF%AD%E8%A7%A3%E9%87%8A"><span class="nav-number">2.</span> <span class="nav-text">0X01 基础术语解释</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83"><span class="nav-number">3.</span> <span class="nav-text">0X02 测试环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-%E5%87%86%E5%A4%87%E5%88%86%E5%8C%BA"><span class="nav-number">4.</span> <span class="nav-text">0X03 准备分区</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-%E5%88%9B%E5%BB%BA%E7%89%A9%E7%90%86%E5%8D%B7-PV"><span class="nav-number">5.</span> <span class="nav-text">0X04 创建物理卷 PV</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-%E5%87%86%E5%A4%87%E5%8D%B7%E7%BB%84-VG"><span class="nav-number">6.</span> <span class="nav-text">0X05 准备卷组 VG</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-%E5%88%9B%E5%BB%BA%E9%80%BB%E8%BE%91%E5%8D%B7-LV"><span class="nav-number">7.</span> <span class="nav-text">0X06 创建逻辑卷 LV</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X07-%E6%89%A9%E5%B1%95LVM%E9%80%BB%E8%BE%91%E5%8D%B7"><span class="nav-number">8.</span> <span class="nav-text">0X07 扩展LVM逻辑卷</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X08-%E5%8E%8B%E7%BC%A9LVM%E9%80%BB%E8%BE%91%E5%8D%B7"><span class="nav-number">9.</span> <span class="nav-text">0X08 压缩LVM逻辑卷</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X09-%E6%89%A9%E5%B1%95%E5%8D%B7%E7%BB%84"><span class="nav-number">10.</span> <span class="nav-text">0X09 扩展卷组</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
 
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Shawn"
-      src="/uploads/naruto.png">
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name">Shawn</p>
   <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
 </div>
-<div class="site-state-wrap animated">
+<div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
@@ -214,7 +153,7 @@
       </div>
   </nav>
 </div>
-  <div class="links-of-author animated">
+  <div class="links-of-author site-overview-item animated">
       <span class="links-of-author-item">
         <a href="https://github.com/shawn-bluce" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;shawn-bluce" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
@@ -228,12 +167,12 @@
         <a href="https://stackoverflow.com/users/8969875/shawn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;8969875&#x2F;shawn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
       </span>
   </div>
-  <div class="cc-license animated" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
   </div>
 
 
-  <div class="links-of-blogroll animated">
+  <div class="links-of-blogroll site-overview-item animated">
     <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
       Links
     </div>
@@ -245,22 +184,10 @@
           <a href="https://www.cnblogs.com/303donatello" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;303donatello" rel="noopener" target="_blank">303Donatello</a>
         </li>
         <li class="links-of-blogroll-item">
-          <a href="http://lixianhua.com/" title="http:&#x2F;&#x2F;lixianhua.com&#x2F;" rel="noopener" target="_blank">绛木子</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="http://duuge.com/" title="http:&#x2F;&#x2F;duuge.com&#x2F;" rel="noopener" target="_blank">杜哥</a>
-        </li>
-        <li class="links-of-blogroll-item">
           <a href="http://hubojing.github.io/" title="http:&#x2F;&#x2F;hubojing.github.io&#x2F;" rel="noopener" target="_blank">胡博靖</a>
         </li>
         <li class="links-of-blogroll-item">
-          <a href="http://blog.csdn.net/Ypersistence" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;Ypersistence" rel="noopener" target="_blank">威大爷</a>
-        </li>
-        <li class="links-of-blogroll-item">
           <a href="http://wenqy.com/" title="http:&#x2F;&#x2F;wenqy.com&#x2F;" rel="noopener" target="_blank">小温之家</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="http://www.rumoss.cn/" title="http:&#x2F;&#x2F;www.rumoss.cn&#x2F;" rel="noopener" target="_blank">濡沫杂记</a>
         </li>
         <li class="links-of-blogroll-item">
           <a href="http://blog.csdn.net/shouldnotappearcalm" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;shouldnotappearcalm" rel="noopener" target="_blank">不应有的淡定的博客</a>
@@ -271,7 +198,8 @@
     </ul>
   </div>
 
-      </section>
+          </div>
+        </div>
     </div>
   </aside>
   <div class="sidebar-dimmer"></div>
@@ -280,7 +208,7 @@
     </header>
 
     
-  <div class="back-to-top">
+  <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
@@ -293,18 +221,20 @@
 
 
     <div class="main-inner post posts-expand">
-      
 
-      
 
-    
+  
+
+
+<div class="post-block">
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2016/05/17/linux-lvm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Shawn">
       <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
     </span>
@@ -312,9 +242,6 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Shawn's Blog">
     </span>
-
-    
-    
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           Linux的LVM 逻辑卷管理 分区 划分 重划
@@ -437,10 +364,10 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Linux/" rel="tag"># Linux</a>
-              <a href="/tags/LVM/" rel="tag"># LVM</a>
-              <a href="/tags/Partition/" rel="tag"># Partition</a>
-              <a href="/tags/Format/" rel="tag"># Format</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/LVM/" rel="tag"><i class="fa fa-tag"></i> LVM</a>
+              <a href="/tags/Partition/" rel="tag"><i class="fa fa-tag"></i> Partition</a>
+              <a href="/tags/Format/" rel="tag"><i class="fa fa-tag"></i> Format</a>
           </div>
 
         
@@ -459,119 +386,39 @@
           </div>
     </footer>
   </article>
-  
-  
-  
+</div>
 
 
 
-      
-    <div class="comments" id="gitalk-container"></div>
 
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      const commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
 
-    </div>
+
+</div>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      
 
-      
 
 <div class="copyright">
-  
   &copy; 
   <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Shawn </br> 月亮很圆，圆也没用，没用也圆</span>
+  <span class="author" itemprop="copyrightHolder">Shawn</span>
 </div>
-
-<div>
-<script type="text/javascript">
-    document.write(unescape("%3Cspan id='cnzz_stat_icon_1279322050'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1279322050%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-</script>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
     </div>
   </footer>
 
   
-  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
-  <script src="https://cdn.bootcdn.net/ajax/libs/animejs/1.0/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '.page-configurations',
-    '.main-inner',
-    '.post-toc-wrap',
-    '.languages',
-    '.pjax'
-  ],
-  analytics: false,
-  cacheBust: false,
-  scrollRestoration: false,
-  scrollTo: !CONFIG.bookmark.enable
-});
-
-document.addEventListener('pjax:success', () => {
-  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  const hasTOC = document.querySelector('.post-toc');
-  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
-  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -582,34 +429,5 @@ document.addEventListener('pjax:success', () => {
 
 
 
-
-
-
-    <div class="pjax">
-  
-
-  
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
-
-<script>
-NexT.utils.loadComments('#gitalk-container', () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
-    var gitalk = new Gitalk({
-      clientID    : '79f0f80e1019d9521c50',
-      clientSecret: '8f463866cba423bfaa63f5162824d03533327b73',
-      repo        : 'shawn-bluce.github.io',
-      owner       : 'shawn-bluce',
-      admin       : ['shawn-bluce'],
-      id          : 'a69c62d0ac00ebe675cd8d2b9bbdd2da',
-        language: 'zh-CN',
-      distractionFreeMode: true
-    });
-    gitalk.render('gitalk-container');
-  }, window.Gitalk);
-});
-</script>
-
-    </div>
 </body>
 </html>

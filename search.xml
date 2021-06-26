@@ -3,21 +3,19 @@
   
     
     <entry>
-      <title><![CDATA[Linux 中不那么基础的权限 Rwx/acl/suid/sgid/sbit/lsattr/setattr]]></title>
+      <title><![CDATA[Linux 中不那么基础的权限]]></title>
       <url>/2021/06/02/linux-unbasic-permission/</url>
-      <content type="html"><![CDATA[<p>-</p>
-<h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 <code>user/group/other</code> 和 <code>rwx</code> 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。</p>
+      <content type="html"><![CDATA[<h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 <code>user/group/other</code> 和 <code>rwx</code> 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。</p>
 <p>另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些小知识点，不过也没什么，毕竟这些知识点的使用率真的很低。</p>
 <p>如果你看完了这篇博客有那么一点点收获，那我也算是完成目标了；如果你看完后发现所有的内容都是你以前就知道的，那我只能说你对 Linux 权限这部分的掌握超过了大多数人。因为我确实给周围好多人分享过这些内容，从刚实习的朋友到比我工作经历多很多综合实力也强很多的人，几乎没有谁是完全了解这些内容的。（所以说虽然这篇博客并不难，并不是什么高深的知识，但是我比较有信息让你从中获得那么一点点的收获）</p>
 <blockquote>
 <p>本博客不涉及某个命令的具体用法，只起到一个让你“知道自己哪里不知道”的作用。如果想要仔细了解某个命令或者某个机制，可以自行搜索相关资料。</p>
 </blockquote>
-<a id="more"></a>
-
 <h1 id="0X01-root-究竟是谁"><a href="#0X01-root-究竟是谁" class="headerlink" title="0X01 root 究竟是谁"></a>0X01 root 究竟是谁</h1><p>“root是谁？”这个问题听起来很蠢，但是实际上好多人并没有思考过这个问题。我们都知道 Linux 中有一个叫做 <code>uid</code> 的东西，其实 root 用户指的就是 <strong>uid为0的用户</strong>，而非用户名为root的用户，我们可以通过 <code>id</code> 命令来查看用户的 uid。</p>
 <p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id.png"></p>
 <p>而且值得注意的一点是 <strong>uid 是会被回收利用的</strong>。也就是说你创建了一个用户，系统分配了 1002 这个 uid 后，如果删掉这个用户紧接着再创建一个新用户是会敷用 1002 这个 uid 的。假设你删掉了系统中的一个老用户，又创建了个新的用户，那么万一 uid 是重复的就有可能导致这个新用户拥有之前老用户的权限，这是一种很危险的操作。</p>
 <p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id_2.png"></p>
+<a id="more"></a>
 <h1 id="0X02-一分钟带过的-rwx"><a href="#0X02-一分钟带过的-rwx" class="headerlink" title="0X02 一分钟带过的 rwx"></a>0X02 一分钟带过的 rwx</h1><p>然后进入正题，也就是真正意义上的权限：<code>rwx/ugo</code> 机制。不过这里就不细说了，假设你已经掌握了基础的这套权限机制。如果你之前不知道 <code>rwx</code> 是三个二进制位，从而用 <code>111/101/110</code> 来表示的 <code>rwx/r-x/rw-</code> 的话现在也知道了。</p>
 <h1 id="0X03-基础-rwx-之后的一级：ACL"><a href="#0X03-基础-rwx-之后的一级：ACL" class="headerlink" title="0X03 基础 rwx 之后的一级：ACL"></a>0X03 基础 rwx 之后的一级：ACL</h1><p>我们会发现基础的 rwx/ugo 权限机制只能将权限分配给三种人：文件所属用户、文件所属组、其他。如果你想专门指定给某个用户某个权限的话，是做不到的。那么 ACL 就是来解决这个问题的。</p>
 <p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/acl.png"></p>

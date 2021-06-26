@@ -2,9 +2,11 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.2.0">
+
+
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
@@ -14,14 +16,11 @@
 
 
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.just666.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":true,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
-  </script>
-
-  <meta name="description" content="0X00 前言不论多初级的后端程序员，只要认可自己是“后端程序员”那最起码也是听过“数据库索引”这个东西的，应该也直到这东西能让数据库变快。但是具体“数据库索引”是个什么东西，怎么用，为什么能让数据库变快可能就不一定清楚了。 这篇博客仅仅是简述了“数据库索引”的最基础内容，不涉及内部原理（其实我也还没搞懂）。阅读了本篇博客可以（也许）搞清楚怎么给一张表添加索引，索引加在哪儿，以及为什么不能给所有字">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.just666.com","root":"/","images":"/images","scheme":"Gemini","version":"8.5.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="0X00 前言不论多初级的后端程序员，只要认可自己是“后端程序员”那最起码也是听过“数据库索引”这个东西的，应该也直到这东西能让数据库变快。但是具体“数据库索引”是个什么东西，怎么用，为什么能让数据库变快可能就不一定清楚了。 这篇博客仅仅是简述了“数据库索引”的最基础内容，不涉及内部原理（其实我也还没搞懂）。阅读了本篇博客可以（也许）搞清楚怎么给一张表添加索引，索引加在哪儿，以及为什么不能给所有字">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关系型数据库索引初步使用（搞不好性能提升百倍呦）">
 <meta property="og:url" content="https://blog.just666.com/2019/09/15/database-index/index.html">
@@ -39,69 +38,29 @@
 <link rel="canonical" href="https://blog.just666.com/2019/09/15/database-index/">
 
 
-<script data-pjax class="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
 
-  <title>关系型数据库索引初步使用（搞不好性能提升百倍呦） | Shawn's Blog</title>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.just666.com/2019/09/15/database-index/","path":"2019/09/15/database-index/","title":"关系型数据库索引初步使用（搞不好性能提升百倍呦）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>关系型数据库索引初步使用（搞不好性能提升百倍呦） | Shawn's Blog</title>
   
 
 
 
 
-
-
   <noscript>
-  <style>
-  body { margin-top: 2rem; }
-
-  .use-motion .menu-item,
-  .use-motion .sidebar,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header {
-    visibility: visible;
-  }
-
-  .use-motion .header,
-  .use-motion .site-brand-container .toggle,
-  .use-motion .footer { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle,
-  .use-motion .custom-logo-image {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line {
-    transform: scaleX(1);
-  }
-
-  .search-pop-overlay, .sidebar-nav { display: none; }
-  .sidebar-panel { display: block; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
 
   <main class="main">
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
+    <div class="toggle" aria-label="切换导航栏" role="button">
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
@@ -128,31 +87,11 @@
 
 <nav class="site-nav">
   <ul class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-        <li class="menu-item menu-item-sitemap">
-
-    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
-
-  </li>
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
   </ul>
 </nav>
 
@@ -162,7 +101,7 @@
 </div>
         
   
-  <div class="toggle sidebar-toggle">
+  <div class="toggle sidebar-toggle" role="button">
     <span class="toggle-line"></span>
     <span class="toggle-line"></span>
     <span class="toggle-line"></span>
@@ -180,20 +119,20 @@
         </li>
       </ul>
 
-      <!--noindex-->
-      <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-%E5%89%8D%E8%A8%80"><span class="nav-text">0X00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-%E4%B8%80%E4%B8%AA%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF"><span class="nav-text">0X01 一个业务场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-%E4%BB%80%E4%B9%88%E6%98%AF%E7%B4%A2%E5%BC%95-amp-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8%E7%B4%A2%E5%BC%95%E4%BC%9A%E5%8A%A0%E5%BF%AB%E6%9F%A5%E8%AF%A2"><span class="nav-text">0X02 什么是索引&amp;为什么用索引会加快查询</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-%E5%A6%82%E4%BD%95%E6%B7%BB%E5%8A%A0%E7%B4%A2%E5%BC%95"><span class="nav-text">0X03 如何添加索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-%E7%B4%A2%E5%BC%95%E5%8A%A0%E5%9C%A8%E9%82%A3%E5%84%BF"><span class="nav-text">0X04 索引加在那儿</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95"><span class="nav-text">0X05 联合索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-%E7%B4%A2%E5%BC%95%E5%BD%93%E7%84%B6%E6%9C%89%E5%89%AF%E4%BD%9C%E7%94%A8"><span class="nav-text">0X06 索引当然有副作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X07-%E6%80%BB%E7%BB%93"><span class="nav-text">0X07 总结</span></a></li></ol></div>
-      </section>
-      <!--/noindex-->
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0X00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-%E4%B8%80%E4%B8%AA%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF"><span class="nav-number">2.</span> <span class="nav-text">0X01 一个业务场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-%E4%BB%80%E4%B9%88%E6%98%AF%E7%B4%A2%E5%BC%95-amp-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8%E7%B4%A2%E5%BC%95%E4%BC%9A%E5%8A%A0%E5%BF%AB%E6%9F%A5%E8%AF%A2"><span class="nav-number">3.</span> <span class="nav-text">0X02 什么是索引&amp;为什么用索引会加快查询</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-%E5%A6%82%E4%BD%95%E6%B7%BB%E5%8A%A0%E7%B4%A2%E5%BC%95"><span class="nav-number">4.</span> <span class="nav-text">0X03 如何添加索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-%E7%B4%A2%E5%BC%95%E5%8A%A0%E5%9C%A8%E9%82%A3%E5%84%BF"><span class="nav-number">5.</span> <span class="nav-text">0X04 索引加在那儿</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95"><span class="nav-number">6.</span> <span class="nav-text">0X05 联合索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-%E7%B4%A2%E5%BC%95%E5%BD%93%E7%84%B6%E6%9C%89%E5%89%AF%E4%BD%9C%E7%94%A8"><span class="nav-number">7.</span> <span class="nav-text">0X06 索引当然有副作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X07-%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">0X07 总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
 
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Shawn"
-      src="/uploads/naruto.png">
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name">Shawn</p>
   <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
 </div>
-<div class="site-state-wrap animated">
+<div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
@@ -210,7 +149,7 @@
       </div>
   </nav>
 </div>
-  <div class="links-of-author animated">
+  <div class="links-of-author site-overview-item animated">
       <span class="links-of-author-item">
         <a href="https://github.com/shawn-bluce" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;shawn-bluce" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
@@ -224,12 +163,12 @@
         <a href="https://stackoverflow.com/users/8969875/shawn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;8969875&#x2F;shawn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
       </span>
   </div>
-  <div class="cc-license animated" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
   </div>
 
 
-  <div class="links-of-blogroll animated">
+  <div class="links-of-blogroll site-overview-item animated">
     <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
       Links
     </div>
@@ -241,22 +180,10 @@
           <a href="https://www.cnblogs.com/303donatello" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;303donatello" rel="noopener" target="_blank">303Donatello</a>
         </li>
         <li class="links-of-blogroll-item">
-          <a href="http://lixianhua.com/" title="http:&#x2F;&#x2F;lixianhua.com&#x2F;" rel="noopener" target="_blank">绛木子</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="http://duuge.com/" title="http:&#x2F;&#x2F;duuge.com&#x2F;" rel="noopener" target="_blank">杜哥</a>
-        </li>
-        <li class="links-of-blogroll-item">
           <a href="http://hubojing.github.io/" title="http:&#x2F;&#x2F;hubojing.github.io&#x2F;" rel="noopener" target="_blank">胡博靖</a>
         </li>
         <li class="links-of-blogroll-item">
-          <a href="http://blog.csdn.net/Ypersistence" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;Ypersistence" rel="noopener" target="_blank">威大爷</a>
-        </li>
-        <li class="links-of-blogroll-item">
           <a href="http://wenqy.com/" title="http:&#x2F;&#x2F;wenqy.com&#x2F;" rel="noopener" target="_blank">小温之家</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="http://www.rumoss.cn/" title="http:&#x2F;&#x2F;www.rumoss.cn&#x2F;" rel="noopener" target="_blank">濡沫杂记</a>
         </li>
         <li class="links-of-blogroll-item">
           <a href="http://blog.csdn.net/shouldnotappearcalm" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;shouldnotappearcalm" rel="noopener" target="_blank">不应有的淡定的博客</a>
@@ -267,7 +194,8 @@
     </ul>
   </div>
 
-      </section>
+          </div>
+        </div>
     </div>
   </aside>
   <div class="sidebar-dimmer"></div>
@@ -276,7 +204,7 @@
     </header>
 
     
-  <div class="back-to-top">
+  <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
@@ -289,18 +217,20 @@
 
 
     <div class="main-inner post posts-expand">
-      
 
-      
 
-    
+  
+
+
+<div class="post-block">
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2019/09/15/database-index/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Shawn">
       <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
     </span>
@@ -308,9 +238,6 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Shawn's Blog">
     </span>
-
-    
-    
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           关系型数据库索引初步使用（搞不好性能提升百倍呦）
@@ -445,8 +372,8 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Database/" rel="tag"># Database</a>
-              <a href="/tags/Index/" rel="tag"># Index</a>
+              <a href="/tags/Database/" rel="tag"><i class="fa fa-tag"></i> Database</a>
+              <a href="/tags/Index/" rel="tag"><i class="fa fa-tag"></i> Index</a>
           </div>
 
         
@@ -465,119 +392,39 @@
           </div>
     </footer>
   </article>
-  
-  
-  
+</div>
 
 
 
-      
-    <div class="comments" id="gitalk-container"></div>
 
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      const commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
 
-    </div>
+
+</div>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      
 
-      
 
 <div class="copyright">
-  
   &copy; 
   <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Shawn </br> 月亮很圆，圆也没用，没用也圆</span>
+  <span class="author" itemprop="copyrightHolder">Shawn</span>
 </div>
-
-<div>
-<script type="text/javascript">
-    document.write(unescape("%3Cspan id='cnzz_stat_icon_1279322050'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1279322050%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-</script>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
     </div>
   </footer>
 
   
-  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
-  <script src="https://cdn.bootcdn.net/ajax/libs/animejs/1.0/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '.page-configurations',
-    '.main-inner',
-    '.post-toc-wrap',
-    '.languages',
-    '.pjax'
-  ],
-  analytics: false,
-  cacheBust: false,
-  scrollRestoration: false,
-  scrollTo: !CONFIG.bookmark.enable
-});
-
-document.addEventListener('pjax:success', () => {
-  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  const hasTOC = document.querySelector('.post-toc');
-  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
-  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -588,34 +435,5 @@ document.addEventListener('pjax:success', () => {
 
 
 
-
-
-
-    <div class="pjax">
-  
-
-  
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
-
-<script>
-NexT.utils.loadComments('#gitalk-container', () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
-    var gitalk = new Gitalk({
-      clientID    : '79f0f80e1019d9521c50',
-      clientSecret: '8f463866cba423bfaa63f5162824d03533327b73',
-      repo        : 'shawn-bluce.github.io',
-      owner       : 'shawn-bluce',
-      admin       : ['shawn-bluce'],
-      id          : '33c12ebcdca874020f3db750a4c58a54',
-        language: 'zh-CN',
-      distractionFreeMode: true
-    });
-    gitalk.render('gitalk-container');
-  }, window.Gitalk);
-});
-</script>
-
-    </div>
 </body>
 </html>

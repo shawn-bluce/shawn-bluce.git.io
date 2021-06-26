@@ -2,9 +2,11 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.2.0">
+
+
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
@@ -14,19 +16,16 @@
 
 
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.just666.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":true,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
-  </script>
-
-  <meta name="description" content="- 0X00 前言首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 user&#x2F;group&#x2F;other 和 rwx 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。 另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.just666.com","root":"/","images":"/images","scheme":"Gemini","version":"8.5.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="0X00 前言首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 user&#x2F;group&#x2F;other 和 rwx 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。 另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些小知">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux 中不那么基础的权限 Rwx&#x2F;acl&#x2F;suid&#x2F;sgid&#x2F;sbit&#x2F;lsattr&#x2F;setattr">
+<meta property="og:title" content="Linux 中不那么基础的权限">
 <meta property="og:url" content="https://blog.just666.com/2021/06/02/linux-unbasic-permission/index.html">
 <meta property="og:site_name" content="Shawn&#39;s Blog">
-<meta property="og:description" content="- 0X00 前言首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 user&#x2F;group&#x2F;other 和 rwx 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。 另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些">
+<meta property="og:description" content="0X00 前言首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 user&#x2F;group&#x2F;other 和 rwx 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。 另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些小知">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id_2.png">
@@ -44,7 +43,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/chattr_1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/chattr_2.png">
 <meta property="article:published_time" content="2021-06-02T13:05:47.000Z">
-<meta property="article:modified_time" content="2021-06-26T03:18:58.110Z">
+<meta property="article:modified_time" content="2021-06-26T03:54:46.335Z">
 <meta property="article:author" content="Shawn">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="ACL">
@@ -61,69 +60,29 @@
 <link rel="canonical" href="https://blog.just666.com/2021/06/02/linux-unbasic-permission/">
 
 
-<script data-pjax class="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
 
-  <title>Linux 中不那么基础的权限 Rwx/acl/suid/sgid/sbit/lsattr/setattr | Shawn's Blog</title>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.just666.com/2021/06/02/linux-unbasic-permission/","path":"2021/06/02/linux-unbasic-permission/","title":"Linux 中不那么基础的权限"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux 中不那么基础的权限 | Shawn's Blog</title>
   
 
 
 
 
-
-
   <noscript>
-  <style>
-  body { margin-top: 2rem; }
-
-  .use-motion .menu-item,
-  .use-motion .sidebar,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header {
-    visibility: visible;
-  }
-
-  .use-motion .header,
-  .use-motion .site-brand-container .toggle,
-  .use-motion .footer { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle,
-  .use-motion .custom-logo-image {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line {
-    transform: scaleX(1);
-  }
-
-  .search-pop-overlay, .sidebar-nav { display: none; }
-  .sidebar-panel { display: block; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
 
   <main class="main">
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
+    <div class="toggle" aria-label="切换导航栏" role="button">
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
@@ -150,31 +109,11 @@
 
 <nav class="site-nav">
   <ul class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-        <li class="menu-item menu-item-sitemap">
-
-    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
-
-  </li>
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
   </ul>
 </nav>
 
@@ -184,7 +123,7 @@
 </div>
         
   
-  <div class="toggle sidebar-toggle">
+  <div class="toggle sidebar-toggle" role="button">
     <span class="toggle-line"></span>
     <span class="toggle-line"></span>
     <span class="toggle-line"></span>
@@ -202,20 +141,20 @@
         </li>
       </ul>
 
-      <!--noindex-->
-      <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-%E5%89%8D%E8%A8%80"><span class="nav-text">0X00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-root-%E7%A9%B6%E7%AB%9F%E6%98%AF%E8%B0%81"><span class="nav-text">0X01 root 究竟是谁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-%E4%B8%80%E5%88%86%E9%92%9F%E5%B8%A6%E8%BF%87%E7%9A%84-rwx"><span class="nav-text">0X02 一分钟带过的 rwx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-%E5%9F%BA%E7%A1%80-rwx-%E4%B9%8B%E5%90%8E%E7%9A%84%E4%B8%80%E7%BA%A7%EF%BC%9AACL"><span class="nav-text">0X03 基础 rwx 之后的一级：ACL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-suid-sgid-%E5%92%8C-sbit"><span class="nav-text">0X04 suid sgid 和 sbit</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-umask-%E9%BB%98%E8%AE%A4%E6%9D%83%E9%99%90"><span class="nav-text">0X05 umask 默认权限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E5%BC%95%E5%8F%91%E7%9A%84%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98"><span class="nav-text">0X06 删除文件引发的权限问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X07-%E5%B0%BE%E5%B7%B4"><span class="nav-text">0X07 尾巴</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X08-%E5%B0%BE%E5%B7%B4%E7%9A%84%E5%B0%BE%E5%B7%B4"><span class="nav-text">0X08 尾巴的尾巴</span></a></li></ol></div>
-      </section>
-      <!--/noindex-->
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0X00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X01-root-%E7%A9%B6%E7%AB%9F%E6%98%AF%E8%B0%81"><span class="nav-number">2.</span> <span class="nav-text">0X01 root 究竟是谁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X02-%E4%B8%80%E5%88%86%E9%92%9F%E5%B8%A6%E8%BF%87%E7%9A%84-rwx"><span class="nav-number">3.</span> <span class="nav-text">0X02 一分钟带过的 rwx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X03-%E5%9F%BA%E7%A1%80-rwx-%E4%B9%8B%E5%90%8E%E7%9A%84%E4%B8%80%E7%BA%A7%EF%BC%9AACL"><span class="nav-number">4.</span> <span class="nav-text">0X03 基础 rwx 之后的一级：ACL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X04-suid-sgid-%E5%92%8C-sbit"><span class="nav-number">5.</span> <span class="nav-text">0X04 suid sgid 和 sbit</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X05-umask-%E9%BB%98%E8%AE%A4%E6%9D%83%E9%99%90"><span class="nav-number">6.</span> <span class="nav-text">0X05 umask 默认权限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X06-%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E5%BC%95%E5%8F%91%E7%9A%84%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text">0X06 删除文件引发的权限问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X07-%E5%B0%BE%E5%B7%B4"><span class="nav-number">8.</span> <span class="nav-text">0X07 尾巴</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X08-%E5%B0%BE%E5%B7%B4%E7%9A%84%E5%B0%BE%E5%B7%B4"><span class="nav-number">9.</span> <span class="nav-text">0X08 尾巴的尾巴</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
 
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Shawn"
-      src="/uploads/naruto.png">
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name">Shawn</p>
   <div class="site-description" itemprop="description">分享我的知识、经验、生活与感悟</div>
 </div>
-<div class="site-state-wrap animated">
+<div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
@@ -232,7 +171,7 @@
       </div>
   </nav>
 </div>
-  <div class="links-of-author animated">
+  <div class="links-of-author site-overview-item animated">
       <span class="links-of-author-item">
         <a href="https://github.com/shawn-bluce" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;shawn-bluce" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
@@ -246,12 +185,12 @@
         <a href="https://stackoverflow.com/users/8969875/shawn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;8969875&#x2F;shawn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
       </span>
   </div>
-  <div class="cc-license animated" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
   </div>
 
 
-  <div class="links-of-blogroll animated">
+  <div class="links-of-blogroll site-overview-item animated">
     <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
       Links
     </div>
@@ -263,22 +202,10 @@
           <a href="https://www.cnblogs.com/303donatello" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;303donatello" rel="noopener" target="_blank">303Donatello</a>
         </li>
         <li class="links-of-blogroll-item">
-          <a href="http://lixianhua.com/" title="http:&#x2F;&#x2F;lixianhua.com&#x2F;" rel="noopener" target="_blank">绛木子</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="http://duuge.com/" title="http:&#x2F;&#x2F;duuge.com&#x2F;" rel="noopener" target="_blank">杜哥</a>
-        </li>
-        <li class="links-of-blogroll-item">
           <a href="http://hubojing.github.io/" title="http:&#x2F;&#x2F;hubojing.github.io&#x2F;" rel="noopener" target="_blank">胡博靖</a>
         </li>
         <li class="links-of-blogroll-item">
-          <a href="http://blog.csdn.net/Ypersistence" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;Ypersistence" rel="noopener" target="_blank">威大爷</a>
-        </li>
-        <li class="links-of-blogroll-item">
           <a href="http://wenqy.com/" title="http:&#x2F;&#x2F;wenqy.com&#x2F;" rel="noopener" target="_blank">小温之家</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="http://www.rumoss.cn/" title="http:&#x2F;&#x2F;www.rumoss.cn&#x2F;" rel="noopener" target="_blank">濡沫杂记</a>
         </li>
         <li class="links-of-blogroll-item">
           <a href="http://blog.csdn.net/shouldnotappearcalm" title="http:&#x2F;&#x2F;blog.csdn.net&#x2F;shouldnotappearcalm" rel="noopener" target="_blank">不应有的淡定的博客</a>
@@ -289,7 +216,8 @@
     </ul>
   </div>
 
-      </section>
+          </div>
+        </div>
     </div>
   </aside>
   <div class="sidebar-dimmer"></div>
@@ -298,7 +226,7 @@
     </header>
 
     
-  <div class="back-to-top">
+  <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
@@ -311,18 +239,20 @@
 
 
     <div class="main-inner post posts-expand">
-      
 
-      
 
-    
+  
+
+
+<div class="post-block">
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blog.just666.com/2021/06/02/linux-unbasic-permission/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/naruto.png">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Shawn">
       <meta itemprop="description" content="分享我的知识、经验、生活与感悟">
     </span>
@@ -330,12 +260,9 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Shawn's Blog">
     </span>
-
-    
-    
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Linux 中不那么基础的权限 Rwx/acl/suid/sgid/sbit/lsattr/setattr
+          Linux 中不那么基础的权限
         </h1>
 
         <div class="post-meta-container">
@@ -353,7 +280,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-06-26 11:18:58" itemprop="dateModified" datetime="2021-06-26T11:18:58+08:00">2021-06-26</time>
+        <time title="修改时间：2021-06-26 11:54:46" itemprop="dateModified" datetime="2021-06-26T11:54:46+08:00">2021-06-26</time>
       </span>
 
   
@@ -366,19 +293,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>-</p>
-<h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 <code>user/group/other</code> 和 <code>rwx</code> 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。</p>
+        <h1 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h1><p>首先声明这篇博客针对的是中级 Linux 用户，如果你还不清楚 Linux 中的基本权限机制 <code>user/group/other</code> 和 <code>rwx</code> 的话需要先去了解一下对应的基础内容才行。既然标题上写了是“不那么基础的权限”，也就能看出来虽然内容不是很基础，但是也不会很高深。</p>
 <p>另外，这篇博客里提到的好多内容都是并不复杂的东西，但是非常零碎，也许你用了十年 Linux 还是不知道其中的一些小知识点，不过也没什么，毕竟这些知识点的使用率真的很低。</p>
 <p>如果你看完了这篇博客有那么一点点收获，那我也算是完成目标了；如果你看完后发现所有的内容都是你以前就知道的，那我只能说你对 Linux 权限这部分的掌握超过了大多数人。因为我确实给周围好多人分享过这些内容，从刚实习的朋友到比我工作经历多很多综合实力也强很多的人，几乎没有谁是完全了解这些内容的。（所以说虽然这篇博客并不难，并不是什么高深的知识，但是我比较有信息让你从中获得那么一点点的收获）</p>
 <blockquote>
 <p>本博客不涉及某个命令的具体用法，只起到一个让你“知道自己哪里不知道”的作用。如果想要仔细了解某个命令或者某个机制，可以自行搜索相关资料。</p>
 </blockquote>
-<a id="more"></a>
-
 <h1 id="0X01-root-究竟是谁"><a href="#0X01-root-究竟是谁" class="headerlink" title="0X01 root 究竟是谁"></a>0X01 root 究竟是谁</h1><p>“root是谁？”这个问题听起来很蠢，但是实际上好多人并没有思考过这个问题。我们都知道 Linux 中有一个叫做 <code>uid</code> 的东西，其实 root 用户指的就是 <strong>uid为0的用户</strong>，而非用户名为root的用户，我们可以通过 <code>id</code> 命令来查看用户的 uid。</p>
 <p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id.png"></p>
 <p>而且值得注意的一点是 <strong>uid 是会被回收利用的</strong>。也就是说你创建了一个用户，系统分配了 1002 这个 uid 后，如果删掉这个用户紧接着再创建一个新用户是会敷用 1002 这个 uid 的。假设你删掉了系统中的一个老用户，又创建了个新的用户，那么万一 uid 是重复的就有可能导致这个新用户拥有之前老用户的权限，这是一种很危险的操作。</p>
 <p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/user_id_2.png"></p>
+<a id="more"></a>
 <h1 id="0X02-一分钟带过的-rwx"><a href="#0X02-一分钟带过的-rwx" class="headerlink" title="0X02 一分钟带过的 rwx"></a>0X02 一分钟带过的 rwx</h1><p>然后进入正题，也就是真正意义上的权限：<code>rwx/ugo</code> 机制。不过这里就不细说了，假设你已经掌握了基础的这套权限机制。如果你之前不知道 <code>rwx</code> 是三个二进制位，从而用 <code>111/101/110</code> 来表示的 <code>rwx/r-x/rw-</code> 的话现在也知道了。</p>
 <h1 id="0X03-基础-rwx-之后的一级：ACL"><a href="#0X03-基础-rwx-之后的一级：ACL" class="headerlink" title="0X03 基础 rwx 之后的一级：ACL"></a>0X03 基础 rwx 之后的一级：ACL</h1><p>我们会发现基础的 rwx/ugo 权限机制只能将权限分配给三种人：文件所属用户、文件所属组、其他。如果你想专门指定给某个用户某个权限的话，是做不到的。那么 ACL 就是来解决这个问题的。</p>
 <p><img src="https://raw.githubusercontent.com/shawn-bluce/pics_home/master/linux_perm/acl.png"></p>
@@ -485,7 +410,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://blog.just666.com/2021/06/02/linux-unbasic-permission/" title="Linux 中不那么基础的权限 Rwx&#x2F;acl&#x2F;suid&#x2F;sgid&#x2F;sbit&#x2F;lsattr&#x2F;setattr">https://blog.just666.com/2021/06/02/linux-unbasic-permission/</a>
+      <a href="https://blog.just666.com/2021/06/02/linux-unbasic-permission/" title="Linux 中不那么基础的权限">https://blog.just666.com/2021/06/02/linux-unbasic-permission/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -494,14 +419,14 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Linux/" rel="tag"># Linux</a>
-              <a href="/tags/ACL/" rel="tag"># ACL</a>
-              <a href="/tags/Permission/" rel="tag"># Permission</a>
-              <a href="/tags/suid/" rel="tag"># suid</a>
-              <a href="/tags/sgid/" rel="tag"># sgid</a>
-              <a href="/tags/sbit/" rel="tag"># sbit</a>
-              <a href="/tags/lsattr/" rel="tag"># lsattr</a>
-              <a href="/tags/setattr/" rel="tag"># setattr</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/ACL/" rel="tag"><i class="fa fa-tag"></i> ACL</a>
+              <a href="/tags/Permission/" rel="tag"><i class="fa fa-tag"></i> Permission</a>
+              <a href="/tags/suid/" rel="tag"><i class="fa fa-tag"></i> suid</a>
+              <a href="/tags/sgid/" rel="tag"><i class="fa fa-tag"></i> sgid</a>
+              <a href="/tags/sbit/" rel="tag"><i class="fa fa-tag"></i> sbit</a>
+              <a href="/tags/lsattr/" rel="tag"><i class="fa fa-tag"></i> lsattr</a>
+              <a href="/tags/setattr/" rel="tag"><i class="fa fa-tag"></i> setattr</a>
           </div>
 
         
@@ -517,119 +442,39 @@
           </div>
     </footer>
   </article>
-  
-  
-  
+</div>
 
 
 
-      
-    <div class="comments" id="gitalk-container"></div>
 
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      const commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
 
-    </div>
+
+</div>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      
 
-      
 
 <div class="copyright">
-  
   &copy; 
   <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Shawn </br> 月亮很圆，圆也没用，没用也圆</span>
+  <span class="author" itemprop="copyrightHolder">Shawn</span>
 </div>
-
-<div>
-<script type="text/javascript">
-    document.write(unescape("%3Cspan id='cnzz_stat_icon_1279322050'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1279322050%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-</script>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
     </div>
   </footer>
 
   
-  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
-  <script src="https://cdn.bootcdn.net/ajax/libs/animejs/1.0/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '.page-configurations',
-    '.main-inner',
-    '.post-toc-wrap',
-    '.languages',
-    '.pjax'
-  ],
-  analytics: false,
-  cacheBust: false,
-  scrollRestoration: false,
-  scrollTo: !CONFIG.bookmark.enable
-});
-
-document.addEventListener('pjax:success', () => {
-  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  const hasTOC = document.querySelector('.post-toc');
-  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
-  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -640,34 +485,5 @@ document.addEventListener('pjax:success', () => {
 
 
 
-
-
-
-    <div class="pjax">
-  
-
-  
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
-
-<script>
-NexT.utils.loadComments('#gitalk-container', () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
-    var gitalk = new Gitalk({
-      clientID    : '79f0f80e1019d9521c50',
-      clientSecret: '8f463866cba423bfaa63f5162824d03533327b73',
-      repo        : 'shawn-bluce.github.io',
-      owner       : 'shawn-bluce',
-      admin       : ['shawn-bluce'],
-      id          : 'c1a8731beea98dccfe56837f8056ce5e',
-        language: 'zh-CN',
-      distractionFreeMode: true
-    });
-    gitalk.render('gitalk-container');
-  }, window.Gitalk);
-});
-</script>
-
-    </div>
 </body>
 </html>

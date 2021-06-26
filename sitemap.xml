@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.just666.com/about/index.html</loc>
+    
+    <lastmod>2021-06-26</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.just666.com/2021/06/02/linux-unbasic-permission/</loc>
     
     <lastmod>2021-06-26</lastmod>
@@ -73,13 +80,6 @@
   
   <url>
     <loc>https://blog.just666.com/2020/09/27/leave-knownsec/</loc>
-    
-    <lastmod>2020-09-28</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.just666.com/about/index.html</loc>
     
     <lastmod>2020-09-28</lastmod>
     
